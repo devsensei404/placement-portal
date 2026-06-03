@@ -25,6 +25,7 @@ public class ProfileDTO {
 
     public Profile toEntity() {
         Profile p = new Profile();
+        p.setId(this.id);
         p.setEmail(this.email);
         p.setJobTitle(this.jobTitle);
         p.setCompany(this.company);
