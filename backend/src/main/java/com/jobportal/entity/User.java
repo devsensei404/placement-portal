@@ -2,10 +2,6 @@ package com.jobportal.entity;
 
 import com.jobportal.dto.AccountType;
 import com.jobportal.dto.UserDTO;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import jakarta.persistence.*;
@@ -32,7 +28,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
+    private Long profileId;
+
     public UserDTO toDTO(){
-        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType);
+        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType,this.profileId);
     }
 }
