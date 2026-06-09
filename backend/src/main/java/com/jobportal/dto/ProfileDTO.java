@@ -22,6 +22,7 @@ public class ProfileDTO {
     private List<String> skills;
     private List<Experience> experience;
     private List<Certification> certifications;
+    private List<Long>savedJobs;
 
     public Profile toEntity() {
         Profile p = new Profile();
@@ -32,6 +33,7 @@ public class ProfileDTO {
         p.setLocation(this.location);
         p.setAbout(this.about);
         p.setSkills(this.skills);
+        p.setSavedJobs(this.savedJobs);
         return p;
     }
 }

@@ -1,6 +1,5 @@
 package com.jobportal.entity;
 
-import com.jobportal.entity.Applicant;
 import com.jobportal.dto.JobDTO;
 import com.jobportal.dto.JobStatus;
 import jakarta.persistence.*;
@@ -52,7 +51,7 @@ public class Job {
     private JobStatus status;
 
     public JobDTO toDTO(){
-        return new JobDTO(this.id,this.jobTitle,this.company, this.applicants, this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status);
+        return new JobDTO(this.id,this.jobTitle,this.company, this.applicants.stream().map(x->x.toDTO()).toList(), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status);
     }
 
 }

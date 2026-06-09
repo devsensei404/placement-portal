@@ -32,6 +32,9 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Certification> certifications = new ArrayList<>();
 
+    @ElementCollection
+    private List<Long>savedJobs;
+
     public ProfileDTO toDTO(){
         ProfileDTO dto = new ProfileDTO();
         dto.setId(this.id);
@@ -43,6 +46,7 @@ public class Profile {
         dto.setSkills(this.skills);
         dto.setExperience(this.experience);
         dto.setCertifications(this.certifications);
+        dto.setSavedJobs(this.savedJobs);
         return dto;
     }
 
