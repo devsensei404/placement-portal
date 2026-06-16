@@ -17,6 +17,7 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
     @Column(unique = true)
     private String email;
     private String jobTitle;
@@ -38,6 +39,7 @@ public class Profile {
     public ProfileDTO toDTO(){
         ProfileDTO dto = new ProfileDTO();
         dto.setId(this.id);
+        dto.setName(this.name);
         dto.setEmail(this.email);
         dto.setJobTitle(this.jobTitle);
         dto.setCompany(this.company);

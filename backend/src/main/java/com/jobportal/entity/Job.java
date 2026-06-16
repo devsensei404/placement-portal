@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -50,8 +51,10 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private JobStatus status;
 
+    private Long postedBy;
+
     public JobDTO toDTO(){
-        return new JobDTO(this.id,this.jobTitle,this.company, this.applicants.stream().map(x->x.toDTO()).toList(), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status);
+        return new JobDTO(this.id,this.jobTitle,this.company,this.applicants == null ? new ArrayList<>() : this.applicants.stream().map(x->x.toDTO()).toList(), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy);
     }
 
 }

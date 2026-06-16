@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileDTO {
     private Long id;
+    private String name;
     private String email;
     private String jobTitle;
     private String company;
@@ -27,6 +28,7 @@ public class ProfileDTO {
     public Profile toEntity() {
         Profile p = new Profile();
         p.setId(this.id);
+        p.setName(this.name);
         p.setEmail(this.email);
         p.setJobTitle(this.jobTitle);
         p.setCompany(this.company);

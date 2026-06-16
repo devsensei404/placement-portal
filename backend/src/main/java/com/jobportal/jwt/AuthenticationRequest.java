@@ -1,5 +1,6 @@
 package com.jobportal.jwt;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationRequest {
+
+    @NotBlank(message = "Email cannot be empty")
     private String email;
+
+    @NotBlank(message = "Password cannot be empty")
     private String password;
 }

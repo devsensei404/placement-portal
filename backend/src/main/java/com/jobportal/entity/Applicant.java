@@ -31,8 +31,9 @@ public class Applicant {
     @ManyToOne
     @JoinColumn(name="job_id")
     private Job job;
+    private LocalDateTime interviewTime;
 
-    public Applicant(Long applicantId, String name, String email, Long phone, String website, String resume, String coverLetter, ApplicationStatus applicationStatus) {
+    public Applicant(Long applicantId, String name, String email, Long phone, String website, String resume, String coverLetter, ApplicationStatus applicationStatus,LocalDateTime interviewTime) {
         this.applicantId = applicantId;
         this.name = name;
         this.email = email;
@@ -41,8 +42,9 @@ public class Applicant {
         this.resume = resume;
         this.coverLetter = coverLetter;
         this.applicationStatus = applicationStatus;
+        this.interviewTime = interviewTime;
     }
     public ApplicantDTO toDTO() {
-        return new ApplicantDTO(this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus);
+        return new ApplicantDTO(this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus,this.interviewTime);
     }
 }

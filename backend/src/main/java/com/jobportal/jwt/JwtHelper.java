@@ -14,7 +14,7 @@ import java.util.function.Function;
 @Component
 public class JwtHelper {
 
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // FIX 1: move to application.properties later
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // need to FIX as per AI move to application.properties later
 
     private static final long JWT_TOKEN_VALIDITY = 3600000;
 
@@ -32,7 +32,7 @@ public class JwtHelper {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()                          // FIX 2: was parserBuilder()
+        return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)

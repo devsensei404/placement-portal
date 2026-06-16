@@ -1,9 +1,6 @@
 package com.jobportal.service;
 
-import com.jobportal.dto.ApplicantDTO;
-import com.jobportal.dto.ApplicationStatus;
-import com.jobportal.dto.JobDTO;
-import com.jobportal.dto.JobStatus;
+import com.jobportal.dto.*;
 import com.jobportal.entity.Applicant;
 import com.jobportal.entity.Job;
 import com.jobportal.exception.JobPortalException;
@@ -51,6 +48,22 @@ public class JobServiceImpl implements JobService{
         applicantDTO.setApplicationStatus(ApplicationStatus.APPLIED);
         Applicant applicant = applicantDTO.toEntity();
         applicant.setJob(job);
+        applicantRepository.save(applicant);
+    }
+
+    @Override
+    public List<JobDTO> getJobsPostedby(Long id) throws JobPortalException {
+        return jobRepository.findByPostedBy(id).stream().map((x)->x.toDTO()).toList();
+    }
+
+    @Override
+    public void changeAppStatus(ApplicationDTO applicationDTO) throws JobPortalException {
+        Applicant applicant = applicantRepository.findById(applicationDTO.getApplicantId())
+                .orElseThrow(() -> new JobPortalException("APPLICANT_NOT_FOUND"));
+        applicant.setApplicationStatus(applicationDTO.getApplicationStatus());
+        if (applicationDTO.getApplicationStatus().equals(ApplicationStatus.INTERVIEWING)) {
+            applicant.setInterviewTime(applicationDTO.getInterviewTime());
+        }
         applicantRepository.save(applicant);
     }
 }
