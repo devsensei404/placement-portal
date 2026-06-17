@@ -1,5 +1,5 @@
-PLACEMENT-PORTAL
+**PLACEMENT-PORTAL**
 
-Work in Progress
+Backend in progress — Core REST API built with Spring Boot and PostgreSQL. Auth, JWT security, job posting, and application tracking done. Delete endpoints and some features still pending.
 
-Currently Working on JWT , auth based login and signup
+Frontend not started yet.
