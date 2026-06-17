@@ -66,4 +66,40 @@ public class JobServiceImpl implements JobService{
         }
         applicantRepository.save(applicant);
     }
+    @Override
+    public JobDTO closeJob(Long jobId) throws JobPortalException {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+        job.setStatus(JobStatus.CLOSED);
+        return jobRepository.save(job).toDTO();
+    }
+
+    @Override
+    public JobDTO reopenJob(Long jobId) throws JobPortalException {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+        if (job.getPostTime() == null) {
+            job.setPostTime(LocalDateTime.now());
+        }
+        job.setStatus(JobStatus.OPEN);
+        return jobRepository.save(job).toDTO();
+    }
+
+    @Override
+    public JobDTO updateJob(Long jobId, JobDTO jobDTO) throws JobPortalException {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+
+        if (jobDTO.getJobTitle() != null) job.setJobTitle(jobDTO.getJobTitle());
+        if (jobDTO.getCompany() != null) job.setCompany(jobDTO.getCompany());
+        if (jobDTO.getAbout() != null) job.setAbout(jobDTO.getAbout());
+        if (jobDTO.getExperience() != null) job.setExperience(jobDTO.getExperience());
+        if (jobDTO.getJobType() != null) job.setJobType(jobDTO.getJobType());
+        if (jobDTO.getLocation() != null) job.setLocation(jobDTO.getLocation());
+        if (jobDTO.getPackageOffered() != null) job.setPackageOffered(jobDTO.getPackageOffered());
+        if (jobDTO.getDescription() != null) job.setDescription(jobDTO.getDescription());
+        if (jobDTO.getSkillsRequired() != null) job.setSkillsRequired(jobDTO.getSkillsRequired());
+
+        return jobRepository.save(job).toDTO();
+    }
 }

@@ -55,5 +55,19 @@ public class JobAPI {
     public ResponseEntity<ResponseDTO>changeAppStatus(@RequestBody ApplicationDTO applicationDTO) throws JobPortalException {
         jobService.changeAppStatus(applicationDTO);
         return new ResponseEntity<>(new ResponseDTO("Application Status Changed Successfully"), HttpStatus.OK);
+    }
+    @PutMapping("/close/{id}")
+    public ResponseEntity<JobDTO> closeJob(@PathVariable("id") Long jobId) throws JobPortalException {
+        return ResponseEntity.ok(jobService.closeJob(jobId));
+    }
 
-}}
+    @PutMapping("/reopen/{id}")
+    public ResponseEntity<JobDTO> reopenJob(@PathVariable("id") Long jobId) throws JobPortalException {
+        return ResponseEntity.ok(jobService.reopenJob(jobId));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<JobDTO> updateJob(@PathVariable("id") Long jobId, @RequestBody JobDTO jobDTO) throws JobPortalException {
+        return ResponseEntity.ok(jobService.updateJob(jobId, jobDTO));
+    }
+}

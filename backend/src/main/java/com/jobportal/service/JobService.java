@@ -22,4 +22,10 @@ public interface JobService {
     public List<JobDTO> getJobsPostedby(Long id) throws JobPortalException;
 
     public void changeAppStatus(ApplicationDTO applicationDTO)throws JobPortalException;
+
+    public JobDTO closeJob(Long jobId) throws JobPortalException;
+
+    public JobDTO reopenJob(Long jobId) throws JobPortalException;
+
+    public JobDTO updateJob(Long jobId, JobDTO jobDTO) throws JobPortalException;
 }
