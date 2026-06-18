@@ -3,9 +3,11 @@ package com.jobportal.service;
 import com.jobportal.dto.*;
 import com.jobportal.entity.Applicant;
 import com.jobportal.entity.Job;
+import com.jobportal.entity.User;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.ApplicantRepository;
 import com.jobportal.repository.JobRepository;
+import com.jobportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ import java.util.List;
 
 @Service("jobService")
 public class JobServiceImpl implements JobService{
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private JobRepository jobRepository;
@@ -26,10 +31,25 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
-
         jobDTO.setStatus(JobStatus.OPEN);
         jobDTO.setPostTime(LocalDateTime.now());
-        return jobRepository.save(jobDTO.toEntity()).toDTO();
+        Job savedJob = jobRepository.save(jobDTO.toEntity());
+
+        List<User> applicants = userRepository.findByAccountType(AccountType.APPLICANT);
+        for (User user : applicants) {
+            NotificationDTO notiDto = new NotificationDTO();
+            notiDto.setUserId(user.getId());
+            notiDto.setAction("New Job Posted");
+            notiDto.setMessage("New job posted: " + jobDTO.getJobTitle() + " at " + jobDTO.getCompany());
+            notiDto.setRoute("/jobs/" + savedJob.getId());
+            try {
+                notificationService.sendNotification(notiDto);
+            } catch (JobPortalException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return savedJob.toDTO();
     }
 
     @Override
@@ -46,7 +66,9 @@ public class JobServiceImpl implements JobService{
     public void applyJob(Long id, ApplicantDTO applicantDTO) throws JobPortalException {
         Job job = jobRepository.findById(id).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
         List<Applicant> applicants = job.getApplicants();
-        if (!applicants.stream().filter((x) -> x.getApplicantId().equals(applicantDTO.getApplicantId())).toList().isEmpty())
+        if (!applicants.stream()
+                .filter((x) -> x.getApplicantId() != null && x.getApplicantId().equals(applicantDTO.getApplicantId()))
+                .toList().isEmpty())
             throw new JobPortalException("JOB_APPLIED_ALREADY");
         applicantDTO.setApplicationStatus(ApplicationStatus.APPLIED);
         Applicant applicant = applicantDTO.toEntity();

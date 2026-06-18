@@ -9,4 +9,5 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<Notification,Long> {
 
     public List<Notification> findByUserIdAndStatus(Long userId, NotificationStatus status);
+
 }
