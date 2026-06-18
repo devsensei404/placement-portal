@@ -21,6 +21,8 @@ public class JobServiceImpl implements JobService{
     @Autowired
     private ApplicantRepository applicantRepository;
 
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
@@ -32,7 +34,7 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public List<JobDTO> getAllJobs() throws JobPortalException {
-        return jobRepository.findAll().stream().map((x)->x.toDTO()).toList();
+        return jobRepository.findByStatus(JobStatus.OPEN).stream().map((x)->x.toDTO()).toList();
     }
 
     @Override
@@ -42,13 +44,25 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public void applyJob(Long id, ApplicantDTO applicantDTO) throws JobPortalException {
-        Job job=jobRepository.findById(id).orElseThrow(()->new JobPortalException("JOB_NOT_FOUND"));
-        List<Applicant>applicants=job.getApplicants();
-        if (!applicants.stream().filter((x) -> x.getApplicantId() .equals(applicantDTO.getApplicantId())).toList().isEmpty())throw new JobPortalException("JOB_APPLIED_ALREADY");
+        Job job = jobRepository.findById(id).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+        List<Applicant> applicants = job.getApplicants();
+        if (!applicants.stream().filter((x) -> x.getApplicantId().equals(applicantDTO.getApplicantId())).toList().isEmpty())
+            throw new JobPortalException("JOB_APPLIED_ALREADY");
         applicantDTO.setApplicationStatus(ApplicationStatus.APPLIED);
         Applicant applicant = applicantDTO.toEntity();
         applicant.setJob(job);
         applicantRepository.save(applicant);
+
+        NotificationDTO notiDto = new NotificationDTO();
+        notiDto.setAction("Application Submitted");
+        notiDto.setMessage("Your application has been received for " + job.getJobTitle() + " at " + job.getCompany());
+        notiDto.setUserId(applicantDTO.getApplicantId());
+        notiDto.setRoute("/job-history");
+        try {
+            notificationService.sendNotification(notiDto);
+        } catch (JobPortalException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -61,9 +75,29 @@ public class JobServiceImpl implements JobService{
         Applicant applicant = applicantRepository.findById(applicationDTO.getApplicantId())
                 .orElseThrow(() -> new JobPortalException("APPLICANT_NOT_FOUND"));
         applicant.setApplicationStatus(applicationDTO.getApplicationStatus());
+
+        NotificationDTO notiDto = new NotificationDTO();
+        notiDto.setUserId(applicant.getApplicantId());
+        notiDto.setRoute("/job-history");
+
         if (applicationDTO.getApplicationStatus().equals(ApplicationStatus.INTERVIEWING)) {
             applicant.setInterviewTime(applicationDTO.getInterviewTime());
+            notiDto.setAction("Interview Scheduled");
+            notiDto.setMessage("You have been shortlisted for an interview");
+        } else if (applicationDTO.getApplicationStatus().equals(ApplicationStatus.OFFERED)) {
+            notiDto.setAction("Offer Released");
+            notiDto.setMessage("Congratulations! You have been offered the position");
+        } else if (applicationDTO.getApplicationStatus().equals(ApplicationStatus.REJECTED)) {
+            notiDto.setAction("Application Rejected");
+            notiDto.setMessage("Your application was not selected");
         }
+
+        try {
+            notificationService.sendNotification(notiDto);
+        } catch (JobPortalException e) {
+            e.printStackTrace();
+        }
+
         applicantRepository.save(applicant);
     }
     @Override

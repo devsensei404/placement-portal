@@ -34,9 +34,16 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public ProfileDTO updateProfile(ProfileDTO profileDTO) throws JobPortalException {
-        profileRepository.findById(profileDTO.getId()).orElseThrow(()->new JobPortalException("USER_NOT_FOUND"));
-        profileRepository.save(profileDTO.toEntity());
-        return profileDTO;
+        Profile existing = profileRepository.findById(profileDTO.getId())
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        if (profileDTO.getName() != null) existing.setName(profileDTO.getName());
+        if (profileDTO.getJobTitle() != null) existing.setJobTitle(profileDTO.getJobTitle());
+        if (profileDTO.getCompany() != null) existing.setCompany(profileDTO.getCompany());
+        if (profileDTO.getLocation() != null) existing.setLocation(profileDTO.getLocation());
+        if (profileDTO.getAbout() != null) existing.setAbout(profileDTO.getAbout());
+        if (profileDTO.getSkills() != null) existing.setSkills(profileDTO.getSkills());
+        if (profileDTO.getSavedJobs() != null) existing.setSavedJobs(profileDTO.getSavedJobs());
+        return profileRepository.save(existing).toDTO();
     }
 
     @Override
