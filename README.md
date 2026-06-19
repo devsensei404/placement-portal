@@ -1,5 +1,18 @@
-**PLACEMENT-PORTAL**
+# Placement Portal
 
-Backend in progress — Core REST API built with Spring Boot and PostgreSQL. Auth, JWT security, job posting, and application tracking done. Delete endpoints and some features still pending.
+A full-stack placement portal for NIT Durgapur.
 
-Frontend not started yet.
+**Stack:** Java 21 · Spring Boot 3.5.x · PostgreSQL 16 · React · Vite
+
+## Progress
+**Backend:** Auth + JWT, Student Profile, Job Postings,
+Job Search, Apply for Jobs, Application Status Tracking,
+Interview Scheduling, Notifications
+
+**Frontend:** Login, Signup
+
+**Pending:** Dashboards, Job Browse, Profile Page,
+Resume Upload, Chat, Dockerization
+
+## Author
+Devsensei404 — NIT Durgapur
