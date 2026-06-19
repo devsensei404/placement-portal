@@ -1,0 +1,61 @@
+/* Login.css */
+
+* { font-family: monospace; box-sizing: border-box; }
+
+body { background: #000; color: #00ff00; }
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  border: 1px solid #00ff00;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.subtitle { font-size: 11px; letter-spacing: 0.15em; }
+
+h1 { font-weight: normal; margin: 4px 0 28px; }
+h1::before { content: "> "; }
+
+.field { margin-bottom: 18px; }
+
+label { display: block; font-size: 12px; text-transform: uppercase; margin-bottom: 6px; }
+
+input {
+  width: 100%;
+  background: #000;
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  padding: 8px 12px;
+  outline: none;
+}
+
+input:focus { background: #001a00; }
+input::placeholder { color: #005500; }
+
+.error { border: 1px solid red; color: red; padding: 8px 12px; margin-bottom: 16px; }
+.error::before { content: "! "; }
+
+button {
+  width: 100%;
+  background: #000;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+button:hover { background: #00ff00; color: #000; }
+
+.footer-text { font-size: 12px; text-align: center; margin-top: 20px; }
+
+a { color: #00ff00; }
+a:hover { background: #00ff00; color: #000; }
