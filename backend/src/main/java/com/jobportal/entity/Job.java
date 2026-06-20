@@ -2,6 +2,7 @@ package com.jobportal.entity;
 
 import com.jobportal.dto.JobDTO;
 import com.jobportal.dto.JobStatus;
+import com.jobportal.dto.JobType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +35,8 @@ public class Job {
 
     private String experience;
 
-    private String jobType;
+    @Enumerated(EnumType.STRING)
+    private JobType jobType;
 
     private String location;
 

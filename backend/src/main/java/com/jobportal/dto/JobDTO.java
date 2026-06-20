@@ -27,7 +27,7 @@ public class JobDTO {
 
     private String experience;
 
-    private String jobType;
+    private JobType jobType;
 
     private String location;
 
