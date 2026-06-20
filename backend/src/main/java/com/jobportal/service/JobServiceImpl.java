@@ -72,6 +72,7 @@ public class JobServiceImpl implements JobService{
             throw new JobPortalException("JOB_APPLIED_ALREADY");
         applicantDTO.setApplicationStatus(ApplicationStatus.APPLIED);
         Applicant applicant = applicantDTO.toEntity();
+        applicant.setTimestamp(LocalDateTime.now());
         applicant.setJob(job);
         applicantRepository.save(applicant);
 
