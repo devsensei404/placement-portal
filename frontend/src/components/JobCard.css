@@ -1,0 +1,46 @@
+.job-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content:space-between;
+}
+
+.job-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.job-card-company {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+.job-card-location {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.btn-view {
+  width:100%;
+  margin-top: 10px;
+  align-self: flex-start;
+  padding: 7px 18px;
+  background-color: #457df7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-view:hover {
+  background-color: #1d4ed8;
+}

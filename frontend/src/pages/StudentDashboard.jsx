@@ -16,7 +16,7 @@ export default function StudentDashboard() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then((data) => setRecentJobs(data.slice(0, 3)))
+      .then((data) => setRecentJobs(data.slice(-3)))
       .catch((err) => console.error("Failed to fetch jobs:", err));
   }, []);
 

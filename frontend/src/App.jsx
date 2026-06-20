@@ -3,6 +3,7 @@ import Login from "./pages/Login.jsx"
 import Signup from "./pages/Signup.jsx"
 import StudentDashboard from "./pages/StudentDashboard.jsx"
 import BrowseJobs from './pages/BrowseJobs.jsx';
+import JobDetails from "./pages/JobDetails";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -10,7 +11,8 @@ const router = createBrowserRouter([
   { path: "/signup", element: <Signup /> },
   { path: "/student-dashboard", element: <StudentDashboard /> },
   { path: "/recruiter-dashboard", element: <div style={{color:"red", padding:"40px"}}>Recruiter Dashboard — coming soon</div> },
-  { path: '/browse-jobs', element: <BrowseJobs />}
+  { path: '/browse-jobs', element: <BrowseJobs />},
+  { path: "/job-details", element: <JobDetails /> }
 ])
 
 export default function App() {

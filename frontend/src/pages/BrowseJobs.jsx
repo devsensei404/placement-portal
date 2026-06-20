@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import JobCard from '../components/JobCard';
+import "./BrowseJobs.css";
 
 function BrowseJobs() {
   const [jobs, setJobs] = useState([]);
@@ -25,7 +26,7 @@ function BrowseJobs() {
       <h2 className="section-heading">Browse Jobs</h2>
 
       <div className="jobs-grid">
-        {jobs.map(job => (
+        {jobs.slice().reverse().map(job => (
           <JobCard key={job.id} job={job} />
         ))}
       </div>

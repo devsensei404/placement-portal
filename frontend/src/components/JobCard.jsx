@@ -1,6 +1,7 @@
 // src/components/JobCard.jsx
 
 import { useNavigate } from 'react-router-dom';
+import "./JobCard.css";
 
 // Reusable card — used on Dashboard (3 cards) and Browse Jobs (all cards)
 function JobCard({ job }) {
@@ -8,9 +9,11 @@ function JobCard({ job }) {
 
   return (
     <div className="job-card">
-      <h3 className="job-card-title">{job.jobTitle}</h3>
-      <p className="job-card-company">{job.company}</p>
-      <p className="job-card-location">{job.location}</p>
+      <div className="job-card-info">
+        <h3 className="job-card-title">{job.jobTitle}</h3>
+        <p className="job-card-company">{job.company}</p>
+        <p className="job-card-location">{job.location}</p>
+      </div>
       <button
         className="btn-view"
         onClick={() => navigate(`/job-details?id=${job.id}`)}
