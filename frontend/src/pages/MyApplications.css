@@ -1,0 +1,162 @@
+/* MyApplications.css */
+
+.my-apps-page {
+  min-height: 100vh;
+  background: #f5f0ff;
+}
+
+.my-apps-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+.my-apps-header {
+  margin-bottom: 32px;
+}
+
+.my-apps-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.my-apps-sub {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.my-apps-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Empty state */
+.empty-state {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  padding: 60px 32px;
+  text-align: center;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.empty-sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  background: #8b5cf6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #7c3aed;
+}
+
+/* Application cards list */
+.apps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.app-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
+  transition: box-shadow 0.2s;
+}
+
+.app-card:hover {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+}
+
+.app-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.app-job-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.app-company {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.app-meta-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.app-meta-chip {
+  font-size: 12px;
+  color: #49494a;
+  background: #f3efff;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.app-date {
+  font-size: 12px;
+  color: #454545;
+  margin-top: 4px;
+}
+
+.app-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-view-details {
+  padding: 8px 18px;
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-view-details:hover {
+  background: #ede9fe;
+}

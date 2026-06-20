@@ -25,7 +25,7 @@ export default function Navbar() {
     <nav className="navbar">
 
       {/* Logo — clicking takes you to the right dashboard */}
-      <span className="navbar-logo">MeowJOB</span>
+      <span className="navbar-logo">MeowJOB🐱</span>
 
       {/* Nav links — different per role */}
       <div className="navbar-links">
@@ -34,9 +34,9 @@ export default function Navbar() {
           <>
             <Link to="/student-dashboard">Home</Link>
             <Link to="/browse-jobs">Browse Jobs</Link>
-            <Link to="/student-dashboard/applications">My Applications</Link>
+            <Link to="/my-applications">My Applications</Link>
             <Link to="/student-dashboard/profile">My Profile</Link>
-            <Link to="/student-dashboard/notifications">Notifications</Link>
+            <Link to="/notifications">Notifications</Link>
           </>
         )}
 

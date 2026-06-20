@@ -86,7 +86,9 @@ export default function JobDetails() {
           <p className="job-meta"><span className="meta-label">Job Type:</span> {job.jobType}</p>
           <p className="job-meta"><span className="meta-label">Experience:</span> {job.experience}</p>
           {job.packageOffered && (
-            <p className="job-package">₹ {job.packageOffered} LPA</p>
+            <p className="job-package">
+                ₹ {job.packageOffered} {job.jobType === "FULL_TIME" ? "LPA" : job.jobType === "INTERNSHIP" ?"per month":"per hour"}
+            </p>
           )}
         </div>
 

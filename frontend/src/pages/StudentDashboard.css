@@ -2,7 +2,7 @@
 
 .dashboard {
   min-height: 100vh;
-  background: #f3f4f6;
+  background: #f5f0ff;
 }
 
 .dashboard-main {
@@ -19,9 +19,10 @@
 }
 
 .welcome {
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 36px;
+  font-size: 17px;
+  color: #374151;
+  margin-top: 5px;
+  margin-bottom: 30px;
 }
 
 .stats-grid {
@@ -31,8 +32,8 @@
 }
 
 .stat-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
   border-radius: 12px;
   padding: 24px 28px;
   display: flex;
@@ -40,7 +41,7 @@
   gap: 10px;
   min-width: 180px;
   flex: 1;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
 }
 
 .stat-label {
@@ -48,7 +49,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #9ca3af;
+  color: #374151;
 }
 
 .stat-value {
@@ -60,7 +61,7 @@
 .stat-value.incomplete {
   font-size: 18px;
   font-weight: 600;
-  color: #f59e0b;
+  color: #d97706;
 }
 
 .recent-jobs-section {
@@ -69,9 +70,9 @@
 
 .section-heading {
   font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 35px;
 }
 
 .jobs-grid {
@@ -88,8 +89,8 @@
 
 .btn-view-more {
   padding: 10px 28px;
-  background-color: #2563eb;
-  color: #fff;
+  background-color: #8b5cf6;
+  color: #ffffff;
   border: none;
   border-radius: 6px;
   font-size: 14px;
@@ -97,5 +98,5 @@
 }
 
 .btn-view-more:hover {
-  background-color: #1d4ed8;
+  background-color: #7c3aed;
 }

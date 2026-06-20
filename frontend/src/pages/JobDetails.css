@@ -1,5 +1,5 @@
 .job-details-page {
-  background-color: #f0f0f0;
+  background-color: #f5f0ff;
   min-height: 100vh;
 }
 
@@ -10,9 +10,9 @@
 }
 
 .job-header {
-  background: #fff;
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.06);
   padding: 28px;
   margin-bottom: 24px;
 }
@@ -26,21 +26,21 @@
 
 .job-meta {
   font-size: 14px;
-  color: #555;
+  color: #393838;
   margin: 4px 0;
 }
 
 .job-package {
   font-size: 16px;
   font-weight: 600;
-  color: #2563eb;
+  color: #7c3aed;
   margin-top: 10px;
 }
 
 .job-section {
-  background: #fff;
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.06);
   padding: 24px 28px;
   margin-bottom: 20px;
 }
@@ -54,7 +54,7 @@
 
 .job-section p {
   font-size: 14px;
-  color: #444;
+  color: #3a3a3a;
   line-height: 1.7;
   margin: 0;
 }
@@ -66,9 +66,9 @@
 }
 
 .skill-tag {
-  background: #eff6ff;
-  color: #2563eb;
-  border: 1px solid #bfdbfe;
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
   border-radius: 20px;
   padding: 4px 14px;
   font-size: 13px;
@@ -93,8 +93,9 @@
 .loading {
   padding: 40px;
   text-align: center;
-  color: #888;
+  color: #3f3f3f;
 }
+
 .meta-label {
   font-weight: 600;
   color: #1a1a1a;
@@ -103,7 +104,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(76, 29, 149, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,7 +112,7 @@
 }
 
 .modal {
-  background: #fff;
+  background: #ffffff;
   border-radius: 10px;
   padding: 32px;
   width: 100%;
@@ -121,6 +122,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.12);
 }
 
 .modal h2 {
@@ -133,26 +135,26 @@
 .modal label {
   font-size: 13px;
   font-weight: 600;
-  color: #444;
+  color: #2c2c2c;
   margin-top: 8px;
 }
 
 .modal input,
 .modal textarea {
   padding: 9px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #ddd6fe;
   border-radius: 6px;
   font-size: 14px;
   color: #1a1a1a;
   outline: none;
   width: 100%;
   box-sizing: border-box;
+  background: #ffffff;
 }
 
 .modal input:focus,
 .modal textarea:focus {
-  border-color: #2563eb;
-
+  border-color: #8b5cf6;
 }
 
 .modal-actions {
@@ -164,22 +166,22 @@
 .btn-cancel {
   flex: 1;
   padding: 10px;
-  background: #f0f0f0;
+  background: #f3efff;
   border: none;
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  color: #444;
+  color: #5b21b6;
 }
 
 .btn-cancel:hover {
-  background: #e0e0e0;
+  background: #ede9fe;
 }
 
 .btn-apply {
   flex: 1;
   padding: 10px;
-  background-color: #2563eb;
+  background-color: #8b5cf6;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -188,10 +190,10 @@
 }
 
 .btn-apply:hover {
-  background-color: #1d4ed8;
+  background-color: #7c3aed;
 }
 
 .modal textarea {
   min-height: 120px;
-  resize: vertical; /* lets user drag to resize if they want */
+  resize: vertical;
 }

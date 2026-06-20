@@ -1,7 +1,9 @@
 // Login.jsx
 // This is the login page. It has two inputs, one button, and an error message.
+// If the user is already logged in (token exists in localStorage),
+// they get redirected straight to their dashboard without seeing this form.
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 
@@ -18,6 +20,21 @@ export default function Login() {
 
   // navigate() lets us redirect the user to a different page
   const navigate = useNavigate();
+
+  // If a token already exists, the user is already logged in.
+  // Redirect them to their dashboard immediately — no need to log in again.
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const accountType = localStorage.getItem("accountType");
+
+    if (token) {
+      if (accountType === "EMPLOYER") {
+        navigate("/recruiter-dashboard");
+      } else {
+        navigate("/student-dashboard");
+      }
+    }
+  }, []);
 
   // This runs on every keystroke in any input field
   // e.target.name is the input's name attribute ("email" or "password")
@@ -59,8 +76,8 @@ export default function Login() {
       // We only need the middle part (payload), which is Base64 encoded
       const payload = JSON.parse(atob(token.split(".")[1]));
 
-      localStorage.setItem("userId", payload.id)
-      localStorage.setItem("accountType", payload.accountType)
+      localStorage.setItem("userId", payload.id);
+      localStorage.setItem("accountType", payload.accountType);
 
       // payload.accountType will be "APPLICANT" or "EMPLOYER"
       // Redirect to the right dashboard based on role

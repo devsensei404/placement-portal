@@ -1,0 +1,109 @@
+body {
+  background: #f5f0ff;
+}
+.notif-page {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 16px;
+  background-color: #f5f0ff;
+}
+
+.notif-page h2 {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  font-weight: 700;
+  color: #312e81;
+}
+
+.notif-status {
+  color: #374151;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.notif-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e9e2ff;
+  border-left: 5px solid #8b5cf6;
+
+  border-radius: 14px;
+
+  padding: 16px 18px;
+  margin-bottom: 14px;
+
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.06);
+}
+
+.notif-card-clickable {
+  cursor: pointer;
+}
+
+.notif-card-clickable:hover {
+  background: #fcfbff;
+}
+
+.notif-message {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  font-size: 1rem;
+  color: #111827;
+
+  line-height: 1.5;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.notif-time {
+  flex-shrink: 0;
+
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  color: #4b5563;
+
+  white-space: nowrap;
+}
+
+.notif-dismiss {
+  flex-shrink: 0;
+
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #a78bfa;
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.notif-dismiss:hover {
+  background: #f3efff;
+  color: #7c3aed;
+}
