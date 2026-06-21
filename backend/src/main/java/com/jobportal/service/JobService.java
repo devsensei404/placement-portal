@@ -30,4 +30,5 @@ public interface JobService {
     public JobDTO updateJob(Long jobId, JobDTO jobDTO) throws JobPortalException;
 
     public void deleteJob(Long id) throws JobPortalException;
+
 }

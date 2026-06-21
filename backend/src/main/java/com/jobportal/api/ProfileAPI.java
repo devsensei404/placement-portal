@@ -1,5 +1,6 @@
 package com.jobportal.api;
 
+import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
 import com.jobportal.dto.ResponseDTO;
@@ -42,27 +43,65 @@ public class ProfileAPI {
         return new ResponseEntity<>(profileService.updateProfile(profileDTO),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @DeleteMapping("/{profileId}/experience/{expId}")
     public ResponseEntity<ResponseDTO> deleteExperience(@PathVariable Long profileId, @PathVariable Long expId) throws JobPortalException {
         profileService.deleteExperience(profileId, expId);
         return new ResponseEntity<>(new ResponseDTO("Experience Deleted Successfully"), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @DeleteMapping("/{profileId}/certifications/{certId}")
     public ResponseEntity<ResponseDTO> deleteCertification(@PathVariable Long profileId, @PathVariable Long certId) throws JobPortalException {
         profileService.deleteCertification(profileId, certId);
         return new ResponseEntity<>(new ResponseDTO("Certification Deleted Successfully"), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @PostMapping("/{profileId}/experience")
     public ResponseEntity<ResponseDTO> addExperience(@PathVariable Long profileId, @RequestBody ExperienceDTO experienceDTO) throws JobPortalException {
         profileService.addExperience(profileId, experienceDTO);
         return new ResponseEntity<>(new ResponseDTO("Experience Added Successfully"), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @PutMapping("/{profileId}/experience/{expId}")
     public ResponseEntity<ResponseDTO> updateExperience(@PathVariable Long profileId, @PathVariable Long expId, @RequestBody ExperienceDTO experienceDTO) throws JobPortalException {
         profileService.updateExperience(profileId, expId, experienceDTO);
         return new ResponseEntity<>(new ResponseDTO("Experience Updated Successfully"), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @PostMapping("/{profileId}/certifications")
+    public ResponseEntity<ResponseDTO> addCertification(@PathVariable Long profileId, @RequestBody CertificationDTO certificationDTO) throws JobPortalException {
+        profileService.addCertification(profileId, certificationDTO);
+        return new ResponseEntity<>(new ResponseDTO("Certification Added Successfully"), HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @PutMapping("/{profileId}/certifications/{certId}")
+    public ResponseEntity<ResponseDTO> updateCertification(@PathVariable Long profileId, @PathVariable Long certId, @RequestBody CertificationDTO certificationDTO) throws JobPortalException {
+        profileService.updateCertification(profileId, certId, certificationDTO);
+        return new ResponseEntity<>(new ResponseDTO("Certification Updated Successfully"), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @PostMapping("/{profileId}/saved/{jobId}")
+    public ResponseEntity<ResponseDTO> saveJob(@PathVariable Long profileId, @PathVariable Long jobId) throws JobPortalException {
+        profileService.saveJob(profileId, jobId);
+        return new ResponseEntity<>(new ResponseDTO("Job Saved Successfully"), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @DeleteMapping("/{profileId}/saved/{jobId}")
+    public ResponseEntity<ResponseDTO> unsaveJob(@PathVariable Long profileId, @PathVariable Long jobId) throws JobPortalException {
+        profileService.unsaveJob(profileId, jobId);
+        return new ResponseEntity<>(new ResponseDTO("Job Removed from Saved"), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @GetMapping("/{profileId}/saved")
+    public ResponseEntity<List<Long>> getSavedJobs(@PathVariable Long profileId) throws JobPortalException {
+        return new ResponseEntity<>(profileService.getSavedJobs(profileId), HttpStatus.OK);
     }
 }

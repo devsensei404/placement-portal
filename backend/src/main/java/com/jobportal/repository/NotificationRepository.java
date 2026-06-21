@@ -10,4 +10,5 @@ public interface NotificationRepository extends JpaRepository<Notification,Long>
 
     public List<Notification> findByUserIdAndStatus(Long userId, NotificationStatus status);
 
+    public void deleteByUserId(Long userId);
 }

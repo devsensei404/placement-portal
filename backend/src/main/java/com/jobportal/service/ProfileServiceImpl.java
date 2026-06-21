@@ -1,5 +1,6 @@
 package com.jobportal.service;
 
+import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
 import com.jobportal.entity.Certification;
@@ -107,5 +108,52 @@ public class ProfileServiceImpl implements ProfileService{
         experienceRepository.save(existing);
     }
 
+    @Override
+    public void addCertification(Long profileId, CertificationDTO certificationDTO) throws JobPortalException {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        Certification certification = certificationDTO.toEntity();
+        certification.setProfile(profile);
+        certificationRepository.save(certification);
+    }
 
+    @Override
+    public void updateCertification(Long profileId, Long certId, CertificationDTO certificationDTO) throws JobPortalException {
+        profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        Certification existing = certificationRepository.findById(certId)
+                .orElseThrow(() -> new JobPortalException("CERTIFICATION_NOT_FOUND"));
+        if (certificationDTO.getName() != null) existing.setName(certificationDTO.getName());
+        if (certificationDTO.getIssuer() != null) existing.setIssuer(certificationDTO.getIssuer());
+        if (certificationDTO.getIssueDate() != null) existing.setIssueDate(certificationDTO.getIssueDate());
+        if (certificationDTO.getCertificateId() != null) existing.setCertificateId(certificationDTO.getCertificateId());
+        certificationRepository.save(existing);
+    }
+    @Override
+    public void saveJob(Long profileId, Long jobId) throws JobPortalException {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        if (profile.getSavedJobs() == null) profile.setSavedJobs(new ArrayList<>());
+        if (profile.getSavedJobs().contains(jobId))
+            throw new JobPortalException("JOB_ALREADY_SAVED");
+        profile.getSavedJobs().add(jobId);
+        profileRepository.save(profile);
+    }
+
+    @Override
+    public void unsaveJob(Long profileId, Long jobId) throws JobPortalException {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        if (profile.getSavedJobs() == null || !profile.getSavedJobs().contains(jobId))
+            throw new JobPortalException("JOB_NOT_SAVED");
+        profile.getSavedJobs().remove(jobId);
+        profileRepository.save(profile);
+    }
+
+    @Override
+    public List<Long> getSavedJobs(Long profileId) throws JobPortalException {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        return profile.getSavedJobs() == null ? new ArrayList<>() : profile.getSavedJobs();
+    }
 }

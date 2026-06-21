@@ -1,5 +1,6 @@
 package com.jobportal.service;
 
+import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
 import com.jobportal.exception.JobPortalException;
@@ -21,4 +22,14 @@ public interface ProfileService {
     public void addExperience(Long profileId, ExperienceDTO experienceDTO) throws JobPortalException;
 
     public void updateExperience(Long profileId, Long expId, ExperienceDTO experienceDTO) throws JobPortalException;
+
+    public void addCertification(Long profileId, CertificationDTO certificationDTO) throws JobPortalException;
+
+    public void updateCertification(Long profileId, Long certId, CertificationDTO certificationDTO) throws JobPortalException;
+
+    public void saveJob(Long profileId, Long jobId) throws JobPortalException;
+
+    public void unsaveJob(Long profileId, Long jobId) throws JobPortalException;
+
+    public List<Long> getSavedJobs(Long profileId) throws JobPortalException;
 }
