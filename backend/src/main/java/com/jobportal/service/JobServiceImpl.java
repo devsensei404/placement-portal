@@ -159,4 +159,15 @@ public class JobServiceImpl implements JobService{
 
         return jobRepository.save(job).toDTO();
     }
+
+    @Override
+    public void deleteJob(Long id) throws JobPortalException {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+        if (!job.getApplicants().isEmpty())
+            throw new JobPortalException("JOB_HAS_APPLICANTS");
+        jobRepository.deleteById(id);
+    }
+
+
 }

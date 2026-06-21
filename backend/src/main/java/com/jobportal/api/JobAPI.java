@@ -80,4 +80,11 @@ public class JobAPI {
     public ResponseEntity<JobDTO> updateJob(@PathVariable("id") Long jobId, @RequestBody JobDTO jobDTO) throws JobPortalException {
         return ResponseEntity.ok(jobService.updateJob(jobId, jobDTO));
     }
+
+    @PreAuthorize("hasRole('EMPLOYER')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseDTO> deleteJob(@PathVariable Long id) throws JobPortalException {
+        jobService.deleteJob(id);
+        return new ResponseEntity<>(new ResponseDTO("Job Deleted Successfully"), HttpStatus.OK);
+    }
 }

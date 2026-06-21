@@ -1,6 +1,8 @@
 package com.jobportal.api;
 
+import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
+import com.jobportal.dto.ResponseDTO;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +40,29 @@ public class ProfileAPI {
     @PutMapping("/update")
     public ResponseEntity<ProfileDTO>updateProfile(@RequestBody ProfileDTO profileDTO) throws JobPortalException{
         return new ResponseEntity<>(profileService.updateProfile(profileDTO),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{profileId}/experience/{expId}")
+    public ResponseEntity<ResponseDTO> deleteExperience(@PathVariable Long profileId, @PathVariable Long expId) throws JobPortalException {
+        profileService.deleteExperience(profileId, expId);
+        return new ResponseEntity<>(new ResponseDTO("Experience Deleted Successfully"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{profileId}/certifications/{certId}")
+    public ResponseEntity<ResponseDTO> deleteCertification(@PathVariable Long profileId, @PathVariable Long certId) throws JobPortalException {
+        profileService.deleteCertification(profileId, certId);
+        return new ResponseEntity<>(new ResponseDTO("Certification Deleted Successfully"), HttpStatus.OK);
+    }
+
+    @PostMapping("/{profileId}/experience")
+    public ResponseEntity<ResponseDTO> addExperience(@PathVariable Long profileId, @RequestBody ExperienceDTO experienceDTO) throws JobPortalException {
+        profileService.addExperience(profileId, experienceDTO);
+        return new ResponseEntity<>(new ResponseDTO("Experience Added Successfully"), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{profileId}/experience/{expId}")
+    public ResponseEntity<ResponseDTO> updateExperience(@PathVariable Long profileId, @PathVariable Long expId, @RequestBody ExperienceDTO experienceDTO) throws JobPortalException {
+        profileService.updateExperience(profileId, expId, experienceDTO);
+        return new ResponseEntity<>(new ResponseDTO("Experience Updated Successfully"), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.jobportal.entity;
 
+import com.jobportal.dto.CertificationDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -22,4 +23,8 @@ public class Certification {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    public CertificationDTO toDTO() {
+        return new CertificationDTO(this.id, this.name, this.issuer, this.issueDate, this.certificateId);
+    }
 }

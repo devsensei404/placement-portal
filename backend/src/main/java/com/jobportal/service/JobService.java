@@ -28,4 +28,6 @@ public interface JobService {
     public JobDTO reopenJob(Long jobId) throws JobPortalException;
 
     public JobDTO updateJob(Long jobId, JobDTO jobDTO) throws JobPortalException;
+
+    public void deleteJob(Long id) throws JobPortalException;
 }

@@ -1,5 +1,6 @@
 package com.jobportal.entity;
 
+import com.jobportal.dto.ExperienceDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -25,4 +26,8 @@ public class Experience {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    public ExperienceDTO toDTO() {
+        return new ExperienceDTO(this.id, this.title, this.company, this.location, this.startDate, this.endDate, this.working, this.description);
+    }
 }
