@@ -3,6 +3,7 @@ package com.jobportal.service;
 import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
+import com.jobportal.dto.UserDTO;
 import com.jobportal.entity.Certification;
 import com.jobportal.entity.Experience;
 import com.jobportal.entity.Profile;
@@ -10,6 +11,7 @@ import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.CertificationRepository;
 import com.jobportal.repository.ExperienceRepository;
 import com.jobportal.repository.ProfileRepository;
+import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Autowired
     private CertificationRepository certificationRepository;
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     @Override
     public Long createProfile(String email) throws JobPortalException {
@@ -46,6 +51,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public ProfileDTO updateProfile(ProfileDTO profileDTO) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileDTO.getId()))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile existing = profileRepository.findById(profileDTO.getId())
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         if (profileDTO.getName() != null) existing.setName(profileDTO.getName());
@@ -65,26 +73,39 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void deleteExperience(Long profileId, Long expId) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         Experience exp = experienceRepository.findById(expId)
                 .orElseThrow(() -> new JobPortalException("EXPERIENCE_NOT_FOUND"));
+        if (!exp.getProfile().getId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         profile.getExperience().remove(exp);
         experienceRepository.delete(exp);
     }
 
     @Override
     public void deleteCertification(Long profileId, Long certId) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         Certification cert = certificationRepository.findById(certId)
                 .orElseThrow(() -> new JobPortalException("CERTIFICATION_NOT_FOUND"));
+        if (!cert.getProfile().getId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         profile.getCertifications().remove(cert);
         certificationRepository.delete(cert);
     }
 
     @Override
     public void addExperience(Long profileId, ExperienceDTO experienceDTO) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         Experience experience = experienceDTO.toEntity();
@@ -94,6 +115,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void updateExperience(Long profileId, Long expId, ExperienceDTO experienceDTO) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         Experience existing = experienceRepository.findById(expId)
@@ -110,7 +134,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void addCertification(Long profileId, CertificationDTO certificationDTO) throws JobPortalException {
-        Profile profile = profileRepository.findById(profileId)
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         Certification certification = certificationDTO.toEntity();
         certification.setProfile(profile);
@@ -119,6 +145,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void updateCertification(Long profileId, Long certId, CertificationDTO certificationDTO) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         Certification existing = certificationRepository.findById(certId)
@@ -131,6 +160,9 @@ public class ProfileServiceImpl implements ProfileService{
     }
     @Override
     public void saveJob(Long profileId, Long jobId) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         if (profile.getSavedJobs() == null) profile.setSavedJobs(new ArrayList<>());
@@ -142,6 +174,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void unsaveJob(Long profileId, Long jobId) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         if (profile.getSavedJobs() == null || !profile.getSavedJobs().contains(jobId))
@@ -152,6 +187,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public List<Long> getSavedJobs(Long profileId) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         return profile.getSavedJobs() == null ? new ArrayList<>() : profile.getSavedJobs();

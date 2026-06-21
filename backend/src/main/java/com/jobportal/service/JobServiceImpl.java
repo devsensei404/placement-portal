@@ -8,6 +8,7 @@ import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.ApplicantRepository;
 import com.jobportal.repository.JobRepository;
 import com.jobportal.repository.UserRepository;
+import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,13 @@ public class JobServiceImpl implements JobService{
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private SecurityUtils securityUtils;
+
     @Override
     public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
+        Long userId = securityUtils.getLoggedInUser().getId();
+        jobDTO.setPostedBy(userId);
         jobDTO.setStatus(JobStatus.OPEN);
         jobDTO.setPostTime(LocalDateTime.now());
         Job savedJob = jobRepository.save(jobDTO.toEntity());
@@ -64,6 +70,8 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public void applyJob(Long id, ApplicantDTO applicantDTO) throws JobPortalException {
+        Long userId = securityUtils.getLoggedInUser().getId();
+        applicantDTO.setApplicantId(userId);
         Job job = jobRepository.findById(id).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
         List<Applicant> applicants = job.getApplicants();
         if (!applicants.stream()
@@ -90,7 +98,10 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public List<JobDTO> getJobsPostedby(Long id) throws JobPortalException {
-        return jobRepository.findByPostedBy(id).stream().map((x)->x.toDTO()).toList();
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getId().equals(id))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
+        return jobRepository.findByPostedBy(id).stream().map(x -> x.toDTO()).toList();
     }
 
     @Override
@@ -127,6 +138,9 @@ public class JobServiceImpl implements JobService{
     public JobDTO closeJob(Long jobId) throws JobPortalException {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!job.getPostedBy().equals(loggedInUser.getId()))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         job.setStatus(JobStatus.CLOSED);
         return jobRepository.save(job).toDTO();
     }
@@ -135,9 +149,10 @@ public class JobServiceImpl implements JobService{
     public JobDTO reopenJob(Long jobId) throws JobPortalException {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
-        if (job.getPostTime() == null) {
-            job.setPostTime(LocalDateTime.now());
-        }
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!job.getPostedBy().equals(loggedInUser.getId()))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
+        if (job.getPostTime() == null) job.setPostTime(LocalDateTime.now());
         job.setStatus(JobStatus.OPEN);
         return jobRepository.save(job).toDTO();
     }
@@ -146,7 +161,9 @@ public class JobServiceImpl implements JobService{
     public JobDTO updateJob(Long jobId, JobDTO jobDTO) throws JobPortalException {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
-
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!job.getPostedBy().equals(loggedInUser.getId()))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         if (jobDTO.getJobTitle() != null) job.setJobTitle(jobDTO.getJobTitle());
         if (jobDTO.getCompany() != null) job.setCompany(jobDTO.getCompany());
         if (jobDTO.getAbout() != null) job.setAbout(jobDTO.getAbout());
@@ -156,7 +173,6 @@ public class JobServiceImpl implements JobService{
         if (jobDTO.getPackageOffered() != null) job.setPackageOffered(jobDTO.getPackageOffered());
         if (jobDTO.getDescription() != null) job.setDescription(jobDTO.getDescription());
         if (jobDTO.getSkillsRequired() != null) job.setSkillsRequired(jobDTO.getSkillsRequired());
-
         return jobRepository.save(job).toDTO();
     }
 
@@ -166,6 +182,9 @@ public class JobServiceImpl implements JobService{
                 .orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
         if (!job.getApplicants().isEmpty())
             throw new JobPortalException("JOB_HAS_APPLICANTS");
+        Long loggedInUserId = securityUtils.getLoggedInUser().getId();
+        if (!job.getPostedBy().equals(loggedInUserId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
         jobRepository.deleteById(id);
     }
 
