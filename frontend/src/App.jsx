@@ -8,6 +8,7 @@ import MyApplications from "./pages/MyApplications.jsx";
 import ApplicationDetail from "./pages/ApplicationDetail.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Notifications from "./pages/Notifications.jsx";
+import MyProfile from "./pages/MyProfile.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
   { path: "/my-applications", element: <ProtectedRoute><MyApplications /></ProtectedRoute> },
   { path: "/application-detail", element: <ProtectedRoute><ApplicationDetail /></ProtectedRoute> },
   { path: "/notifications", element: <ProtectedRoute><Notifications /></ProtectedRoute> },
+  { path: "/my-profile", element: <ProtectedRoute><MyProfile /></ProtectedRoute> },
   { path: "/recruiter-dashboard", element: <ProtectedRoute><div style={{color:"red", padding:"40px"}}>Recruiter Dashboard — coming soon</div></ProtectedRoute> },
 ])
 

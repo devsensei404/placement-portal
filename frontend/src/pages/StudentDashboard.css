@@ -2,13 +2,13 @@
 
 .dashboard {
   min-height: 100vh;
-  background: #f5f0ff;
+  background: oklch(96.335% 0.02068 301.001);
 }
 
 .dashboard-main {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 32px;
+  padding: 25px 32px;
 }
 
 .dash-title {

@@ -35,7 +35,7 @@ export default function Navbar() {
             <Link to="/student-dashboard">Home</Link>
             <Link to="/browse-jobs">Browse Jobs</Link>
             <Link to="/my-applications">My Applications</Link>
-            <Link to="/student-dashboard/profile">My Profile</Link>
+            <Link to="/my-profile">My Profile</Link>
             <Link to="/notifications">Notifications</Link>
           </>
         )}
