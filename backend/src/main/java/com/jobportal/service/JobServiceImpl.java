@@ -187,6 +187,4 @@ public class JobServiceImpl implements JobService{
             throw new JobPortalException("UNAUTHORIZED_ACTION");
         jobRepository.deleteById(id);
     }
-
-
 }

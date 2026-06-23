@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.http.HttpResponse;
 import java.util.List;
@@ -27,8 +28,8 @@ public class ProfileAPI {
 
     @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @GetMapping("/get/{id}")
-    public ResponseEntity<ProfileDTO>getProfile(@PathVariable Long id) throws JobPortalException{
-        return new ResponseEntity<>(profileService.getProfile(id), HttpStatus.OK);
+    public ResponseEntity<ProfileDTO> getMyProfile() throws JobPortalException {
+        return ResponseEntity.ok(profileService.getMyProfile());
     }
 
     @PreAuthorize("hasRole('EMPLOYER')")
@@ -103,5 +104,32 @@ public class ProfileAPI {
     @GetMapping("/{profileId}/saved")
     public ResponseEntity<List<Long>> getSavedJobs(@PathVariable Long profileId) throws JobPortalException {
         return new ResponseEntity<>(profileService.getSavedJobs(profileId), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @PutMapping("/{id}/picture")
+    public ResponseEntity<ResponseDTO> uploadProfilePicture(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) throws JobPortalException {
+        profileService.uploadProfilePicture(id, file);
+        return ResponseEntity.ok(new ResponseDTO("Profile picture updated"));
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @PutMapping("/{id}/cover")
+    public ResponseEntity<ResponseDTO> uploadCoverPhoto(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) throws JobPortalException {
+        profileService.uploadCoverPhoto(id, file);
+        return ResponseEntity.ok(new ResponseDTO("Cover photo updated"));
+    }
+
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @PutMapping("/{id}/resume")
+    public ResponseEntity<ResponseDTO> uploadResume(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) throws JobPortalException {
+        profileService.uploadResume(id, file);
+        return ResponseEntity.ok(new ResponseDTO("Resume updated"));
     }
 }

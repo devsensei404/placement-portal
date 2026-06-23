@@ -4,13 +4,14 @@ import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
 import com.jobportal.exception.JobPortalException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ProfileService {
 
     public Long createProfile(String email) throws JobPortalException;
-    public ProfileDTO getProfile(Long id) throws JobPortalException;
+
     public ProfileDTO updateProfile(ProfileDTO profileDTO) throws JobPortalException;
 
     public List<ProfileDTO> getAllProfiles() throws JobPortalException;
@@ -32,4 +33,12 @@ public interface ProfileService {
     public void unsaveJob(Long profileId, Long jobId) throws JobPortalException;
 
     public List<Long> getSavedJobs(Long profileId) throws JobPortalException;
+
+    public ProfileDTO getMyProfile() throws JobPortalException;
+
+    public void uploadProfilePicture(Long profileId, MultipartFile file) throws JobPortalException;
+
+    public void uploadCoverPhoto(Long profileId, MultipartFile file) throws JobPortalException;
+
+    public void uploadResume(Long profileId, MultipartFile file) throws JobPortalException;
 }

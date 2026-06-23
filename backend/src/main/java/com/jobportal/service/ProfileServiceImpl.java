@@ -14,6 +14,7 @@ import com.jobportal.repository.ProfileRepository;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,9 @@ public class ProfileServiceImpl implements ProfileService{
     @Autowired
     private SecurityUtils securityUtils;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
     @Override
     public Long createProfile(String email) throws JobPortalException {
         Profile profile=new Profile();
@@ -45,8 +49,10 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override
-    public ProfileDTO getProfile(Long id) throws JobPortalException {
-        return profileRepository.findById(id).orElseThrow(()->new JobPortalException("USER_NOT_FOUND")).toDTO();
+    public ProfileDTO getMyProfile() throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        return profileRepository.findById(loggedInUser.getProfileId())
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND")).toDTO();
     }
 
     @Override
@@ -193,5 +199,41 @@ public class ProfileServiceImpl implements ProfileService{
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         return profile.getSavedJobs() == null ? new ArrayList<>() : profile.getSavedJobs();
+    }
+
+    @Override
+    public void uploadProfilePicture(Long profileId, MultipartFile file) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        String url = cloudinaryService.uploadFile(file, "profile-pictures");
+        profile.setProfilePictureUrl(url);
+        profileRepository.save(profile);
+    }
+
+    @Override
+    public void uploadCoverPhoto(Long profileId, MultipartFile file) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        String url = cloudinaryService.uploadFile(file, "cover-photos");
+        profile.setCoverPhotoUrl(url);
+        profileRepository.save(profile);
+    }
+
+    @Override
+    public void uploadResume(Long profileId, MultipartFile file) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!loggedInUser.getProfileId().equals(profileId))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        String url = cloudinaryService.uploadFile(file, "resumes");
+        profile.setResumeUrl(url);
+        profileRepository.save(profile);
     }
 }

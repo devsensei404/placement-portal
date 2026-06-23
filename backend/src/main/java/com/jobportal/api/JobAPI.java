@@ -46,7 +46,7 @@ public class JobAPI {
 
     @PreAuthorize("hasRole('APPLICANT')")
     @PostMapping("/apply/{id}")
-    public ResponseEntity<ResponseDTO>applyJob(@PathVariable Long id, @RequestBody ApplicantDTO applicantDTO) throws JobPortalException {
+    public ResponseEntity<ResponseDTO>applyJob(@PathVariable Long id, @RequestBody @Valid ApplicantDTO applicantDTO) throws JobPortalException {
         jobService.applyJob(id,applicantDTO);
         return new ResponseEntity<>(new ResponseDTO("Applied Successfully"), HttpStatus.OK);
     }

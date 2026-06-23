@@ -5,12 +5,17 @@ import com.jobportal.dto.UserDTO;
 import com.jobportal.entity.Job;
 import com.jobportal.entity.User;
 import com.jobportal.exception.JobPortalException;
+import com.jobportal.jwt.AuthenticationResponse;
+import com.jobportal.jwt.CustomUserDetails;
+import com.jobportal.jwt.JwtHelper;
+import com.jobportal.jwt.MyUserDetailsService;
 import com.jobportal.repository.JobRepository;
 import com.jobportal.repository.NotificationRepository;
 import com.jobportal.repository.ProfileRepository;
 import com.jobportal.repository.UserRepository;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,16 +46,29 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SecurityUtils securityUtils;
 
+    @Autowired
+    private JwtHelper jwtHelper;
+
     @Override
-    public UserDTO registerUser(UserDTO userDTO) throws JobPortalException {
-        Optional<User> optional=userRepository.findByEmail(userDTO.getEmail());
-        if(optional.isPresent()) throw new JobPortalException("USER_FOUND");
+    public AuthenticationResponse registerUser(UserDTO userDTO) throws JobPortalException {
+        Optional<User> optional = userRepository.findByEmail(userDTO.getEmail());
+        if (optional.isPresent()) throw new JobPortalException("USER_FOUND");
+
         userDTO.setProfileId(profileService.createProfile(userDTO.getEmail()));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        User user=userDTO.toEntity();
-        user = userRepository.save(user);
-        return user.toDTO();
 
+        User user = userDTO.toEntity();
+        user = userRepository.save(user);
+
+        // generate JWT
+        UserDetails userDetails = new CustomUserDetails(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getAccountType()
+        );
+        String jwt = jwtHelper.generateToken(userDetails);
+        return new AuthenticationResponse(jwt);
     }
 
     @Override

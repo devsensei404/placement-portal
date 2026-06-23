@@ -20,9 +20,12 @@ public class ProfileDTO {
     private String company;
     private String location;
     private String about;
+    private String profilePictureUrl;
+    private String coverPhotoUrl;
+    private String resumeUrl;
     private List<String> skills;
-    private List<Experience> experience;
-    private List<Certification> certifications;
+    private List<ExperienceDTO> experience;
+    private List<CertificationDTO> certifications;
     private List<Long>savedJobs;
 
     public Profile toEntity() {
@@ -34,6 +37,9 @@ public class ProfileDTO {
         p.setCompany(this.company);
         p.setLocation(this.location);
         p.setAbout(this.about);
+        p.setProfilePictureUrl(this.profilePictureUrl);
+        p.setCoverPhotoUrl(this.coverPhotoUrl);
+        p.setResumeUrl(this.resumeUrl);
         p.setSkills(this.skills);
         p.setSavedJobs(this.savedJobs);
         return p;

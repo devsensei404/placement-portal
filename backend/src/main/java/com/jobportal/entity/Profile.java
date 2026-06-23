@@ -24,6 +24,9 @@ public class Profile {
     private String company;
     private String location;
     private String about;
+    private String profilePictureUrl;
+    private String coverPhotoUrl;
+    private String resumeUrl;
     @ElementCollection
     private List<String> skills = new ArrayList<>();
 
@@ -45,9 +48,12 @@ public class Profile {
         dto.setCompany(this.company);
         dto.setLocation(this.location);
         dto.setAbout(this.about);
+        dto.setProfilePictureUrl(this.profilePictureUrl);
+        dto.setCoverPhotoUrl(this.coverPhotoUrl);
+        dto.setResumeUrl(this.resumeUrl);
         dto.setSkills(this.skills);
-        dto.setExperience(this.experience);
-        dto.setCertifications(this.certifications);
+        dto.setExperience(this.experience.stream().map(exp -> exp.toDTO()).toList());
+        dto.setCertifications(this.certifications.stream().map(cert -> cert.toDTO()).toList());
         dto.setSavedJobs(this.savedJobs);
         return dto;
     }

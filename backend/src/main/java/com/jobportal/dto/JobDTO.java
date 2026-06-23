@@ -35,7 +35,6 @@ public class JobDTO {
 
     private LocalDateTime postTime;
 
-
     private String description;
 
     private List<String> skillsRequired;

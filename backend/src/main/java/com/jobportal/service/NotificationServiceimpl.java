@@ -47,5 +47,4 @@ public class NotificationServiceimpl implements NotificationService{
         notif.setStatus(NotificationStatus.READ);
         notificationRepository.save(notif);
     }
-
 }
