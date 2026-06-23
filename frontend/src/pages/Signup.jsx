@@ -1,11 +1,22 @@
-// Signup.jsx
 // This is the signup page. Four inputs, one button, error message.
-
-import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Signup.css";
+import { useState, useEffect } from "react";
 
 export default function Signup() {
+
+  useEffect(() => {
+      const token = localStorage.getItem("token");
+      const accountType = localStorage.getItem("accountType");
+
+      if (token) {
+        if (accountType === "EMPLOYER") {
+          navigate("/recruiter-dashboard");
+        } else {
+          navigate("/student-dashboard");
+        }
+      }
+    }, []);
 
   // formData holds all four fields the user fills in
   const [formData, setFormData] = useState({
@@ -45,8 +56,20 @@ export default function Signup() {
         throw new Error(errorBody.errorMessage || "Registration failed");
       }
 
-      // Registration worked — send user to login page
-      navigate("/login");
+      const data = await response.json();
+      const token = data.jwt;
+
+      localStorage.setItem("token", token);
+
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      localStorage.setItem("userId", payload.id);
+      localStorage.setItem("accountType", payload.accountType);
+
+      if (payload.accountType === "EMPLOYER") {
+        navigate("/recruiter-dashboard");
+      } else {
+        navigate("/student-dashboard");
+      };
 
     } catch (err) {
       setError(err.message);

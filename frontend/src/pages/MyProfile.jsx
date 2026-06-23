@@ -1,5 +1,3 @@
-// Route: /my-profile
-
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar.jsx";
 import "./MyProfile.css";
