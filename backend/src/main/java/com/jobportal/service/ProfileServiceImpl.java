@@ -232,7 +232,7 @@ public class ProfileServiceImpl implements ProfileService{
             throw new JobPortalException("UNAUTHORIZED_ACTION");
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
-        String url = cloudinaryService.uploadFile(file, "resumes");
+        String url = cloudinaryService.uploadFile(file, "resumes","raw");
         profile.setResumeUrl(url);
         profileRepository.save(profile);
     }

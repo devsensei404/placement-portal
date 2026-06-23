@@ -1,5 +1,6 @@
 package com.jobportal.api;
 
+import com.jobportal.dto.NotificationPageDTO;
 import com.jobportal.dto.ResponseDTO;
 import com.jobportal.entity.Notification;
 import com.jobportal.exception.JobPortalException;
@@ -24,8 +25,12 @@ public class NotificationAPI {
 
     @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @GetMapping("/get/{userId}")
-    public ResponseEntity<List<Notification>>getNotifications(@PathVariable Long userId) throws JobPortalException {
-        return new ResponseEntity<>(notificationService.getUnreadNotification(userId), HttpStatus.OK);
+    public ResponseEntity<NotificationPageDTO> getNotifications(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) throws JobPortalException {
+        return new ResponseEntity<>(notificationService.getUnreadNotifications(userId, page, size), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")

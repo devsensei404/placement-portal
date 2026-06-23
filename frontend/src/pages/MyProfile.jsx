@@ -47,11 +47,29 @@ export default function MyProfile() {
 
         {/* ── Hero Card ── */}
         <div className="profile-hero-card">
-          <div className="profile-banner" />
+          <div
+            className="profile-banner"
+            style={
+              profile.coverPhotoUrl
+                ? {
+                  backgroundImage: `url(${profile.coverPhotoUrl})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }
+                : {}
+            }
+          />
 
           <div className="profile-hero-body">
-            {/* Avatar — placeholder until upload is ready */}
-            <div className="profile-avatar">{initials}</div>
+            {profile.profilePictureUrl ? (
+              <img
+                src={profile.profilePictureUrl}
+                alt="Profile"
+                className="profile-avatar-image"
+              />
+            ) : (
+              <div className="profile-avatar">{initials}</div>
+            )}
 
             <div className="profile-hero-info">
               <h1 className="profile-hero-name">{profile.name || "No name set"}</h1>
@@ -143,16 +161,33 @@ export default function MyProfile() {
               )}
             </section>
 
-            {/* Resume — placeholder */}
             <section className="profile-card profile-resume-card">
               <h2 className="profile-card-title">Resume</h2>
-              <div className="resume-placeholder-row">
-                <div className="resume-pdf-icon">PDF</div>
-                <p className="resume-placeholder-text">No resume uploaded yet.</p>
-              </div>
-              <button className="btn-resume" disabled>
-                Upload Resume — Coming Soon
-              </button>
+
+              {profile.resumeUrl ? (
+                <a
+                  href={profile.resumeUrl}
+                  download="Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-resume"
+                >
+                  Download Resume
+                </a>
+              ) : (
+                <>
+                  <div className="resume-placeholder-row">
+                    <div className="resume-pdf-icon">PDF</div>
+                    <p className="resume-placeholder-text">
+                      No resume uploaded yet.
+                    </p>
+                  </div>
+
+                  <button className="btn-resume" disabled>
+                    Upload Resume — Coming Soon
+                  </button>
+                </>
+              )}
             </section>
 
           </div>

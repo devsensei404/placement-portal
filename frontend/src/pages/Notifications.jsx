@@ -19,22 +19,33 @@ function timeAgo(dateString) {
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [hasNext, setHasNext] = useState(false);
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/notification/get/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    setLoading(true);
+
+    fetch(
+      `http://localhost:8080/notification/get/${userId}?page=${page}&size=10`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
       .then((res) => res.json())
-      .then((data) => setNotifications(data.slice().reverse()))
+      .then((data) => {
+        setNotifications(data.notifications);
+        setHasNext(data.hasNext);
+      })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [page]);
 
   function handleDismiss(e, id) {
     e.stopPropagation();
+
     fetch(`http://localhost:8080/notification/read/${id}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${token}` },
@@ -48,6 +59,7 @@ export default function Notifications() {
   return (
     <div style={{ minHeight: "100vh", background: "#f5f0ff" }}>
       <Navbar />
+
       <div className="notif-page">
         <h2>Notifications</h2>
 
@@ -59,9 +71,32 @@ export default function Notifications() {
           <div key={notif.id} className="notif-card">
             <span className="notif-message">{notif.message}</span>
             <span className="notif-time">{timeAgo(notif.createdAt)}</span>
-            <button className="notif-dismiss" onClick={(e) => handleDismiss(e, notif.id)}>&#x2715;</button>
+            <button
+              className="notif-dismiss"
+              onClick={(e) => handleDismiss(e, notif.id)}
+            >
+              &#x2715;
+            </button>
           </div>
         ))}
+
+        <div className="pagination">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage(page - 1)}
+          >
+            Previous
+          </button>
+
+          <span>Page {page + 1}</span>
+
+          <button
+            disabled={!hasNext}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
