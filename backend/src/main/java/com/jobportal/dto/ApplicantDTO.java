@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class ApplicantDTO {
+
+    private Long applicationId;
+
     private Long applicantId;
     @NotBlank(message = "{applicant.name.absent}")
     private String name;

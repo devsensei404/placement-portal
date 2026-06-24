@@ -10,6 +10,7 @@ import com.jobportal.repository.JobRepository;
 import com.jobportal.repository.UserRepository;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -54,13 +55,25 @@ public class JobServiceImpl implements JobService{
                 e.printStackTrace();
             }
         }
-
+        NotificationDTO recruiterNoti = new NotificationDTO();
+        recruiterNoti.setUserId(userId);
+        recruiterNoti.setAction("Job Posted Successfully");
+        recruiterNoti.setMessage(
+                "Your job \"" + jobDTO.getJobTitle() + "\" has been posted successfully."
+        );
+        recruiterNoti.setRoute("/my-jobs");
+        try {
+            notificationService.sendNotification(recruiterNoti);
+        } catch (JobPortalException e) {
+            e.printStackTrace();
+        }
         return savedJob.toDTO();
     }
 
     @Override
     public List<JobDTO> getAllJobs() throws JobPortalException {
-        return jobRepository.findByStatus(JobStatus.OPEN).stream().map((x)->x.toDTO()).toList();
+        return jobRepository.findByStatus(JobStatus.OPEN, Sort.by(Sort.Direction.DESC, "postTime"))
+                .stream().map((x) -> x.toDTO()).toList();
     }
 
     @Override
@@ -98,15 +111,13 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public List<JobDTO> getJobsPostedby(Long id) throws JobPortalException {
-        UserDTO loggedInUser = securityUtils.getLoggedInUser();
-        if (!loggedInUser.getId().equals(id))
-            throw new JobPortalException("UNAUTHORIZED_ACTION");
-        return jobRepository.findByPostedBy(id).stream().map(x -> x.toDTO()).toList();
+        Long userId = securityUtils.getLoggedInUser().getId();
+        return jobRepository.findByPostedBy(userId , Sort.by(Sort.Direction.DESC, "postTime")).stream().map(x -> x.toDTO()).toList();
     }
 
     @Override
     public void changeAppStatus(ApplicationDTO applicationDTO) throws JobPortalException {
-        Applicant applicant = applicantRepository.findById(applicationDTO.getApplicantId())
+        Applicant applicant = applicantRepository.findById(applicationDTO.getId())
                 .orElseThrow(() -> new JobPortalException("APPLICANT_NOT_FOUND"));
         applicant.setApplicationStatus(applicationDTO.getApplicationStatus());
 

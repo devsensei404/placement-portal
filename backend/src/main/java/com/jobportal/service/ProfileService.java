@@ -41,4 +41,6 @@ public interface ProfileService {
     public void uploadCoverPhoto(Long profileId, MultipartFile file) throws JobPortalException;
 
     public void uploadResume(Long profileId, MultipartFile file) throws JobPortalException;
+
+    public ProfileDTO viewProfile(Long profileId) throws JobPortalException;
 }

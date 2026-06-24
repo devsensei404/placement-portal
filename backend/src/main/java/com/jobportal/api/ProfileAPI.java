@@ -32,6 +32,13 @@ public class ProfileAPI {
         return ResponseEntity.ok(profileService.getMyProfile());
     }
 
+    @PreAuthorize("hasAnyRole('EMPLOYER')")
+    @GetMapping("/view/{id}")
+    public ResponseEntity<ProfileDTO> viewProfile(@PathVariable("id") Long profileId)
+            throws JobPortalException {
+        return ResponseEntity.ok(profileService.viewProfile(profileId));
+    }
+
     @PreAuthorize("hasRole('EMPLOYER')")
     @GetMapping("/getAll")
     public ResponseEntity<List<ProfileDTO>>getAllProfiles() throws JobPortalException{

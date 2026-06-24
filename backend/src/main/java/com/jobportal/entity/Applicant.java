@@ -45,6 +45,6 @@ public class Applicant {
         this.interviewTime = interviewTime;
     }
     public ApplicantDTO toDTO() {
-        return new ApplicantDTO(this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus,this.interviewTime);
+        return new ApplicantDTO(this.applicationId,this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus,this.interviewTime);
     }
 }

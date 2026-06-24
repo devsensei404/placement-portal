@@ -8,16 +8,17 @@ import com.jobportal.exception.JobPortalException;
 import com.jobportal.jwt.AuthenticationResponse;
 import com.jobportal.jwt.CustomUserDetails;
 import com.jobportal.jwt.JwtHelper;
-import com.jobportal.jwt.MyUserDetailsService;
 import com.jobportal.repository.JobRepository;
 import com.jobportal.repository.NotificationRepository;
 import com.jobportal.repository.ProfileRepository;
 import com.jobportal.repository.UserRepository;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.jobportal.jwt.MyUserDetailsService;
 
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
         //if employer, nullify postedBy on their jobs
         if (user.getAccountType() == AccountType.EMPLOYER) {
-            List<Job> postedJobs = jobRepository.findByPostedBy(id);
+            List<Job> postedJobs = jobRepository.findByPostedBy(id, Sort.by(Sort.Direction.DESC, "postTime"));
             for (Job job : postedJobs) {
                 job.setPostedBy(null);
                 jobRepository.save(job);
