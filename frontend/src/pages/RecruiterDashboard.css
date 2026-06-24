@@ -1,0 +1,602 @@
+/* RecruiterDashboard.css */
+
+.rd-page {
+  min-height: 100vh;
+  background: #f5f0ff;
+}
+
+.rd-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 32px 60px;
+}
+
+/* ── Header ── */
+.rd-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.rd-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.rd-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ── Stats ── */
+.rd-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+  .rd-stats { grid-template-columns: 1fr; }
+}
+
+.rd-stat-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 14px;
+  padding: 24px 20px 20px;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+}
+
+.rd-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.rd-stat-value {
+  font-size: 42px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.rd-stat-open {
+  color: #7c3aed;
+}
+
+/* ── Quick Links ── */
+.rd-quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.rd-quick-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 14px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+}
+
+.rd-quick-card:hover {
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+  border-color: #c4b5fd;
+}
+
+.rd-quick-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.rd-quick-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.rd-quick-sub {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.rd-quick-arrow {
+  margin-left: auto;
+  font-size: 18px;
+  color: #8b5cf6;
+  flex-shrink: 0;
+}
+
+/* ── Lower two-column grid ── */
+.rd-lower-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 700px) {
+  .rd-lower-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Panel (shared by both columns) ── */
+.rd-panel {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+}
+
+.rd-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #f3efff;
+}
+
+.rd-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.rd-panel-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7c3aed;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+}
+
+.rd-panel-link:hover {
+  text-decoration: underline;
+  background: none;
+}
+
+.rd-panel-empty {
+  padding: 20px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.rd-panel-empty-state {
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.rd-panel-empty-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.rd-panel-empty-sub {
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+/* ── Interview List ── */
+.rd-interview-list {
+  padding: 8px 0;
+}
+
+.rd-interview-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f9f7ff;
+  transition: background 0.15s;
+}
+
+.rd-interview-row:last-child {
+  border-bottom: none;
+}
+
+.rd-interview-row:hover {
+  background: #fdfcff;
+}
+
+.rd-interview-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ede9fe;
+  color: #7c3aed;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rd-interview-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rd-interview-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rd-interview-job {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rd-interview-time {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.rd-interview-datetime {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7c3aed;
+}
+
+/* ── Candidates scroll window ── */
+.rd-candidates-scroll {
+  padding: 8px 0;
+  /* Fixed height showing ~3 cards, scrollable if more */
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.rd-candidates-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.rd-candidates-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.rd-candidates-scroll::-webkit-scrollbar-thumb {
+  background: #ddd6fe;
+  border-radius: 4px;
+}
+
+.rd-candidate-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #f9f7ff;
+  transition: background 0.15s;
+}
+
+.rd-candidate-card:last-child {
+  border-bottom: none;
+}
+
+.rd-candidate-card:hover {
+  background: #fdfcff;
+}
+
+.rd-candidate-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f3efff;
+  color: #8b5cf6;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid #ede9fe;
+}
+
+.rd-candidate-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rd-candidate-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.rd-candidate-title {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rd-candidate-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.rd-skill-chip {
+  font-size: 11px;
+  background: #f3efff;
+  color: #7c3aed;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.rd-skill-more {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.rd-candidate-arrow {
+  font-size: 14px;
+  color: #c4b5fd;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ── */
+.rd-btn-post {
+  padding: 10px 22px;
+  background: #8b5cf6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: auto;
+}
+
+.rd-btn-post:hover:not(:disabled) { background: #7c3aed; }
+.rd-btn-post:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.rd-btn-cancel {
+  padding: 10px 22px;
+  background: #f3efff;
+  color: #5b21b6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: auto;
+}
+
+.rd-btn-cancel:hover { background: #ede9fe; }
+
+.rd-btn-sm-ghost {
+  padding: 8px 14px;
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  width: auto;
+}
+
+.rd-btn-sm-ghost:hover { background: #ede9fe; }
+
+/* ── Modal ── */
+.rd-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(76, 29, 149, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+}
+
+.rd-modal {
+  background: #ffffff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.18);
+  overflow: hidden;
+}
+
+.rd-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid #f3efff;
+  flex-shrink: 0;
+}
+
+.rd-modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.rd-modal-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  width: auto;
+  line-height: 1;
+}
+
+.rd-modal-close:hover { background: #f3efff; color: #7c3aed; }
+
+.rd-modal-body {
+  padding: 22px 28px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.rd-modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid #f3efff;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* ── Form layout ── */
+.rd-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 500px) {
+  .rd-form-row { grid-template-columns: 1fr; }
+}
+
+.rd-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rd-form-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rd-label-hint {
+  font-weight: 400;
+  color: #9ca3af;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 11px;
+}
+
+.rd-form-field input,
+.rd-form-field select,
+.rd-form-field textarea {
+  padding: 9px 12px;
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #111827;
+  background: #faf8ff;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rd-form-field input:focus,
+.rd-form-field select:focus,
+.rd-form-field textarea:focus {
+  border-color: #8b5cf6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.rd-form-field textarea { resize: vertical; }
+
+/* ── Skills ── */
+.rd-skill-row {
+  display: flex;
+  gap: 8px;
+}
+
+.rd-skill-row input { flex: 1; }
+
+.rd-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.rd-skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.rd-skill-remove {
+  background: none;
+  border: none;
+  color: #a78bfa;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1;
+  width: auto;
+}
+
+.rd-skill-remove:hover { color: #7c3aed; }
+
+/* ── Messages ── */
+.rd-msg-success {
+  font-size: 13px;
+  color: #166534;
+  background: #dcfce7;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.rd-msg-error {
+  font-size: 13px;
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 10px 14px;
+  border-radius: 8px;
+}

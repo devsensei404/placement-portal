@@ -9,6 +9,10 @@ import ApplicationDetail from "./pages/ApplicationDetail.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
+import RecruiterDashboard from "./pages/RecruiterDashboard.jsx";
+import MyJobs from "./pages/MyJobs.jsx";
+import Candidates from "./pages/Candidates";
+import CandidateProfile from "./pages/CandidateProfile";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -21,7 +25,10 @@ const router = createBrowserRouter([
   { path: "/application-detail", element: <ProtectedRoute><ApplicationDetail /></ProtectedRoute> },
   { path: "/notifications", element: <ProtectedRoute><Notifications /></ProtectedRoute> },
   { path: "/my-profile", element: <ProtectedRoute><MyProfile /></ProtectedRoute> },
-  { path: "/recruiter-dashboard", element: <ProtectedRoute><div style={{color:"red", padding:"40px"}}>Recruiter Dashboard — coming soon</div></ProtectedRoute> },
+  { path: "/recruiter-dashboard", element: <ProtectedRoute><RecruiterDashboard /></ProtectedRoute> },
+  { path: "/my-jobs", element: <ProtectedRoute><MyJobs /></ProtectedRoute> },
+  { path: "/candidates", element: <ProtectedRoute><Candidates /></ProtectedRoute> },
+  { path: "/candidate/:id", element: <ProtectedRoute><CandidateProfile /></ProtectedRoute> }
 ])
 
 export default function App() {

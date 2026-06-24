@@ -44,6 +44,10 @@ export default function Navbar() {
           <>
             {/* Recruiter links go here when we build that branch */}
             <Link to="/recruiter-dashboard">Home</Link>
+            <Link to="/browse-jobs">Browse Jobs</Link>
+            <Link to="/my-jobs">My Jobs</Link>
+            <Link to="/my-profile">My Profile</Link>
+            <Link to="/notifications">Notifications</Link>
           </>
         )}
 

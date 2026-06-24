@@ -37,21 +37,40 @@
 
 .profile-banner {
   height: 180px;
-  background: linear-gradient(
-    135deg,
-    #c4b5fd 0%,
-    #a78bfa 40%,
-    #818cf8 100%
-  );
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 40%, #818cf8 100%);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 12px;
+}
+
+.btn-upload-cover {
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-upload-cover:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.btn-upload-cover:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .profile-hero-body {
   display: flex;
   align-items: flex-start;
   gap: 24px;
-
   padding: 0 30px 24px;
-
   margin-top: -55px;
 }
 
@@ -61,46 +80,65 @@
   flex: 1;
 }
 
+/* ── Avatar with upload overlay ── */
+
+.profile-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  width: 130px;
+  height: 130px;
+}
+
 .profile-avatar {
   width: 130px;
   height: 130px;
-
   border-radius: 50%;
-
   background: #7c3aed;
   color: #ffffff;
-
   font-size: 34px;
   font-weight: 700;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border: 4px solid #ffffff;
-
-  flex-shrink: 0;
 }
 
 .profile-avatar-image {
   width: 130px;
   height: 130px;
-
   border-radius: 50%;
   object-fit: cover;
-
   border: 4px solid #ffffff;
-
-  flex-shrink: 0;
   display: block;
 }
+
+.profile-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border: 4px solid transparent;
+}
+
+.profile-avatar-wrap:hover .profile-avatar-overlay {
+  opacity: 1;
+}
+
+/* ── Hero info text ── */
 
 .profile-hero-name {
   font-size: 28px;
   font-weight: 700;
   color: #111827;
   margin-bottom: 4px;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -115,6 +153,7 @@
 .profile-hero-meta {
   font-size: 14px;
   color: #6b7280;
+  margin-bottom: 10px;
 }
 
 /* ── Generic Card ── */
@@ -127,11 +166,152 @@
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.06);
 }
 
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+/* override margin when using card-header — title margin handled by header */
+.profile-card-header .profile-card-title {
+  margin-bottom: 0;
+}
+
 .profile-card-title {
   font-size: 16px;
   font-weight: 700;
   color: #111827;
   margin-bottom: 16px;
+}
+
+/* ── Edit / Add section buttons ── */
+
+.btn-edit-section {
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-edit-section:hover {
+  background: #ede9fe;
+}
+
+.btn-add-section {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-add-section:hover {
+  background: #6d28d9;
+}
+
+/* ── Edit form actions (Save / Cancel) ── */
+
+.edit-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save-edit {
+  flex: 1;
+  padding: 9px;
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-save-edit:hover {
+  background: #6d28d9;
+}
+
+.btn-save-edit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel-edit {
+  flex: 1;
+  padding: 9px;
+  background: #f3efff;
+  color: #5b21b6;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-cancel-edit:hover {
+  background: #ede9fe;
+}
+
+.form-error {
+  color: #b91c1c;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* ── Basic info edit form ── */
+
+.basic-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.basic-edit-row {
+  display: flex;
+  gap: 12px;
+}
+
+.basic-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.basic-edit-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0;
+}
+
+.basic-edit-field input,
+.basic-edit-field textarea {
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  outline: none;
+  width: 100%;
+  resize: vertical;
+}
+
+.basic-edit-field input:focus,
+.basic-edit-field textarea:focus {
+  border-color: #8b5cf6;
 }
 
 /* ── Two-column grid ── */
@@ -156,6 +336,10 @@
 
   .profile-hero-info {
     padding-top: 0;
+  }
+
+  .basic-edit-row {
+    flex-direction: column;
   }
 }
 
@@ -189,6 +373,62 @@
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-remove-skill {
+  background: none;
+  border: none;
+  color: #7c3aed;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: auto;
+  display: flex;
+  align-items: center;
+}
+
+.btn-remove-skill:hover {
+  color: #b91c1c;
+  background: none;
+}
+
+.skill-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.skill-input-row input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.skill-input-row input:focus {
+  border-color: #8b5cf6;
+}
+
+.btn-add-skill {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.btn-add-skill:hover {
+  background: #6d28d9;
 }
 
 /* ── Experience / Certifications ── */
@@ -207,6 +447,49 @@
 .profile-entry:last-child {
   padding-bottom: 0;
   border-bottom: none;
+}
+
+.entry-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.btn-entry-action {
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 5px;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.btn-entry-action:hover {
+  background: #ede9fe;
+}
+
+.btn-entry-delete {
+  color: #b91c1c;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.btn-entry-delete:hover {
+  background: #fecaca;
 }
 
 .profile-entry-title {
@@ -242,6 +525,11 @@
   gap: 14px;
 }
 
+.resume-exists-row {
+  display: flex;
+  gap: 10px;
+}
+
 .resume-placeholder-row {
   display: flex;
   align-items: center;
@@ -256,11 +544,9 @@
   font-size: 11px;
   font-weight: 700;
   border-radius: 6px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   flex-shrink: 0;
 }
 
@@ -272,24 +558,176 @@
 .btn-resume {
   background: #7c3aed;
   color: #ffffff;
-
   border: none;
   border-radius: 8px;
-
   padding: 12px 16px;
-
   font-size: 14px;
   font-weight: 600;
-
-  width: 100%;
-
+  flex: 1;
   text-align: center;
   text-decoration: none;
-
   display: inline-block;
+  cursor: pointer;
+}
+
+.btn-resume:hover {
+  background: #6d28d9;
 }
 
 .btn-resume:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.btn-resume-reupload {
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-resume-reupload:hover {
+  background: #ede9fe;
+}
+
+.btn-resume-reupload:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Modal (reuses JobDetails modal pattern) ── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(76, 29, 149, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.12);
+}
+
+.modal h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.modal label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-top: 8px;
+}
+
+.modal input,
+.modal textarea {
+  padding: 9px 12px;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1a1a1a;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.modal input:focus,
+.modal textarea:focus {
+  border-color: #8b5cf6;
+}
+
+.modal textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 10px;
+  background: #f3efff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #5b21b6;
+  width: auto;
+}
+
+.btn-cancel:hover {
+  background: #ede9fe;
+}
+
+.btn-apply {
+  flex: 1;
+  padding: 10px;
+  background-color: #8b5cf6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  width: auto;
+}
+
+.btn-apply:hover {
+  background-color: #7c3aed;
+}
+
+.btn-apply:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Profile empty state ── */
+
+.profile-empty {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.profile-entry-desc {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.profile-entry-title,
+.profile-entry-sub {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }

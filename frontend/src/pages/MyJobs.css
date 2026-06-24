@@ -1,0 +1,692 @@
+/* MyJobs.css */
+
+.mj-page {
+  min-height: 100vh;
+  background: #f5f0ff;
+}
+
+.mj-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+/* ── Header ── */
+.mj-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.mj-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.mj-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ── Stats ── */
+.mj-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 600px) {
+  .mj-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mj-stat {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  padding: 20px 20px 18px;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+}
+
+.mj-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.mj-stat-value {
+  font-size: 38px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.mj-stat-purple {
+  color: #7c3aed;
+}
+
+/* ── Error / Empty ── */
+.mj-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.mj-empty {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 14px;
+  padding: 56px 32px;
+  text-align: center;
+}
+
+.mj-empty-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.mj-empty-sub {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ── Job List ── */
+.mj-job-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Job Card ── */
+.mj-job-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+  transition: box-shadow 0.2s;
+}
+
+.mj-job-card:hover {
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.1);
+}
+
+.mj-job-card-open {
+  border-color: #c4b5fd;
+}
+
+.mj-job-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mj-job-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mj-job-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.mj-job-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.mj-job-meta {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.mj-job-footer-meta {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+/* Status pill */
+.mj-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.mj-pill-open {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.mj-pill-closed {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.mj-job-type-chip {
+  font-size: 11px;
+  font-weight: 500;
+  color: #7c3aed;
+  background: #f3efff;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* Right side of card header */
+.mj-job-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.mj-job-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.mj-accordion-arrow {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* ── Applicants Panel ── */
+.mj-applicants-panel {
+  border-top: 1px solid #f3efff;
+  padding: 20px 24px 24px;
+  background: #fdfcff;
+}
+
+.mj-applicants-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mj-applicants-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+}
+
+.mj-applicants-count {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.mj-no-applicants {
+  font-size: 14px;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* ── Applicant List ── */
+.mj-applicant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mj-applicant-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 0;
+  border-bottom: 1px solid #f3efff;
+}
+
+.mj-applicant-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.mj-applicant-row-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mj-applicant-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.mj-applicant-email {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 1px;
+}
+
+.mj-applicant-meta {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Links */
+.mj-applicant-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mj-applicant-link {
+  font-size: 13px;
+  color: #7c3aed;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.mj-applicant-link:hover {
+  text-decoration: underline;
+}
+
+/* Cover letter */
+.mj-cover-letter {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  background: #f9f7ff;
+  border: 1px solid #ede9fe;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-top: 4px;
+}
+
+/* Status controls */
+.mj-status-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.mj-status-select {
+  padding: 7px 10px;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #111827;
+  background: #faf8ff;
+  outline: none;
+  cursor: pointer;
+  width: auto;
+}
+
+.mj-status-select:focus {
+  border-color: #8b5cf6;
+}
+
+.mj-interview-input {
+  padding: 7px 10px;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #111827;
+  background: #faf8ff;
+  outline: none;
+  width: auto;
+}
+
+.mj-interview-input:focus {
+  border-color: #8b5cf6;
+}
+
+.mj-save-success {
+  font-size: 12px;
+  color: #166534;
+  font-weight: 500;
+}
+
+.mj-save-error {
+  font-size: 12px;
+  color: #b91c1c;
+}
+
+.mj-interview-scheduled {
+  font-size: 12px;
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+/* ── Buttons ── */
+.mj-btn-post {
+  padding: 10px 22px;
+  background: #8b5cf6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: auto;
+}
+
+.mj-btn-post:hover:not(:disabled) {
+  background: #7c3aed;
+}
+
+.mj-btn-post:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mj-btn-cancel {
+  padding: 10px 22px;
+  background: #f3efff;
+  color: #5b21b6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: auto;
+}
+
+.mj-btn-cancel:hover {
+  background: #ede9fe;
+}
+
+/* Small action buttons */
+.mj-btn-sm {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  width: auto;
+  transition: background 0.15s;
+}
+
+.mj-btn-ghost {
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+}
+
+.mj-btn-ghost:hover {
+  background: #ede9fe;
+}
+
+.mj-btn-purple {
+  background: #8b5cf6;
+  color: #fff;
+}
+
+.mj-btn-purple:hover:not(:disabled) {
+  background: #7c3aed;
+}
+
+.mj-btn-purple:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mj-btn-green {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.mj-btn-green:hover {
+  background: #bbf7d0;
+}
+
+.mj-btn-orange {
+  background: #fff7ed;
+  color: #92400e;
+  border: 1px solid #fed7aa;
+}
+
+.mj-btn-orange:hover {
+  background: #fed7aa;
+}
+
+.mj-btn-red {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.mj-btn-red:hover {
+  background: #fca5a5;
+}
+
+/* ── Modal ── */
+.mj-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(76, 29, 149, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+}
+
+.mj-modal {
+  background: #ffffff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.16);
+  overflow: hidden;
+}
+
+.mj-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid #f3efff;
+  flex-shrink: 0;
+}
+
+.mj-modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.mj-modal-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  width: auto;
+  line-height: 1;
+}
+
+.mj-modal-close:hover {
+  background: #f3efff;
+  color: #7c3aed;
+}
+
+.mj-modal-body {
+  padding: 22px 28px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.mj-modal-footer {
+  padding: 16px 28px;
+  border-top: 1px solid #f3efff;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* ── Form layout ── */
+.mj-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 500px) {
+  .mj-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mj-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mj-form-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mj-label-hint {
+  font-weight: 400;
+  color: #9ca3af;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 11px;
+}
+
+.mj-form-field input,
+.mj-form-field select,
+.mj-form-field textarea {
+  padding: 9px 12px;
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #111827;
+  background: #faf8ff;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mj-form-field input:focus,
+.mj-form-field select:focus,
+.mj-form-field textarea:focus {
+  border-color: #8b5cf6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.mj-form-field textarea {
+  resize: vertical;
+}
+
+/* ── Skills ── */
+.mj-skill-row {
+  display: flex;
+  gap: 8px;
+}
+
+.mj-skill-row input {
+  flex: 1;
+}
+
+.mj-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.mj-skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.mj-skill-remove {
+  background: none;
+  border: none;
+  color: #a78bfa;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1;
+  width: auto;
+}
+
+.mj-skill-remove:hover {
+  color: #7c3aed;
+}
+
+/* ── Messages ── */
+.mj-msg-success {
+  font-size: 13px;
+  color: #166534;
+  background: #dcfce7;
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.mj-msg-error {
+  font-size: 13px;
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 10px 14px;
+  border-radius: 8px;
+}

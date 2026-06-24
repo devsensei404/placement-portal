@@ -103,7 +103,7 @@ export default function BrowseJobs() {
         {/* Job grid */}
         <div className="jobs-grid">
           {filtered.length > 0 ? (
-            filtered.slice().reverse().map((job) => <JobCard key={job.id} job={job} />)
+            filtered.map((job) => <JobCard key={job.id} job={job} />)
           ) : (
             <p className="no-results">No jobs match your filters.</p>
           )}

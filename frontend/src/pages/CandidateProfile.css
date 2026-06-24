@@ -1,0 +1,377 @@
+/* CandidateProfile.css */
+
+.cp-page {
+  min-height: 100vh;
+  background: #f5f0ff;
+}
+
+.cp-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cp-status {
+  max-width: 960px;
+  margin: 60px auto;
+  padding: 0 24px;
+  color: #374151;
+  font-size: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cp-error {
+  color: #b91c1c;
+}
+
+/* ── Back button ── */
+
+.cp-btn-back {
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.cp-btn-back:hover {
+  background: #ede9fe;
+}
+
+/* ── Hero Card ── */
+
+.cp-hero-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+  padding-bottom: 28px;
+}
+
+/* Cover photo */
+
+.cp-cover {
+  height: 180px;
+  width: 100%;
+}
+
+.cp-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cp-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 40%, #818cf8 100%);
+}
+
+/* Avatar */
+
+.cp-avatar-wrap {
+  margin: -55px 0 0 30px;
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+}
+
+.cp-avatar-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  display: block;
+}
+
+.cp-avatar-initials {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #7c3aed;
+  color: #ffffff;
+  font-size: 34px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #ffffff;
+}
+
+/* Name + meta */
+
+.cp-hero-info {
+  padding: 16px 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cp-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.cp-job-title {
+  font-size: 15px;
+  color: #374151;
+  margin: 0;
+}
+
+.cp-meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.cp-meta-chip {
+  background: #f3efff;
+  color: #5b21b6;
+  border: 1px solid #ddd6fe;
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-size: 13px;
+}
+
+.cp-resume-link {
+  display: inline-block;
+  margin-top: 6px;
+  background: #7c3aed;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.cp-resume-link:hover {
+  background: #6d28d9;
+}
+
+/* ── Generic Card ── */
+
+.cp-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  padding: 24px 28px;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.06);
+}
+
+.cp-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 16px 0;
+}
+
+/* ── About ── */
+
+.cp-about-text {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Skills ── */
+
+.cp-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cp-skill-tag {
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ── Experience timeline ── */
+
+.cp-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cp-timeline-item {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+/* vertical line connecting dots */
+.cp-timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 16px;
+  bottom: 0;
+  width: 2px;
+  background: #e9e2ff;
+}
+
+.cp-timeline-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #7c3aed;
+  border: 3px solid #ede9fe;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.cp-timeline-body {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.cp-exp-title,
+.cp-exp-company,
+.cp-exp-desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-exp-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 2px 0;
+}
+
+.cp-exp-company {
+  font-size: 13px;
+  color: #374151;
+  margin: 0 0 2px 0;
+}
+
+.cp-exp-dates {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 4px 0;
+}
+
+.cp-exp-desc {
+  white-space: normal;
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Certifications ── */
+
+.cp-cert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cp-cert-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3efff;
+}
+
+.cp-cert-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.cp-cert-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cp-cert-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cp-cert-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 2px 0;
+}
+
+.cp-cert-meta {
+  font-size: 13px;
+  color: #374151;
+  margin: 0 0 2px 0;
+}
+
+.cp-cert-id {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── Empty profile state ── */
+
+.cp-empty-profile {
+  text-align: center;
+  padding: 48px 28px;
+}
+
+.cp-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 6px 0;
+}
+
+.cp-empty-sub {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 680px) {
+  .cp-avatar-wrap {
+    margin-left: 20px;
+  }
+
+  .cp-hero-info {
+    padding: 16px 20px 0;
+  }
+
+  .cp-name {
+    font-size: 22px;
+  }
+}
