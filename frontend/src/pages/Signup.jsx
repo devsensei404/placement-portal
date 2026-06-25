@@ -2,6 +2,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import "./Signup.css";
 import { useState, useEffect } from "react";
+import BASE_URL from "../api";
 
 export default function Signup() {
 
@@ -44,7 +45,7 @@ export default function Signup() {
 
     try {
       // Call the backend register endpoint
-      const response = await fetch("http://localhost:8080/users/register", {
+      const response = await fetch(`${BASE_URL}/users/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData), // sends name, email, password, accountType

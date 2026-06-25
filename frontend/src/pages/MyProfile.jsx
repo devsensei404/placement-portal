@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar.jsx";
 import "./MyProfile.css";
+import BASE_URL from "../api";
 
-const BASE = "http://localhost:8080";
+const BASE = BASE_URL;
 
 export default function MyProfile() {
   const token     = localStorage.getItem("token");

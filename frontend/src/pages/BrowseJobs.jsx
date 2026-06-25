@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar.jsx";
 import JobCard from "../components/JobCard.jsx";
 import "./BrowseJobs.css";
+import BASE_URL from "../api";
 
 export default function BrowseJobs() {
   const [jobs, setJobs] = useState([]);
@@ -15,7 +16,7 @@ export default function BrowseJobs() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:8080/jobs/getAll", {
+    fetch(`${BASE_URL}/jobs/getAll`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

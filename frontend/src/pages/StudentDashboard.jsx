@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import JobCard from "../components/JobCard.jsx";
 import "./StudentDashboard.css";
+import BASE_URL from "../api";
 
 export default function StudentDashboard() {
   const userId = localStorage.getItem("userId");
@@ -12,7 +13,7 @@ export default function StudentDashboard() {
   const [recentJobs, setRecentJobs] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/jobs/getAll", {
+    fetch(`${BASE_URL}/jobs/getAll`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

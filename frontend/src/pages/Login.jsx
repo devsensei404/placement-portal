@@ -6,6 +6,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+import BASE_URL from "../api";
 
 export default function Login() {
 
@@ -52,7 +53,7 @@ export default function Login() {
 
     try {
       // Call the backend login endpoint
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData), // send email and password as JSON

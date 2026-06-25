@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import "./Notifications.css";
+import BASE_URL from "../api";
 
 function timeAgo(dateString) {
   const now = new Date();
@@ -29,7 +30,7 @@ export default function Notifications() {
     setLoading(true);
 
     fetch(
-      `http://localhost:8080/notification/get/${userId}?page=${page}&size=10`,
+      `${BASE_URL}/notification/get/${userId}?page=${page}&size=10`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -46,7 +47,7 @@ export default function Notifications() {
   function handleDismiss(e, id) {
     e.stopPropagation();
 
-    fetch(`http://localhost:8080/notification/read/${id}`, {
+    fetch(`${BASE_URL}/notification/read/${id}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${token}` },
     }).then(() => {

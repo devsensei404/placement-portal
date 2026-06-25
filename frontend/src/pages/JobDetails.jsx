@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import "./JobDetails.css";
+import BASE_URL from "../api";
 
 export default function JobDetails() {
   const [job, setJob] = useState(null);
@@ -27,7 +28,7 @@ export default function JobDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/jobs/get/${jobId}`, {
+    fetch(`${BASE_URL}/jobs/get/${jobId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -42,7 +43,7 @@ export default function JobDetails() {
 
   // Called when user submits the modal form
   function handleApply() {
-    fetch(`http://localhost:8080/jobs/apply/${jobId}`, {
+    fetch(`${BASE_URL}/jobs/apply/${jobId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

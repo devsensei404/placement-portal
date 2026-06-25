@@ -18,8 +18,9 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
 import "./MyJobs.css";
+import BASE_URL from "../api";
 
-const BASE = "http://localhost:8080";
+const BASE = BASE_URL;
 
 const EMPTY_FORM = {
   jobTitle: "",

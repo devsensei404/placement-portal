@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import StatusBadge from "../components/StatusBadge.jsx";
 import "./ApplicationDetail.css";
+import BASE_URL from "../api";
 
 export default function ApplicationDetail() {
   const token      = localStorage.getItem("token");
@@ -26,7 +27,7 @@ export default function ApplicationDetail() {
   const [error, setError]         = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:8080/jobs/get/${jobId}`, {
+    fetch(`${BASE_URL}/jobs/get/${jobId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {

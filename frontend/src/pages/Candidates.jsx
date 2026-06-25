@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "./Candidates.css";
-
-const BASE_URL = "http://localhost:8080";
+import BASE_URL from "../api";
 
 export default function Candidates() {
 

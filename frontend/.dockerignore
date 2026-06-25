@@ -1,0 +1,10 @@
+dist/
+node_modules/
+.idea/
+.DS_Store
+*.swp
+.git/
+.gitignore
+.env
+.env.local
+.env.*.local

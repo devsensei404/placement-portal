@@ -9,8 +9,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import "./CandidateProfile.css";
+import BASE_URL from "../api";
 
-const BASE = "http://localhost:8080";
+const BASE = BASE_URL;
 
 export default function CandidateProfile() {
   const { id }   = useParams();
