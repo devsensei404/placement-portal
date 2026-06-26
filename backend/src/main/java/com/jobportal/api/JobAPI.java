@@ -3,7 +3,6 @@ package com.jobportal.api;
 import com.jobportal.dto.*;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.service.JobService;
-import com.jobportal.service.ProfileService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
