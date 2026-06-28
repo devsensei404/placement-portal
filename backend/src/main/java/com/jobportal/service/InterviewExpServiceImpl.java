@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service("interviewExpService")
 public class InterviewExpServiceImpl implements InterviewExpService{
@@ -30,8 +31,18 @@ public class InterviewExpServiceImpl implements InterviewExpService{
     private JobRepository jobRepository;
 
     @Override
+    public Optional<InterviewExpDTO> getMyReview(Long jobId) throws JobPortalException {
+        Long userId = securityUtils.getLoggedInUser().getId();
+        InterviewExp exp = interviewExpRepository.findByUserIdAndJobId(userId, jobId)
+                .orElse(null);
+        if (exp == null) return Optional.empty();
+        return Optional.of(exp.toDTO());
+    }
+
+
+    @Override
     public List<InterviewExpDTO> getAllInterviewExps(Long jobId) throws JobPortalException {
-        return interviewExpRepository.findByJobId(jobId, Sort.by(Sort.Direction.DESC, "createdAt")).stream().map(x->x.toDTO()).toList();
+        return interviewExpRepository.findByJobIdAndUserIdNot(jobId, securityUtils.getLoggedInUser().getId(),Sort.by(Sort.Direction.DESC, "createdAt")).stream().map(x->x.toDTO()).toList();
     }
 
     @Override

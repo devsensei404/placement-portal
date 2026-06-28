@@ -23,6 +23,12 @@ public class InterviewExpAPI{
     @Autowired
     private InterviewExpService interviewExpService;
 
+    @PreAuthorize("hasRole('APPLICANT')")
+    @GetMapping("/getMine/{jobId}")
+    public ResponseEntity<InterviewExpDTO> getMyReview(@PathVariable Long jobId) throws JobPortalException {
+        return ResponseEntity.ok(interviewExpService.getMyReview(jobId).orElse(null));
+    }
+
     @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @GetMapping("/getAll/{jobId}")
     public ResponseEntity<List<InterviewExpDTO>> getAllExps(@PathVariable Long jobId) throws JobPortalException {

@@ -4,6 +4,7 @@ import com.jobportal.dto.InterviewExpDTO;
 import com.jobportal.exception.JobPortalException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InterviewExpService {
 
@@ -14,4 +15,6 @@ public interface InterviewExpService {
     public void updateReview(InterviewExpDTO dto) throws JobPortalException;
 
     public void deleteReview(Long jobId) throws JobPortalException;
+
+    public Optional<InterviewExpDTO> getMyReview(Long jobId) throws JobPortalException;
 }

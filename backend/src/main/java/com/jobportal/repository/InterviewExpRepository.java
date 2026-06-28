@@ -13,4 +13,6 @@ public interface InterviewExpRepository extends JpaRepository<InterviewExp,Long>
     public Optional<InterviewExp> findByUserIdAndJobId(Long userId, Long jobId);
 
     void deleteByUserIdAndJobId(Long userId, Long jobId);
+
+    public List<InterviewExp> findByJobIdAndUserIdNot(Long jobId,Long userId, Sort sort);
 }
