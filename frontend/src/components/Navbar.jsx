@@ -25,7 +25,7 @@ export default function Navbar() {
     <nav className="navbar">
 
       {/* Logo — clicking takes you to the right dashboard */}
-      <span className="navbar-logo">MeowJOB🐱</span>
+      <span className="navbar-logo">RŌNINHIRE</span>
 
       {/* Nav links — different per role */}
       <div className="navbar-links">
@@ -35,8 +35,10 @@ export default function Navbar() {
             <Link to="/student-dashboard">Home</Link>
             <Link to="/browse-jobs">Browse Jobs</Link>
             <Link to="/my-applications">My Applications</Link>
+            <Link to="/chats">Messages</Link>
             <Link to="/my-profile">My Profile</Link>
             <Link to="/notifications">Notifications</Link>
+
           </>
         )}
 
@@ -46,6 +48,7 @@ export default function Navbar() {
             <Link to="/recruiter-dashboard">Home</Link>
             <Link to="/browse-jobs">Browse Jobs</Link>
             <Link to="/my-jobs">My Jobs</Link>
+            <Link to="/chats">Messages</Link>
             <Link to="/my-profile">My Profile</Link>
             <Link to="/notifications">Notifications</Link>
           </>

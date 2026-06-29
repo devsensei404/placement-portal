@@ -13,6 +13,8 @@ import RecruiterDashboard from "./pages/RecruiterDashboard.jsx";
 import MyJobs from "./pages/MyJobs.jsx";
 import Candidates from "./pages/Candidates";
 import CandidateProfile from "./pages/CandidateProfile";
+import Chats from "./pages/Chats.jsx";
+import ChatWindow from "./pages/ChatWindow.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -28,7 +30,9 @@ const router = createBrowserRouter([
   { path: "/recruiter-dashboard", element: <ProtectedRoute><RecruiterDashboard /></ProtectedRoute> },
   { path: "/my-jobs", element: <ProtectedRoute><MyJobs /></ProtectedRoute> },
   { path: "/candidates", element: <ProtectedRoute><Candidates /></ProtectedRoute> },
-  { path: "/candidate/:id", element: <ProtectedRoute><CandidateProfile /></ProtectedRoute> }
+  { path: "/candidate/:id", element: <ProtectedRoute><CandidateProfile /></ProtectedRoute> },
+  { path: "/chats", element: <ProtectedRoute><Chats /></ProtectedRoute> },
+  { path: "/chats/:otherUserId", element: <ProtectedRoute><ChatWindow /></ProtectedRoute> },
 ])
 
 export default function App() {
