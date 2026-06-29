@@ -82,7 +82,7 @@ export default function Signup() {
       <div className="card">
 
         <div className="card-header">
-          <p className="subtitle">MeowJOB · IIT Durgapur</p>
+          <p className="subtitle">RŌNINHIRE · IIT Durgapur</p>
           <h1>Create Account</h1>
         </div>
 

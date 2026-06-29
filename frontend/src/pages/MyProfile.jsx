@@ -693,7 +693,7 @@ export default function MyProfile() {
               <input
                 ref={resumeInputRef}
                 type="file"
-                accept=".pdf"
+                accept="image/*"
                 style={{ display: "none" }}
                 onChange={handleResumeUpload}
               />

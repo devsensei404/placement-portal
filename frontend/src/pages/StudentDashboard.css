@@ -1,5 +1,27 @@
 /* StudentDashboard.css */
 
+/* ── Keyframes ── */
+@keyframes sd-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes sd-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sd-slide-right {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes sd-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ── Page shell ── */
 .dashboard {
   min-height: 100vh;
   background: oklch(96.335% 0.02068 301.001);
@@ -9,6 +31,18 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 25px 32px;
+}
+
+/* ── Header ── */
+.sd-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.sd-fade-in {
+  animation: sd-fade-in 0.5s ease both;
 }
 
 .dash-title {
@@ -22,13 +56,19 @@
   font-size: 17px;
   color: #374151;
   margin-top: 5px;
-  margin-bottom: 30px;
 }
 
+.sd-name-highlight {
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+/* ── Stats grid ── */
 .stats-grid {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  margin-bottom: 28px;
 }
 
 .stat-card {
@@ -39,9 +79,21 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 180px;
+  min-width: 160px;
   flex: 1;
   box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
+
+  /* Entry animation — each card inherits animationDelay from inline style */
+  opacity: 0;
+  animation: sd-fade-up 0.45s ease forwards;
+
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card:hover {
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.12);
+  transform: translateY(-2px);
+  border-color: #c4b5fd;
 }
 
 .stat-label {
@@ -49,30 +101,148 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #374151;
+  color: #6b7280;
 }
 
 .stat-value {
   font-size: 36px;
   font-weight: 700;
   color: #111827;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
 }
 
-.stat-value.incomplete {
-  font-size: 18px;
-  font-weight: 600;
-  color: #d97706;
+.sd-stat-green { color: #16a34a; }
+.sd-stat-red   { color: #dc2626; }
+
+/* ── Skeleton loader ── */
+.stat-skeleton {
+  display: block;
+  height: 36px;
+  width: 60px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f3efff 25%, #e9e2ff 50%, #f3efff 75%);
+  background-size: 200% 100%;
+  animation: sd-shimmer 1.4s infinite;
 }
 
+/* ── Profile completion card ── */
+.sd-progress-track {
+  height: 6px;
+  background: #f3efff;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.sd-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sd-completion-hint {
+  font-size: 12px;
+  color: #7c3aed;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2px;
+  transition: color 0.15s ease;
+}
+
+.sd-completion-hint:hover {
+  color: #5b21b6;
+  text-decoration: underline;
+}
+
+/* ── Upcoming Interview card ── */
+.sd-slide-up {
+  animation: sd-fade-up 0.4s ease both;
+}
+
+.sd-interview-card {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
+  margin-bottom: 32px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sd-interview-card:hover {
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.12);
+  transform: translateY(-1px);
+}
+
+.sd-interview-accent {
+  width: 5px;
+  align-self: stretch;
+  background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+  flex-shrink: 0;
+}
+
+.sd-interview-body {
+  flex: 1;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sd-interview-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7c3aed;
+  margin: 0;
+}
+
+.sd-interview-job {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.sd-interview-company {
+  font-size: 14px;
+  color: #374151;
+  margin: 0;
+}
+
+.sd-interview-time {
+  padding: 20px 28px 20px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #5b21b6;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Job cards stagger ── */
+.sd-job-card-wrap {
+  opacity: 0;
+  animation: sd-fade-up 0.4s ease forwards;
+}
+
+/* ── Recent jobs section ── */
 .recent-jobs-section {
-  margin-top: 36px;
+  margin-top: 4px;
 }
 
 .section-heading {
   font-size: 20px;
   font-weight: 700;
   color: #111827;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
 }
 
 .jobs-grid {
@@ -88,6 +258,7 @@
 }
 
 .btn-view-more {
+  width: auto;
   padding: 10px 28px;
   background-color: #8b5cf6;
   color: #ffffff;
@@ -95,8 +266,15 @@
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-view-more:hover {
   background-color: #7c3aed;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+}
+
+.btn-view-more:active {
+  transform: scale(0.97);
 }

@@ -99,7 +99,7 @@ export default function Login() {
       <div className="card">
 
         <div className="card-header">
-          <p className="subtitle">MeowJOB · IIT Durgapur</p>
+          <p className="subtitle">RŌNINHIRE · IIT Durgapur</p>
           <h1>Sign In</h1>
         </div>
 
