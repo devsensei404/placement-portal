@@ -15,6 +15,7 @@ import Candidates from "./pages/Candidates";
 import CandidateProfile from "./pages/CandidateProfile";
 import Chats from "./pages/Chats.jsx";
 import ChatWindow from "./pages/ChatWindow.jsx";
+import ResumeBuilder from "./pages/ResumeBuilder.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
   { path: "/candidate/:id", element: <ProtectedRoute><CandidateProfile /></ProtectedRoute> },
   { path: "/chats", element: <ProtectedRoute><Chats /></ProtectedRoute> },
   { path: "/chats/:otherUserId", element: <ProtectedRoute><ChatWindow /></ProtectedRoute> },
+  { path: "/resume-builder", element: <ProtectedRoute><ResumeBuilder /></ProtectedRoute> },
 ])
 
 export default function App() {

@@ -509,7 +509,7 @@ export default function MyJobs() {
                                       rel="noreferrer"
                                       className="mj-applicant-link"
                                     >
-                                      📄 Resume ↗
+                                       Resume ↗
                                     </a>
                                   )}
                                   {applicant.website && (
@@ -577,6 +577,13 @@ export default function MyJobs() {
                                     disabled={aState.saving}
                                   >
                                     {aState.saving ? "Saving…" : "Save"}
+                                  </button>
+
+                                  <button
+                                    className="mj-btn-sm mj-btn-ghost"
+                                    onClick={() => navigate(`/chats/${applicant.applicantId}`)}
+                                  >
+                                     Message
                                   </button>
 
                                   {aState.msg && (

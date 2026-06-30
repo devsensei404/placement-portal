@@ -38,6 +38,7 @@ export default function Navbar() {
             <Link to="/chats">Messages</Link>
             <Link to="/my-profile">My Profile</Link>
             <Link to="/notifications">Notifications</Link>
+            <Link to="/resume-builder">Resume Builder</Link>
 
           </>
         )}

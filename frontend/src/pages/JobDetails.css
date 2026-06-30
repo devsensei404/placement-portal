@@ -1,3 +1,9 @@
+/* ════════════════════════════════════════════
+   JobDetails.css
+   Original styles preserved exactly.
+   New .exp-* styles appended at the bottom.
+════════════════════════════════════════════ */
+
 .job-details-page {
   background-color: #f5f0ff;
   min-height: 100vh;
@@ -196,4 +202,377 @@
 .modal textarea {
   min-height: 120px;
   resize: vertical;
+}
+
+
+/* ════════════════════════════════════════════
+   INTERVIEW EXPERIENCES — new styles
+════════════════════════════════════════════ */
+
+.exp-section {
+  margin-top: 36px;
+}
+
+/* ── Section header ── */
+.exp-section-header {
+  margin-bottom: 20px;
+}
+
+.exp-heading-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.exp-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.exp-count {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  background: #f3efff;
+  border: 1px solid #e9e2ff;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+/* ── Static rating block ── */
+.exp-rating-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 10px;
+  padding: 14px 20px;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+  width: fit-content;
+}
+
+.exp-rating-number {
+  font-size: 36px;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.exp-rating-right {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exp-star-row {
+  display: flex;
+  gap: 3px;
+}
+
+.star {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.star.filled {
+  color: #f59e0b;
+}
+
+.star.empty {
+  color: #d1d5db;
+}
+
+.exp-rating-soon {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ── Write a Review card ── */
+.exp-write-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+}
+
+.exp-write-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Textarea wrapper (used in both write + edit) ── */
+.exp-textarea-wrap {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.exp-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  padding-bottom: 28px; /* room for char counter */
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: #111827;
+  background: #faf7ff;
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  transition: border-color 0.15s;
+}
+
+.exp-textarea:focus {
+  border-color: #8b5cf6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+}
+
+.exp-char-count {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.exp-char-warn {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* ── Inline error / success ── */
+.exp-error {
+  font-size: 13px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.exp-success {
+  font-size: 13px;
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.exp-success-banner,
+.exp-error-banner {
+  margin-bottom: 16px;
+}
+
+/* ── Submit button ── */
+.exp-btn-submit {
+  padding: 9px 22px;
+  background: #8b5cf6;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+  transition: background 0.15s;
+}
+
+.exp-btn-submit:hover {
+  background: #7c3aed;
+}
+
+/* ── Empty state ── */
+.exp-status {
+  font-size: 14px;
+  color: #6b7280;
+  padding: 24px 0;
+}
+
+.exp-empty {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  padding: 48px 32px;
+  text-align: center;
+}
+
+.exp-empty-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.exp-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.exp-empty-sub {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ── Reviews list ── */
+.exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Single review card ── */
+.exp-card {
+  background: #ffffff;
+  border: 1px solid #e9e2ff;
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+  transition: box-shadow 0.15s;
+}
+
+.exp-card:hover {
+  box-shadow: 0 3px 10px rgba(139, 92, 246, 0.08);
+}
+
+/* Own review — subtle left accent */
+.exp-card-own {
+  border-left: 3px solid #8b5cf6;
+}
+
+/* ── Card top row: avatar + meta + actions ── */
+.exp-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.exp-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ede9fe;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.exp-avatar svg {
+  width: 24px;
+  height: 24px;
+}
+
+.exp-card-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.exp-anon-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.exp-time {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ── Own review action buttons ── */
+.exp-own-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.exp-btn-edit {
+  padding: 5px 14px;
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+  transition: background 0.15s;
+}
+
+.exp-btn-edit:hover {
+  background: #ede9fe;
+}
+
+.exp-btn-delete {
+  padding: 5px 14px;
+  background: #fff1f2;
+  color: #b91c1c;
+  border: 1px solid #fecdd3;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: auto;
+  transition: background 0.15s;
+}
+
+.exp-btn-delete:hover {
+  background: #fee2e2;
+}
+
+/* ── Review message text ── */
+.exp-msg {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* ── Edit block (inline in own card) ── */
+.exp-edit-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-chat-recruiter {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px;
+  background: #f3efff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-chat-recruiter:hover {
+  background: #ede9fe;
 }
