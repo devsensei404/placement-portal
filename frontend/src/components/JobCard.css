@@ -1,62 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 .job-card {
+  font-family: 'Inter', sans-serif;
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.06);
-  padding: 20px;
+  padding: 24px;
+  min-height: 210px;
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 6px;
   justify-content: space-between;
-
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
   transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
+/* corner bracket — signature detail, tech/SaaS marker */
+.job-card::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  border-top: 1.5px solid #d4d4d4;
+  border-right: 1.5px solid #d4d4d4;
+  transition: border-color 0.2s ease;
+}
+
 .job-card:hover {
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.13);
-  transform: translateY(-3px);
-  border-color: #c4b5fd;
+  border-color: #111111;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.job-card:hover::after {
+  border-color: #111111;
+}
+
+.job-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .job-card-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #0a0a0a;
   margin: 0;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  padding-right: 20px;
 }
 
 .job-card-company {
-  font-size: 14px;
-  color: #555;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #555555;
   margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .job-card-location {
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
-  color: #888;
+  font-weight: 500;
+  color: #404040;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.job-card-location::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #737373;
+  flex-shrink: 0;
 }
 
 .btn-view {
   width: 100%;
-  margin-top: 10px;
-  align-self: flex-start;
-  padding: 7px 18px;
-  background-color: #8b5cf6;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
+  box-sizing: border-box;
+  padding: 12px;
+  min-height: 46px;
+  background-color: #ffffff;
+  color: #0a0a0a;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-view::after {
+  content: "→";
+  font-size: 15px;
+  transition: transform 0.2s ease;
 }
 
 .btn-view:hover {
-  background-color: #7c3aed;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.25);
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+.btn-view:hover::after {
+  transform: translateX(3px);
 }
 
 .btn-view:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
+}
+
+@media (max-width: 480px) {
+  .job-card {
+    padding: 20px;
+    gap: 18px;
+  }
+
+  .job-card-info {
+    gap: 8px;
+  }
+
+  .job-card-title {
+    font-size: 16px;
+  }
+
+  .job-card-company {
+    font-size: 12px;
+  }
+
+  .job-card-location {
+    font-size: 12.5px;
+  }
+
+  .btn-view {
+    padding: 11px;
+    font-size: 13.5px;
+  }
 }

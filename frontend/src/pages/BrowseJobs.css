@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 .browse-page {
-  background-color: #f5f0ff;
+  background-color: #ffffff;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .browse-main {
@@ -10,85 +15,161 @@
 }
 
 .browse-main h1 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: -0.01em;
   margin-bottom: 24px;
-  padding-left: 20px;
+  padding-left: 0;
 }
+
+/* ===== Filter bar ===== */
 
 .filter-bar {
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   background: #ffffff;
   padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.06);
+  border: 1px solid #111111;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 901px) {
+  .filter-bar {
+    flex-wrap: nowrap;
+  }
 }
 
 .filter-input {
-  padding: 9px 14px;
-  border: 1px solid #ddd6fe;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1px solid #111111;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  background: #faf7ff;
-  color: #1a1a1a;
+  background: #ffffff;
+  color: #111111;
   outline: none;
-  flex: none;
-  width: 33%;
+  flex: 1 1 32%;
+  width: 32%;
+  min-width: 160px;
+  max-width: 400px;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filter-input::placeholder {
+  color: #a3a3a3;
 }
 
 .filter-input:focus {
-  border-color: #8b5cf6;
-  background: #ffffff;
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.12);
 }
 
 .filter-select {
-  padding: 9px 14px;
-  border: 1px solid #ddd6fe;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1px solid #111111;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  background: #faf7ff;
-  color: #1a1a1a;
+  background: #ffffff;
+  color: #111111;
   outline: none;
   cursor: pointer;
-  flex: none;
-  width: 23%;
+  flex: 1 1 20%;
+  width: 20%;
+  min-width: 150px;
+  max-width: 240px;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .filter-select:focus {
-  border-color: #8b5cf6;
-  background: #ffffff;
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.12);
 }
 
 .btn-clear {
-  padding: 9px 20px;
-  background: #f3efff;
-  border: 1px solid #ddd6fe;
-  border-radius: 6px;
+  padding: 10px 24px;
+  background-color: #111111 !important;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  color: #5b21b6;
-  flex: none;
-  width: 8%;
+  color: #ffffff !important;
+  flex: 1 1 140px;
+  min-width: 120px;
+  white-space: nowrap;
+  margin-left: auto;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .btn-clear:hover {
-  background: #ede9fe;
+  background-color: #333333 !important;
+}
+
+.btn-clear:active {
+  transform: scale(0.97);
 }
 
 .results-count {
   font-size: 13px;
-  color: #888;
+  color: #777777;
   margin-top: 12px;
   margin-bottom: 16px;
-  padding-left: 20px;
+  padding-left: 0;
 }
 
 .no-results {
   font-size: 14px;
-  color: #888;
+  color: #777777;
+  grid-column: 1 / -1;
+}
+
+/* ===== Job grid ===== */
+
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 900px) {
+  .browse-main {
+    padding: 24px 20px;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-input,
+  .filter-select,
+  .btn-clear {
+    width: 100%;
+    max-width: 100%;
+    flex: 1 1 auto;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .browse-main h1 {
+    font-size: 22px;
+  }
 }

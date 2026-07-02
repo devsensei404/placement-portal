@@ -32,10 +32,10 @@ function BellIcon() {
   );
 }
 
-function CloseIcon() {
+function CloseIcon({ color }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
+      <path d="M6 6l12 12M18 6L6 18" stroke={color} strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -45,6 +45,7 @@ export default function Notifications() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [hasNext, setHasNext] = useState(false);
+  const [hoveredDismissId, setHoveredDismissId] = useState(null);
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -116,9 +117,14 @@ export default function Notifications() {
               <button
                 className="notif-dismiss"
                 onClick={(e) => handleDismiss(e, notif.id)}
+                onMouseEnter={() => setHoveredDismissId(notif.id)}
+                onMouseLeave={() => setHoveredDismissId(null)}
                 aria-label="Dismiss notification"
+                style={{
+                  background: hoveredDismissId === notif.id ? "#111111" : "transparent",
+                }}
               >
-                <CloseIcon />
+                <CloseIcon color={hoveredDismissId === notif.id ? "#ffffff" : "#999999"} />
               </button>
             </div>
           ))}

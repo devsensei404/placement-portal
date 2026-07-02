@@ -1,51 +1,202 @@
 /* Login.css */
 
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap");
+
 .page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f3f4f6;
+  background: #ffffff;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.page * {
+  box-sizing: border-box;
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border: 1px solid #c9c9c9;
   border-radius: 12px;
   padding: 40px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Brand mark (kanji + wordmark) ===== */
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.brand-mark .kanji {
+  font-size: 30px;
+  font-weight: 400;
+  color: #111111;
+  line-height: 1;
+}
+
+.brand-mark .wordmark {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111111;
 }
 
 .card-header {
   margin-bottom: 28px;
+  text-align: center;
 }
 
 .subtitle {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 12px;
-  color: #6b7280;
-  letter-spacing: 0.05em;
-  margin-bottom: 6px;
+  font-weight: 700;
+  color: #555555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
 }
 
 h1 {
-  font-size: 24px;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 26px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .field {
   margin-bottom: 18px;
 }
 
+.field label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111111;
+  margin-bottom: 8px;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"] {
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  font-size: 14.5px;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  padding: 11px 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input[type="text"]:focus,
+.field input[type="email"]:focus,
+.field input[type="password"]:focus {
+  outline: none;
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+
+.field input::placeholder {
+  color: #a3a3a3;
+}
+
+/* ===== Password show/hide ===== */
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+  padding-right: 42px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Kill native browser password reveal/autofill icons (Edge, Chrome) so they don't
+   overlap our custom eye button */
+.password-wrapper input::-ms-reveal,
+.password-wrapper input::-ms-clear {
+  display: none;
+}
+
+.password-wrapper input::-webkit-credentials-auto-fill-button,
+.password-wrapper input::-webkit-strong-password-auto-fill-button {
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  flex: 0 0 24px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #555555;
+  transition: color 0.15s ease;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.password-toggle:hover {
+  color: #111111;
+  background: none;
+}
+
+.password-toggle:focus {
+  outline: none;
+  background: none;
+}
+
+/* ===== Error ===== */
+
 .error {
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #dc2626;
+  background: #f9f9f9;
+  border: 1px solid #111111;
+  color: #111111;
   padding: 10px 14px;
   border-radius: 8px;
   font-size: 13px;
+  font-weight: 500;
   margin-bottom: 16px;
 }
 
@@ -53,5 +204,93 @@ h1 {
   font-size: 13px;
   text-align: center;
   margin-top: 20px;
-  color: #6b7280;
+  color: #555555;
+}
+
+.footer-text a {
+  color: #111111;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Submit button (forced black, no browser tint) ===== */
+
+.btn-primary,
+button.btn-primary {
+  width: 100%;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  margin-top: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.btn-primary:hover {
+  background-color: #333333 !important;
+}
+
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: #111111;
+  color: #ffffff;
+  outline: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* ===== Tablet ===== */
+
+@media (max-width: 600px) {
+  .card {
+    padding: 32px 24px;
+    max-width: 100%;
+    border-radius: 10px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+}
+
+/* ===== Small mobile ===== */
+
+@media (max-width: 380px) {
+  .page {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 24px 18px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+  }
+
+  .brand-mark .kanji {
+    font-size: 26px;
+  }
+
+  .brand-mark .wordmark {
+    font-size: 19px;
+  }
 }

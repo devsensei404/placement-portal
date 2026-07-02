@@ -1,98 +1,173 @@
 /* Navbar.css */
 
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap");
+
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 0 32px;
   height: 64px;
-
   background: #ffffff;
-  border-bottom: 1px solid #e9e2ff;
-
+  border-bottom: 1px solid #e5e5e5;
   position: sticky;
   top: 0;
   z-index: 100;
-
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.05);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+/* ===== Logo ===== */
 
 .navbar-logo {
-  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navbar-logo-kanji {
+  font-size: 20px;
+  font-weight: 400;
+  color: #111111;
+  line-height: 1;
+}
+
+.navbar-logo-text {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 18px;
   font-weight: 700;
-
-  color: #7c3aed;
-
-  letter-spacing: 0.02em;
-
-  transition: color 0.2s ease;
+  letter-spacing: -0.01em;
+  color: #111111;
 }
 
-.navbar-logo:hover {
-  color: #6d28d9;
-}
+/* ===== Links (desktop) ===== */
 
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .navbar-links a {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
-
-  color: #4b5563;
-
+  color: #444444;
   padding: 8px 14px;
-  border-radius: 10px;
-
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .navbar-links a:hover {
-  background: #f3efff;
-  color: #7c3aed;
-  text-decoration: none;
-
-  transform: translateY(-1px);
+  background: #f9f9f9;
+  color: #111111;
 }
 
-.navbar-links button {
-  font-size: 0.95rem;
+.navbar-logout-btn {
+  font-size: 0.9rem;
   font-weight: 600;
-
-  padding: 10px 18px;
+  padding: 9px 18px;
   width: auto;
-
-  margin-left: 8px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: #8b5cf6;
-  color: white;
-
+  margin-left: 10px;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
+  background-color: #111111 !important;
+  color: #ffffff !important;
   cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-.navbar-links button:hover {
-  background: #7c3aed;
-
-  transform: translateY(-1px);
-
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+.navbar-logout-btn:hover {
+  background-color: #333333 !important;
 }
 
-.navbar-links button:active {
+.navbar-logout-btn:active {
   transform: scale(0.97);
+}
+
+/* ===== Hamburger button (hidden on desktop) ===== */
+
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+}
+
+.navbar-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #111111;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.navbar-hamburger-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar-hamburger-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-hamburger-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ===== Mobile menu ===== */
+
+@media (max-width: 900px) {
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .navbar-hamburger {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 12px 20px 20px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+  }
+
+  .navbar-links-open {
+    max-height: 600px;
+    opacity: 1;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .navbar-links a {
+    padding: 12px 14px;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  .navbar-logout-btn {
+    margin-left: 0;
+    margin-top: 8px;
+    width: 100%;
+    padding: 12px;
+  }
 }

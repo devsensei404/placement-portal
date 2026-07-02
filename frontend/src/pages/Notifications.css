@@ -159,8 +159,6 @@
   border: none;
   outline: none;
 
-  background: transparent;
-
   cursor: pointer;
 
   display: flex;
@@ -169,25 +167,7 @@
 
   border-radius: 6px;
 
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.notif-dismiss svg {
-  width: 14px;
-  height: 14px;
-}
-
-.notif-dismiss svg path {
-  stroke: #999999;
-  transition: stroke 0.15s ease;
-}
-
-.notif-dismiss:hover {
-  background: #111111;
-}
-
-.notif-dismiss:hover svg path {
-  stroke: #ffffff;
+  transition: background-color 0.15s ease;
 }
 
 /* ===== Pagination ===== */
