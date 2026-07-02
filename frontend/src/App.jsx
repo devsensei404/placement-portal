@@ -16,9 +16,10 @@ import CandidateProfile from "./pages/CandidateProfile";
 import Chats from "./pages/Chats.jsx";
 import ChatWindow from "./pages/ChatWindow.jsx";
 import ResumeBuilder from "./pages/ResumeBuilder.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
 
 const router = createBrowserRouter([
-  { path: "/", element: <Login /> },
+  {path:"/", element: <LandingPage /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   { path: "/student-dashboard", element: <ProtectedRoute><StudentDashboard /></ProtectedRoute> },

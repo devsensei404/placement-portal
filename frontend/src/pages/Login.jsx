@@ -98,6 +98,11 @@ export default function Login() {
     <div className="page">
       <div className="card">
 
+        <div className="brand-mark">
+          <span className="kanji">浪</span>
+          <span className="wordmark">RōninHire</span>
+        </div>
+
         <div className="card-header">
           <p className="subtitle">RŌNINHIRE · IIT Durgapur</p>
           <h1>Sign In</h1>
