@@ -22,8 +22,8 @@ public class ResumeResponseDTO {
     @AllArgsConstructor
     public static class Metadata {
         private LocalDateTime generatedAt;
-        private String template;       // "modern" for now
-        private Integer version;       // 1 for now
+        private String template;
+        private Integer version;
     }
 
     @Data
@@ -33,16 +33,18 @@ public class ResumeResponseDTO {
         private String name;
         private String email;
         private String phone;
-        private String website;
+        private String location;     // NEW
+        private String linkedin;     // NEW (was: website)
+        private String github;       // NEW
+        private String portfolio;    // NEW
         private String summary;
         private List<EducationEntry> education;
         private List<String> skills;
         private List<ExperienceEntry> experience;
         private List<ProjectEntry> projects;
         private List<String> achievements;
+        private List<CertificationEntry> certifications; // NEW
     }
-
-    // ── nested section types (mirror Gemini output shape) ─────────────────
 
     @Data
     @NoArgsConstructor
@@ -61,6 +63,7 @@ public class ResumeResponseDTO {
         private String title;
         private String company;
         private String duration;
+        private String location;   // NEW
         private List<String> points;
     }
 
@@ -71,5 +74,16 @@ public class ResumeResponseDTO {
         private String name;
         private String tech;
         private List<String> points;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CertificationEntry {  // NEW
+        private String name;
+        private String issuer;
+        private String date;
+        private String credentialId;
+        private String credentialUrl;
     }
 }

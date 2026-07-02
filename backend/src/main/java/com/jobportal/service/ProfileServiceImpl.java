@@ -209,7 +209,7 @@ public class ProfileServiceImpl implements ProfileService{
         Long realProfileId = securityUtils.getLoggedInUser().getProfileId();
         Profile profile = profileRepository.findById(realProfileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
-        String url = cloudinaryService.uploadFile(file, "resumes","raw");
+        String url = cloudinaryService.uploadFile(file, "resumes");
         profile.setResumeUrl(url);
         profileRepository.save(profile);
     }

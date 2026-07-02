@@ -17,7 +17,10 @@ public class ResumeRequestDTO {
     private String name;
     private String email;
     private String phone;
-    private String website;
+    private String location;     // NEW
+    private String linkedin;     // NEW (was: website)
+    private String github;       // NEW
+    private String portfolio;    // NEW
 
     // Sections
     private List<EducationEntry> education;
@@ -25,6 +28,7 @@ public class ResumeRequestDTO {
     private List<ExperienceEntry> experience;
     private List<ProjectEntry> projects;
     private List<String> achievements;
+    private List<CertificationEntry> certifications; // NEW
 
     // ── nested input types ────────────────────────────────────────────────
 
@@ -45,6 +49,7 @@ public class ResumeRequestDTO {
         private String title;
         private String company;
         private String duration;
+        private String location;   // NEW
         private List<String> points;
     }
 
@@ -55,5 +60,16 @@ public class ResumeRequestDTO {
         private String name;
         private String tech;
         private List<String> points;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CertificationEntry {  // NEW
+        private String name;
+        private String issuer;
+        private String date;
+        private String credentialId;   // optional
+        private String credentialUrl;  // optional
     }
 }

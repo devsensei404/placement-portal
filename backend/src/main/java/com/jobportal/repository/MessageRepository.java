@@ -18,10 +18,11 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findConversation(@Param("userId1") Long userId1,
                                    @Param("userId2") Long userId2);
 
-    @Query("SELECT DISTINCT CASE WHEN m.senderId = :userId " +
-            "THEN m.receiverId ELSE m.senderId END " +
-            "FROM Message m WHERE m.senderId = :userId " +
-            "OR m.receiverId = :userId")
+    @Query(value = "SELECT CASE WHEN sender_id = :userId THEN receiver_id ELSE sender_id END AS partner_id " +
+            "FROM messages WHERE sender_id = :userId OR receiver_id = :userId " +
+            "GROUP BY partner_id " +
+            "ORDER BY MAX(timestamp) DESC",
+            nativeQuery = true)
     List<Long> findChatPartners(@Param("userId") Long userId);
 
     @Modifying

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface InterviewExpRepository extends JpaRepository<InterviewExp,Long> {
-    public List<InterviewExp> findByJobId(Long jobId, Sort sort);
 
     public Optional<InterviewExp> findByUserIdAndJobId(Long userId, Long jobId);
 

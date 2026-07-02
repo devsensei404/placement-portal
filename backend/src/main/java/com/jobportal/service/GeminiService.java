@@ -59,17 +59,23 @@ Do not include trailing commas.
   "name": "full name",
   "email": "email",
   "phone": "phone number",
-  "website": "linkedin or portfolio url or empty string",
+  "location": "city, state/country or empty string",
+  "linkedin": "linkedin url or empty string",
+  "github": "github url or empty string",
+  "portfolio": "portfolio/personal website url or empty string",
   "summary": "2-3 line professional summary",
   "education": [
     { "degree": "...", "institution": "...", "year": "...", "grade": "..." }
   ],
   "skills": ["skill1", "skill2"],
   "experience": [
-    { "title": "...", "company": "...", "duration": "...", "points": ["..."] }
+    { "title": "...", "company": "...", "duration": "...", "location": "...", "points": ["..."] }
   ],
   "projects": [
     { "name": "...", "tech": "...", "points": ["..."] }
+  ],
+  "certifications": [
+    { "name": "...", "issuer": "...", "date": "...", "credentialId": "...", "credentialUrl": "..." }
   ],
   "achievements": ["achievement 1"]
 }
@@ -91,8 +97,13 @@ Do not add any explanation or text outside the JSON object.
         for (int attempt = 1; attempt <= 2; attempt++) {
             try {
                 String rawJson = callGemini(prompt, imageBase64);
+                System.out.println("\n========== RAW GEMINI RESPONSE ==========");
+                System.out.println(rawJson);
+                System.out.println("=========================================");
+                System.out.println("Length: " + rawJson.length());
                 return parseResumeJson(rawJson);
             } catch (Exception e) {
+                e.printStackTrace();
                 if (attempt == 2) {
                     throw new JobPortalException("AI generation failed. Please try again.");
                 }
@@ -109,7 +120,10 @@ Do not add any explanation or text outside the JSON object.
         sb.append("Name: ").append(orEmpty(req.getName())).append("\n");
         sb.append("Email: ").append(orEmpty(req.getEmail())).append("\n");
         sb.append("Phone: ").append(orEmpty(req.getPhone())).append("\n");
-        sb.append("Website: ").append(orEmpty(req.getWebsite())).append("\n");
+        sb.append("Location: ").append(orEmpty(req.getLocation())).append("\n");        // NEW
+        sb.append("LinkedIn: ").append(orEmpty(req.getLinkedin())).append("\n");        // NEW
+        sb.append("GitHub: ").append(orEmpty(req.getGithub())).append("\n");            // NEW
+        sb.append("Portfolio: ").append(orEmpty(req.getPortfolio())).append("\n");      // NEW
 
         if (req.getEducation() != null && !req.getEducation().isEmpty()) {
             sb.append("\nEducation:\n");
@@ -127,7 +141,11 @@ Do not add any explanation or text outside the JSON object.
             sb.append("\nExperience:\n");
             req.getExperience().forEach(e -> {
                 sb.append("  - ").append(e.getTitle()).append(" at ").append(e.getCompany())
-                        .append(" (").append(orEmpty(e.getDuration())).append(")\n");
+                        .append(" (").append(orEmpty(e.getDuration())).append(")");
+                if (e.getLocation() != null && !e.getLocation().isBlank()) {           // NEW
+                    sb.append(" [").append(e.getLocation()).append("]");               // NEW
+                }
+                sb.append("\n");
                 if (e.getPoints() != null) e.getPoints().forEach(p -> sb.append("      * ").append(p).append("\n"));
             });
         }
@@ -137,6 +155,21 @@ Do not add any explanation or text outside the JSON object.
             req.getProjects().forEach(p -> {
                 sb.append("  - ").append(p.getName()).append(" [").append(orEmpty(p.getTech())).append("]\n");
                 if (p.getPoints() != null) p.getPoints().forEach(pt -> sb.append("      * ").append(pt).append("\n"));
+            });
+        }
+
+        if (req.getCertifications() != null && !req.getCertifications().isEmpty()) {   // NEW
+            sb.append("\nCertifications:\n");
+            req.getCertifications().forEach(c -> {
+                sb.append("  - ").append(c.getName()).append(" | ").append(orEmpty(c.getIssuer()))
+                        .append(" | ").append(orEmpty(c.getDate()));
+                if (c.getCredentialId() != null && !c.getCredentialId().isBlank()) {
+                    sb.append(" | ID: ").append(c.getCredentialId());
+                }
+                if (c.getCredentialUrl() != null && !c.getCredentialUrl().isBlank()) {
+                    sb.append(" | URL: ").append(c.getCredentialUrl());
+                }
+                sb.append("\n");
             });
         }
 
@@ -175,7 +208,7 @@ Do not add any explanation or text outside the JSON object.
                 ),
                 "generationConfig", Map.of(
                         "temperature", 0.3,
-                        "maxOutputTokens", 2048
+                        "maxOutputTokens", 8192
                 )
         );
 
@@ -211,7 +244,8 @@ Do not add any explanation or text outside the JSON object.
             URL url = new URL(imageUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            connection.setConnectTimeout(5000); // 5 sec
+            connection.setConnectTimeout(
+                    5000); // 5 sec
             connection.setReadTimeout(5000);    // 5 sec
 
             try (InputStream inputStream = connection.getInputStream()) {

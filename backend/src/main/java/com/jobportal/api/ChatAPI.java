@@ -1,5 +1,6 @@
 package com.jobportal.api;
 
+import com.jobportal.dto.ChatPartnerDTO;
 import com.jobportal.dto.MessageDTO;
 import com.jobportal.dto.ResponseDTO;
 import com.jobportal.dto.SendMessageRequest;
@@ -41,7 +42,7 @@ public class ChatAPI {
 
     @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @GetMapping("/partners")
-    public ResponseEntity<List<Long>> getChatPartners() throws JobPortalException {
+    public ResponseEntity<List<ChatPartnerDTO>> getChatPartners() throws JobPortalException {
         Long loggedInUserId = securityUtils.getLoggedInUser().getId();
         return new ResponseEntity<>(chatService.getChatPartners(loggedInUserId), HttpStatus.OK);
     }

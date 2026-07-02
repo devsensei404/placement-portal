@@ -55,6 +55,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> optional = userRepository.findByEmail(userDTO.getEmail());
         if (optional.isPresent()) throw new JobPortalException("USER_FOUND");
 
+        //So that students can register with school/college domain only.No such restrictions on recruiters as of now.
+        if (userDTO.getAccountType() == AccountType.APPLICANT &&
+                !userDTO.getEmail().endsWith("@nitdgp.ac.in")) {
+            throw new JobPortalException("INVALID_STUDENT_EMAIL");
+        }
+
         userDTO.setProfileId(profileService.createProfile(userDTO.getEmail()));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
