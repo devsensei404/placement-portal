@@ -17,6 +17,29 @@ function timeAgo(dateString) {
   return "just now";
 }
 
+function BellIcon() {
+  return (
+    <svg className="notif-status-icon" viewBox="0 0 48 48" fill="none">
+      <path
+        className="draw"
+        d="M24 8a10 10 0 0 0-10 10v6l-4 8h28l-4-8v-6A10 10 0 0 0 24 8z"
+        stroke="#111111"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path className="draw" d="M20 36a4 4 0 0 0 8 0" stroke="#111111" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,49 +78,64 @@ export default function Notifications() {
     });
   }
 
-  if (loading) return <p className="notif-status">Loading...</p>;
-
   return (
-    <div style={{ minHeight: "100vh", background: "#f5f0ff" }}>
+    <div className="notif-root">
       <Navbar />
 
       <div className="notif-page">
-        <h2>Notifications</h2>
+        <div className="notif-header">
+          <h2>Notifications</h2>
+          {!loading && notifications.length > 0 && (
+            <span className="notif-count">
+              {notifications.length} unread
+            </span>
+          )}
+        </div>
 
-        {notifications.length === 0 && (
-          <p className="notif-status">No new notifications.</p>
+        {loading && <p className="notif-status">Loading...</p>}
+
+        {!loading && notifications.length === 0 && (
+          <div className="notif-status">
+            <BellIcon />
+            No new notifications.
+          </div>
         )}
 
-        {notifications.map((notif) => (
-          <div key={notif.id} className="notif-card">
-            <span className="notif-message">{notif.message}</span>
-            <span className="notif-time">{timeAgo(notif.createdAt)}</span>
-            <button
-              className="notif-dismiss"
-              onClick={(e) => handleDismiss(e, notif.id)}
+        {!loading &&
+          notifications.map((notif, idx) => (
+            <div
+              key={notif.id}
+              className="notif-card"
+              style={{ animationDelay: `${idx * 0.05}s` }}
             >
-              &#x2715;
+              <span className="notif-dot" />
+              <div className="notif-body">
+                <span className="notif-message">{notif.message}</span>
+                <span className="notif-time">{timeAgo(notif.createdAt)}</span>
+              </div>
+              <button
+                className="notif-dismiss"
+                onClick={(e) => handleDismiss(e, notif.id)}
+                aria-label="Dismiss notification"
+              >
+                <CloseIcon />
+              </button>
+            </div>
+          ))}
+
+        {!loading && notifications.length > 0 && (
+          <div className="pagination">
+            <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+              Previous
+            </button>
+
+            <span>Page {page + 1}</span>
+
+            <button disabled={!hasNext} onClick={() => setPage(page + 1)}>
+              Next
             </button>
           </div>
-        ))}
-
-        <div className="pagination">
-          <button
-            disabled={page === 0}
-            onClick={() => setPage(page - 1)}
-          >
-            Previous
-          </button>
-
-          <span>Page {page + 1}</span>
-
-          <button
-            disabled={!hasNext}
-            onClick={() => setPage(page + 1)}
-          >
-            Next
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );
