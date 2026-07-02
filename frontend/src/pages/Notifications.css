@@ -160,7 +160,6 @@
   outline: none;
 
   background: transparent;
-  color: #999999;
 
   cursor: pointer;
 
@@ -178,9 +177,17 @@
   height: 14px;
 }
 
+.notif-dismiss svg path {
+  stroke: #999999;
+  transition: stroke 0.15s ease;
+}
+
 .notif-dismiss:hover {
   background: #111111;
-  color: #ffffff;
+}
+
+.notif-dismiss:hover svg path {
+  stroke: #ffffff;
 }
 
 /* ===== Pagination ===== */
