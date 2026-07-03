@@ -299,3 +299,13 @@
 .btn-view-more:active {
   transform: scale(0.97);
 }
+
+/* ── Mobile: 6 columns is too tight below ~600px, drop to 2 ── */
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stat-card-completion {
+    grid-column: span 2;
+  }
+}

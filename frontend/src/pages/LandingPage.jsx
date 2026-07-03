@@ -198,9 +198,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <div className="stats-divider"><br /></div>
+      <div className="stats-divider"><br /><br /></div>
       <section className="stats-section">
-        <div className="stats-grid">
+        <div className="stats-grid-landingpage">
           <div className="stat-item">
             <span className="stat-number">2100+</span>
             <span className="stat-label">Registered Candidates</span>

@@ -359,7 +359,7 @@
   background: #ffffff;
 }
 
-.stats-grid {
+.stats-grid-landingpage {
   max-width: 900px;
   margin: 0 auto;
   display: grid;
@@ -399,7 +399,7 @@
 }
 
 @media (max-width: 700px) {
-  .stats-grid {
+  .stats-grid-landingpage {
     grid-template-columns: 1fr;
     gap: 28px;
   }
