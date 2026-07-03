@@ -1,8 +1,13 @@
 /* Chats.css */
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 .chats-page {
   min-height: 100vh;
-  background: #f5f0ff;
+  width: 100%;
+  overflow-x: hidden;
+  background: #f9f9f9;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .chats-main {
@@ -12,51 +17,58 @@
 }
 
 .chats-title {
-  font-size: 24px;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 26px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
+  letter-spacing: -0.01em;
   margin-bottom: 28px;
 }
 
 .chats-status {
   text-align: center;
-  color: #6b7280;
+  color: #777777;
   font-size: 14px;
   margin-top: 60px;
 }
 
 .chats-error {
-  color: #b91c1c;
+  color: #111111;
+  font-weight: 600;
 }
 
-/* Empty state */
+/* ===== Empty state ===== */
+
 .chats-empty {
   text-align: center;
   padding: 64px 32px;
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 16px;
 }
 
 .chats-empty-icon {
-  font-size: 40px;
+  width: 40px;
+  height: 40px;
   margin-bottom: 16px;
 }
 
 .chats-empty-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 17px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
   margin-bottom: 8px;
 }
 
 .chats-empty-sub {
   font-size: 14px;
-  color: #6b7280;
+  color: #666666;
   line-height: 1.6;
 }
 
-/* Partners list */
+/* ===== Partners list ===== */
+
 .partners-list {
   list-style: none;
   padding: 0;
@@ -71,25 +83,28 @@
   align-items: center;
   gap: 14px;
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   padding: 16px 20px;
   cursor: pointer;
-  transition: box-shadow 0.18s, background 0.18s;
+  transition: box-shadow 0.18s ease, background-color 0.18s ease, transform 0.15s ease;
 }
 
 .partner-row:hover {
-  background: #faf7ff;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+  background: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
 }
 
 /* Avatar circle with initial */
+
 .partner-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #8b5cf6;
+  background: #111111;
   color: #ffffff;
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 18px;
   font-weight: 700;
   display: flex;
@@ -106,7 +121,7 @@
 .partner-name {
   font-size: 15px;
   font-weight: 600;
-  color: #111827;
+  color: #111111;
   display: block;
   white-space: nowrap;
   overflow: hidden;
@@ -115,6 +130,39 @@
 
 .partner-chevron {
   font-size: 20px;
-  color: #c4b5fd;
+  color: #999999;
   flex-shrink: 0;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.partner-row:hover .partner-chevron {
+  color: #111111;
+  transform: translateX(2px);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 480px) {
+  .chats-main {
+    padding: 28px 16px;
+  }
+
+  .chats-title {
+    font-size: 22px;
+  }
+
+  .partner-row {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .partner-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+
+  .chats-empty {
+    padding: 48px 20px;
+  }
 }

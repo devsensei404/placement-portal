@@ -1,24 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&family=Unbounded:wght@400;600;700;800&display=swap");
 @import "tailwindcss";
 /* global.css */
-/* Every page inherits from here */
+/* Every page inherits from here — tuned to the black/white minimalist
+   system used on Landing / Login / JobDetails. Page-specific CSS
+   (headings in Space Grotesk / Bricolage Grotesque, bespoke button
+   hover effects, etc.) still overrides this safely since everything
+   here uses low-specificity selectors (*, tag names).
+
+   All fonts used anywhere in the app are now imported once, here,
+   instead of duplicated per-page — if LandingPage.css / Login.css
+   still have their own @import lines for Space Grotesk / Bricolage
+   Grotesque, those are safe to delete since this file loads them
+   for every page already. */
 
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  background: #f5f0ff;
-  color: #111827;
+  background: #ffffff;
+  color: #111111;
   font-size: 15px;
   line-height: 1.5;
 }
 
 a {
-  color: #1d4ed8;
+  color: #111111;
   text-decoration: none;
+  font-weight: 500;
 }
 
 a:hover {
@@ -26,47 +38,102 @@ a:hover {
 }
 
 button {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   padding: 10px 20px;
-  background: #1d4ed8;
-  color: #fff;
-  border: none;
+  background: #111111;
+  color: #ffffff;
+  border: 1.5px solid #111111;
   border-radius: 8px;
   cursor: pointer;
   width: 100%;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
 button:hover {
-  background: #1e40af;
+  background: #333333;
+  border-color: #333333;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 input, select {
   width: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  background: #fff;
-  border: 1px solid #d1d5db;
-  color: #111827;
+  background: #ffffff;
+  border: 1.5px solid #e5e5e5;
+  color: #111111;
   padding: 10px 14px;
   border-radius: 8px;
   outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 input:focus, select:focus {
-  border-color: #1d4ed8;
-  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
 }
 
 input::placeholder {
-  color: #9ca3af;
+  color: #a3a3a3;
 }
 
 label {
   display: block;
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: #444444;
   margin-bottom: 6px;
+}
+
+/* ════════════════════════════════════════════
+   FONT UTILITIES
+   Drop these classes on any element to switch its
+   typeface. Base body copy stays Inter everywhere —
+   use these only for headings, stats, or accents.
+════════════════════════════════════════════ */
+
+/* Space Grotesk — clean geometric grotesk, used for
+   Landing page headings. Confident, modern, neutral. */
+.font-grotesk {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+}
+
+/* Bricolage Grotesque — quirky variable grotesk, used
+   for Login page headings. More personality than
+   Space Grotesk, still tidy in a monochrome layout. */
+.font-bricolage {
+  font-family: "Bricolage Grotesque", "Inter", sans-serif;
+}
+
+/* Instrument Serif — elegant editorial serif. Good for
+   a hero statement, a pull-quote, or a testimonial —
+   anything that wants warmth without adding color. */
+.font-serif-display {
+  font-family: "Instrument Serif", Georgia, serif;
+}
+
+.font-serif-display-italic {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+}
+
+/* Unbounded — bold geometric display face. Good for
+   big stat numbers, hero headlines, anything that
+   needs visual weight without relying on color. */
+.font-display-bold {
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Space Mono — monospace with character. Good for job
+   IDs, timestamps, ratings, tags, badges — small
+   "technical" details that add texture to the page. */
+.font-mono {
+  font-family: "Space Mono", "Courier New", monospace;
 }

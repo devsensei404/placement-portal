@@ -46,7 +46,14 @@ export default function Chats() {
 
         {!loading && !error && partners.length === 0 && (
           <div className="chats-empty">
-            <div className="chats-empty-icon">💬</div>
+            <svg className="chats-empty-icon" viewBox="0 0 48 48" fill="none">
+              <path
+                d="M8 12a3 3 0 0 1 3-3h26a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H20l-8 7v-7h-1a3 3 0 0 1-3-3V12z"
+                stroke="#111111"
+                strokeWidth="2"
+                strokeLinejoin="round"
+              />
+            </svg>
             <p className="chats-empty-title">No conversations yet</p>
             <p className="chats-empty-sub">
               Start a conversation from a job listing or an applicant card.

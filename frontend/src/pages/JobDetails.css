@@ -1,12 +1,16 @@
 /* ════════════════════════════════════════════
    JobDetails.css
-   Original styles preserved exactly.
-   New .exp-* styles appended at the bottom.
+   Rethemed to black/white system, matching rest of app.
 ════════════════════════════════════════════ */
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 .job-details-page {
-  background-color: #f5f0ff;
+  background-color: #f9f9f9;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .job-details-main {
@@ -17,44 +21,49 @@
 
 .job-header {
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.06);
+  border: 1px solid #111111;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 28px;
   margin-bottom: 24px;
 }
 
 .job-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #111111;
+  letter-spacing: -0.01em;
   margin: 0 0 8px;
 }
 
 .job-meta {
   font-size: 14px;
-  color: #393838;
+  color: #444444;
   margin: 4px 0;
 }
 
 .job-package {
   font-size: 16px;
-  font-weight: 600;
-  color: #7c3aed;
+  font-weight: 700;
+  color: #111111;
   margin-top: 10px;
 }
 
 .job-section {
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.06);
+  border: 1px solid #111111;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 24px 28px;
   margin-bottom: 20px;
 }
 
 .job-section h2 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-weight: 700;
+  color: #111111;
   margin: 0 0 12px;
 }
 
@@ -72,12 +81,13 @@
 }
 
 .skill-tag {
-  background: #f3efff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #111111;
   border-radius: 20px;
   padding: 4px 14px;
   font-size: 13px;
+  font-weight: 500;
 }
 
 .apply-section {
@@ -85,13 +95,17 @@
 }
 
 .success-msg {
-  color: #16a34a;
+  color: #111111;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .error-msg {
-  color: #dc2626;
+  color: #111111;
+  background: #f9f9f9;
+  border: 1px solid #111111;
+  border-radius: 6px;
+  padding: 8px 12px;
   font-size: 14px;
   margin-bottom: 12px;
 }
@@ -99,27 +113,33 @@
 .loading {
   padding: 40px;
   text-align: center;
-  color: #3f3f3f;
+  color: #555555;
+  font-size: 14px;
 }
 
 .meta-label {
-  font-weight: 600;
-  color: #1a1a1a;
+  font-weight: 700;
+  color: #111111;
 }
+
+/* ── Apply modal ── */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(76, 29, 149, 0.25);
+  background: rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .modal {
   background: #ffffff;
-  border-radius: 10px;
+  border: 1px solid #111111;
+  border-radius: 12px;
   padding: 32px;
   width: 100%;
   max-width: 500px;
@@ -128,39 +148,51 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
 }
 
 .modal h2 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 18px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-weight: 700;
+  color: #111111;
   margin-bottom: 8px;
 }
 
 .modal label {
   font-size: 13px;
-  font-weight: 600;
-  color: #2c2c2c;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #111111;
   margin-top: 8px;
 }
 
 .modal input,
 .modal textarea {
-  padding: 9px 12px;
-  border: 1px solid #ddd6fe;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border: 1px solid #111111;
+  border-radius: 8px;
   font-size: 14px;
-  color: #1a1a1a;
+  font-family: "Inter", sans-serif;
+  color: #111111;
   outline: none;
   width: 100%;
   box-sizing: border-box;
   background: #ffffff;
+  transition: box-shadow 0.15s ease;
+}
+
+.modal input::placeholder,
+.modal textarea::placeholder {
+  color: #a3a3a3;
 }
 
 .modal input:focus,
 .modal textarea:focus {
-  border-color: #8b5cf6;
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.1);
 }
 
 .modal-actions {
@@ -172,31 +204,37 @@
 .btn-cancel {
   flex: 1;
   padding: 10px;
-  background: #f3efff;
-  border: none;
-  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 8px;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  color: #5b21b6;
+  color: #111111;
+  transition: background-color 0.15s ease;
 }
 
 .btn-cancel:hover {
-  background: #ede9fe;
+  background: #f9f9f9;
 }
 
 .btn-apply {
   flex: 1;
   padding: 10px;
-  background-color: #8b5cf6;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .btn-apply:hover {
-  background-color: #7c3aed;
+  background-color: #333333 !important;
 }
 
 .modal textarea {
@@ -206,7 +244,7 @@
 
 
 /* ════════════════════════════════════════════
-   INTERVIEW EXPERIENCES — new styles
+   INTERVIEW EXPERIENCES
 ════════════════════════════════════════════ */
 
 .exp-section {
@@ -226,18 +264,19 @@
 }
 
 .exp-heading {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 20px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
   margin: 0;
 }
 
 .exp-count {
   font-size: 13px;
-  font-weight: 500;
-  color: #6b7280;
-  background: #f3efff;
-  border: 1px solid #e9e2ff;
+  font-weight: 600;
+  color: #444444;
+  background: #ffffff;
+  border: 1px solid #111111;
   padding: 2px 10px;
   border-radius: 999px;
 }
@@ -248,17 +287,18 @@
   align-items: center;
   gap: 14px;
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 10px;
   padding: 14px 20px;
-  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   width: fit-content;
 }
 
 .exp-rating-number {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 36px;
   font-weight: 800;
-  color: #111827;
+  color: #111111;
   line-height: 1;
   letter-spacing: -0.03em;
 }
@@ -280,16 +320,16 @@
 }
 
 .star.filled {
-  color: #f59e0b;
+  color: #111111;
 }
 
 .star.empty {
-  color: #d1d5db;
+  color: #d4d4d4;
 }
 
 .exp-rating-soon {
   font-size: 11px;
-  color: #9ca3af;
+  color: #888888;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -297,17 +337,17 @@
 /* ── Write a Review card ── */
 .exp-write-card {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   padding: 22px 24px;
   margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .exp-write-label {
   font-size: 13px;
-  font-weight: 600;
-  color: #374151;
+  font-weight: 700;
+  color: #111111;
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -324,22 +364,25 @@
   box-sizing: border-box;
   padding: 11px 14px;
   padding-bottom: 28px; /* room for char counter */
-  border: 1px solid #ddd6fe;
+  border: 1px solid #111111;
   border-radius: 8px;
   font-size: 14px;
   font-family: 'Inter', sans-serif;
-  color: #111827;
-  background: #faf7ff;
+  color: #111111;
+  background: #ffffff;
   resize: vertical;
   outline: none;
   line-height: 1.6;
-  transition: border-color 0.15s;
+  transition: box-shadow 0.15s ease;
+}
+
+.exp-textarea::placeholder {
+  color: #a3a3a3;
 }
 
 .exp-textarea:focus {
-  border-color: #8b5cf6;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.1);
 }
 
 .exp-char-count {
@@ -348,34 +391,36 @@
   right: 12px;
   font-size: 11px;
   font-weight: 500;
-  color: #9ca3af;
+  color: #999999;
   pointer-events: none;
 }
 
 .exp-char-warn {
-  color: #dc2626;
-  font-weight: 600;
+  color: #111111;
+  font-weight: 700;
 }
 
 /* ── Inline error / success ── */
 .exp-error {
   font-size: 13px;
-  color: #b91c1c;
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
+  color: #111111;
+  background: #f9f9f9;
+  border: 1px solid #111111;
   border-radius: 6px;
   padding: 8px 12px;
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
 .exp-success {
   font-size: 13px;
-  color: #15803d;
-  background: #f0fdf4;
-  border: 1px solid #86efac;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #111111;
   border-radius: 6px;
   padding: 8px 12px;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .exp-success-banner,
@@ -386,52 +431,49 @@
 /* ── Submit button ── */
 .exp-btn-submit {
   padding: 9px 22px;
-  background: #8b5cf6;
-  color: #fff;
-  border: none;
-  border-radius: 7px;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   width: auto;
-  transition: background 0.15s;
+  transition: background-color 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .exp-btn-submit:hover {
-  background: #7c3aed;
+  background-color: #333333 !important;
 }
 
 /* ── Empty state ── */
 .exp-status {
   font-size: 14px;
-  color: #6b7280;
+  color: #666666;
   padding: 24px 0;
 }
 
 .exp-empty {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   padding: 48px 32px;
   text-align: center;
 }
 
-.exp-empty-icon {
-  font-size: 32px;
-  display: block;
-  margin-bottom: 12px;
-}
-
 .exp-empty-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  color: #111827;
+  font-weight: 700;
+  color: #111111;
   margin-bottom: 6px;
 }
 
 .exp-empty-sub {
   font-size: 14px;
-  color: #6b7280;
+  color: #666666;
 }
 
 /* ── Reviews list ── */
@@ -444,20 +486,20 @@
 /* ── Single review card ── */
 .exp-card {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   padding: 20px 22px;
-  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.05);
-  transition: box-shadow 0.15s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.15s ease;
 }
 
 .exp-card:hover {
-  box-shadow: 0 3px 10px rgba(139, 92, 246, 0.08);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Own review — subtle left accent */
 .exp-card-own {
-  border-left: 3px solid #8b5cf6;
+  border-left: 3px solid #111111;
 }
 
 /* ── Card top row: avatar + meta + actions ── */
@@ -472,12 +514,14 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #ede9fe;
+  background: #f0f0f0;
+  border: 1px solid #111111;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .exp-avatar svg {
@@ -494,13 +538,13 @@
 
 .exp-anon-label {
   font-size: 13px;
-  font-weight: 600;
-  color: #374151;
+  font-weight: 700;
+  color: #111111;
 }
 
 .exp-time {
   font-size: 12px;
-  color: #9ca3af;
+  color: #999999;
 }
 
 /* ── Own review action buttons ── */
@@ -512,42 +556,43 @@
 
 .exp-btn-edit {
   padding: 5px 14px;
-  background: #f3efff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #111111;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   width: auto;
-  transition: background 0.15s;
+  transition: background-color 0.15s ease;
 }
 
 .exp-btn-edit:hover {
-  background: #ede9fe;
+  background: #f9f9f9;
 }
 
 .exp-btn-delete {
   padding: 5px 14px;
-  background: #fff1f2;
-  color: #b91c1c;
-  border: 1px solid #fecdd3;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #111111;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   width: auto;
-  transition: background 0.15s;
+  transition: background-color 0.15s ease;
 }
 
 .exp-btn-delete:hover {
-  background: #fee2e2;
+  background: #111111;
+  color: #ffffff;
 }
 
 /* ── Review message text ── */
 .exp-msg {
   font-size: 14px;
-  color: #374151;
+  color: #333333;
   line-height: 1.7;
   white-space: pre-wrap;
   margin: 0;
@@ -563,16 +608,396 @@
   margin-top: 12px;
   width: 100%;
   padding: 10px;
-  background: #f3efff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
-  border-radius: 6px;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #111111;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background-color 0.15s ease;
 }
 
 .btn-chat-recruiter:hover {
-  background: #ede9fe;
+  background: #f9f9f9;
+}
+
+/* ═══ Responsive ═══ */
+
+@media (max-width: 600px) {
+  .job-details-main {
+    padding: 28px 16px;
+  }
+
+  .job-header,
+  .job-section {
+    padding: 20px;
+  }
+
+  .job-title {
+    font-size: 21px;
+  }
+
+  .exp-heading-row {
+    flex-wrap: wrap;
+  }
+
+  .exp-card-top {
+    flex-wrap: wrap;
+  }
+
+  .exp-own-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .modal {
+    padding: 24px;
+  }
+}
+
+/* ════════════════════════════════════════════
+   MODERN MICRO-INTERACTIONS & ENTRANCE MOTION
+   Additive only — no colors, spacing, borders, or
+   fonts above this line were changed. Everything
+   below layers animation/transition on top of the
+   existing black/white system using the same
+   color values already in use (#111111 / #ffffff
+   / #999999 etc).
+
+   Easing tokens used:
+     expo-out  cubic-bezier(0.16, 1, 0.3, 1)     → confident deceleration for entrances
+     back-out  cubic-bezier(0.34, 1.56, 0.64, 1) → slight overshoot, playful pop
+     smooth    cubic-bezier(0.65, 0, 0.35, 1)    → symmetric ease for hover/press
+════════════════════════════════════════════ */
+
+/* ── Card entrance (header + info sections) ── */
+.job-header,
+.job-section {
+  animation: card-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Skill tags — staggered pop-in + hover ink-swap ── */
+.skill-tag {
+  opacity: 0;
+  animation: tag-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transition: background-color 0.2s cubic-bezier(0.65, 0, 0.35, 1),
+              color 0.2s cubic-bezier(0.65, 0, 0.35, 1),
+              transform 0.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.skill-tag:hover {
+  background: #111111;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.skill-tag:nth-child(1) { animation-delay: 0.05s; }
+.skill-tag:nth-child(2) { animation-delay: 0.10s; }
+.skill-tag:nth-child(3) { animation-delay: 0.15s; }
+.skill-tag:nth-child(4) { animation-delay: 0.20s; }
+.skill-tag:nth-child(5) { animation-delay: 0.25s; }
+.skill-tag:nth-child(6) { animation-delay: 0.30s; }
+.skill-tag:nth-child(7) { animation-delay: 0.35s; }
+.skill-tag:nth-child(8) { animation-delay: 0.40s; }
+.skill-tag:nth-child(n+9) { animation-delay: 0.45s; }
+
+@keyframes tag-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ── Package figure — soft delayed reveal ── */
+.job-package {
+  opacity: 0;
+  animation: fade-in-simple 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+@keyframes fade-in-simple {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Apply modal — overlay fade + panel rise/scale ── */
+.modal-overlay {
+  animation: overlay-fade 0.25s ease-out forwards;
+}
+
+.modal {
+  animation: modal-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes overlay-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Inputs — focus glow settles in rather than snapping ── */
+.modal input:focus,
+.modal textarea:focus,
+.exp-textarea:focus {
+  animation: focus-settle 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes focus-settle {
+  from { box-shadow: 0 0 0 0 rgba(17, 17, 17, 0.18); }
+  to   { box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.1); }
+}
+
+.exp-char-count {
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+/* ── Primary buttons — sheen sweep instead of a flat hover ── */
+.btn-apply,
+.exp-btn-submit {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.25s cubic-bezier(0.65, 0, 0.35, 1),
+              transform 0.15s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.btn-apply::after,
+.exp-btn-submit::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.btn-apply:hover::after,
+.exp-btn-submit:hover::after {
+  left: 130%;
+}
+
+.btn-apply:active,
+.exp-btn-submit:active {
+  transform: translateY(1px);
+}
+
+/* ── Secondary buttons — lift instead of scale ── */
+.btn-cancel,
+.exp-btn-edit,
+.btn-chat-recruiter {
+  transition: background-color 0.2s cubic-bezier(0.65, 0, 0.35, 1),
+              transform 0.15s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.btn-cancel:hover,
+.exp-btn-edit:hover,
+.btn-chat-recruiter:hover {
+  transform: translateY(-1px);
+}
+
+.btn-cancel:active,
+.exp-btn-edit:active,
+.btn-chat-recruiter:active {
+  transform: translateY(0);
+}
+
+/* ── Delete button — wipe fill instead of an instant color swap ── */
+.exp-btn-delete {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  transition: color 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.exp-btn-delete::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #111111;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: -1;
+}
+
+.exp-btn-delete:hover {
+  background: transparent;
+  color: #ffffff;
+}
+
+.exp-btn-delete:hover::before {
+  transform: scaleX(1);
+}
+
+/* ── Rating block — number + stars settle in ── */
+.exp-rating-block {
+  animation: card-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.exp-rating-number {
+  display: inline-block;
+  animation: number-settle 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes number-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.star {
+  display: inline-block;
+  opacity: 0;
+  animation: star-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.star:nth-child(1) { animation-delay: 0.15s; }
+.star:nth-child(2) { animation-delay: 0.22s; }
+.star:nth-child(3) { animation-delay: 0.29s; }
+.star:nth-child(4) { animation-delay: 0.36s; }
+.star:nth-child(5) { animation-delay: 0.43s; }
+
+@keyframes star-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-15deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.exp-count {
+  opacity: 0;
+  animation: fade-in-simple 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+/* ── Review cards — staggered rise + refined hover lift ── */
+.exp-card {
+  opacity: 0;
+  animation: card-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: box-shadow 0.25s cubic-bezier(0.65, 0, 0.35, 1),
+              transform 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.exp-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.exp-card:nth-child(1) { animation-delay: 0.05s; }
+.exp-card:nth-child(2) { animation-delay: 0.11s; }
+.exp-card:nth-child(3) { animation-delay: 0.17s; }
+.exp-card:nth-child(4) { animation-delay: 0.23s; }
+.exp-card:nth-child(5) { animation-delay: 0.29s; }
+.exp-card:nth-child(n+6) { animation-delay: 0.35s; }
+
+.exp-write-card,
+.exp-empty {
+  animation: card-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Inline success / error — slide down instead of popping in flat ── */
+.exp-success,
+.exp-error,
+.error-msg,
+.success-msg {
+  animation: msg-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes msg-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Loading state — shimmer sweep instead of static grey text ── */
+.loading {
+  background: linear-gradient(90deg, #999999 25%, #111111 50%, #999999 75%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-sweep 1.8s linear infinite;
+}
+
+@keyframes shimmer-sweep {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* ── Respect reduced-motion preference ── */
+@media (prefers-reduced-motion: reduce) {
+  .job-header,
+  .job-section,
+  .skill-tag,
+  .job-package,
+  .modal-overlay,
+  .modal,
+  .exp-rating-block,
+  .exp-rating-number,
+  .star,
+  .exp-count,
+  .exp-card,
+  .exp-write-card,
+  .exp-empty,
+  .exp-success,
+  .exp-error,
+  .error-msg,
+  .success-msg {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .loading {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #555555;
+  }
+
+  .btn-apply::after,
+  .exp-btn-submit::after {
+    display: none;
+  }
 }

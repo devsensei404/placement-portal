@@ -326,8 +326,8 @@ export default function JobDetails() {
                   <div className="exp-card-top">
                     <div className="exp-avatar">
                       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="8" r="4" fill="#c4b5fd" />
-                        <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" fill="#c4b5fd" />
+                        <circle cx="12" cy="8" r="4" fill="#111111" />
+                        <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" fill="#111111" />
                       </svg>
                     </div>
                     <div className="exp-card-meta">
@@ -377,8 +377,8 @@ export default function JobDetails() {
                   <div className="exp-card-top">
                     <div className="exp-avatar">
                       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="8" r="4" fill="#c4b5fd" />
-                        <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" fill="#c4b5fd" />
+                        <circle cx="12" cy="8" r="4" fill="#111111" />
+                        <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" fill="#111111" />
                       </svg>
                     </div>
                     <div className="exp-card-meta">

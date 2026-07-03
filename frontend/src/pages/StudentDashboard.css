@@ -1,4 +1,14 @@
 /* StudentDashboard.css */
+/* Retinted to the black/white system used across Landing / Login /
+   JobDetails / global.css. All layout, spacing, and animation timing
+   is untouched — only purple-family colors were swapped for the
+   established black/white/grey palette.
+
+   Kept intentionally as-is (per request): the green/amber/red status
+   colors on stat numbers and the profile-completion bar. Those are
+   functional (success/warning/danger), not decorative, so they stay
+   outside the monochrome system the same way error banners do
+   elsewhere in the app. */
 
 /* ── Keyframes ── */
 @keyframes sd-fade-up {
@@ -24,7 +34,7 @@
 /* ── Page shell ── */
 .dashboard {
   min-height: 100vh;
-  background: oklch(96.335% 0.02068 301.001);
+  background: #f9f9f9;
 }
 
 .dashboard-main {
@@ -46,21 +56,23 @@
 }
 
 .dash-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.01em;
+  color: #111111;
   margin-bottom: 4px;
 }
 
 .welcome {
   font-size: 17px;
-  color: #374151;
+  color: #444444;
   margin-top: 5px;
 }
 
 .sd-name-highlight {
-  color: #7c3aed;
-  font-weight: 600;
+  color: #111111;
+  font-weight: 700;
 }
 
 /* ── Stats grid ── */
@@ -73,7 +85,7 @@
 
 .stat-card {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   padding: 24px 28px;
   display: flex;
@@ -81,7 +93,7 @@
   gap: 10px;
   min-width: 160px;
   flex: 1;
-  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
   /* Entry animation — each card inherits animationDelay from inline style */
   opacity: 0;
@@ -91,9 +103,8 @@
 }
 
 .stat-card:hover {
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
-  border-color: #c4b5fd;
 }
 
 .stat-label {
@@ -101,18 +112,22 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #6b7280;
+  color: #888888;
 }
 
 .stat-value {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 36px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.02em;
+  color: #111111;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   transition: color 0.3s ease;
 }
 
+/* Functional status colors — intentionally kept, not part of the
+   monochrome system (same reasoning as .error / .exp-error elsewhere) */
 .sd-stat-green { color: #16a34a; }
 .sd-stat-red   { color: #dc2626; }
 
@@ -122,7 +137,7 @@
   height: 36px;
   width: 60px;
   border-radius: 6px;
-  background: linear-gradient(90deg, #f3efff 25%, #e9e2ff 50%, #f3efff 75%);
+  background: linear-gradient(90deg, #ececec 25%, #d8d8d8 50%, #ececec 75%);
   background-size: 200% 100%;
   animation: sd-shimmer 1.4s infinite;
 }
@@ -130,13 +145,14 @@
 /* ── Profile completion card ── */
 .sd-progress-track {
   height: 6px;
-  background: #f3efff;
+  background: #e5e5e5;
   border-radius: 999px;
   overflow: hidden;
   margin-top: 2px;
 }
 
 .sd-progress-fill {
+  /* color set inline per-value (green/amber/red) — kept as-is */
   height: 100%;
   border-radius: 999px;
   width: 0%;
@@ -145,7 +161,7 @@
 
 .sd-completion-hint {
   font-size: 12px;
-  color: #7c3aed;
+  color: #111111;
   font-weight: 500;
   cursor: pointer;
   margin-top: 2px;
@@ -153,7 +169,7 @@
 }
 
 .sd-completion-hint:hover {
-  color: #5b21b6;
+  color: #333333;
   text-decoration: underline;
 }
 
@@ -167,23 +183,23 @@
   align-items: center;
   gap: 0;
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   margin-bottom: 32px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .sd-interview-card:hover {
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 
 .sd-interview-accent {
   width: 5px;
   align-self: stretch;
-  background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+  background: #111111;
   flex-shrink: 0;
 }
 
@@ -200,20 +216,21 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #7c3aed;
+  color: #111111;
   margin: 0;
 }
 
 .sd-interview-job {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 17px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
   margin: 0;
 }
 
 .sd-interview-company {
   font-size: 14px;
-  color: #374151;
+  color: #444444;
   margin: 0;
 }
 
@@ -221,7 +238,7 @@
   padding: 20px 28px 20px 0;
   font-size: 15px;
   font-weight: 700;
-  color: #5b21b6;
+  color: #111111;
   white-space: nowrap;
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
@@ -239,9 +256,11 @@
 }
 
 .section-heading {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 20px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.01em;
+  color: #111111;
   margin-bottom: 20px;
 }
 
@@ -260,19 +279,21 @@
 .btn-view-more {
   width: auto;
   padding: 10px 28px;
-  background-color: #8b5cf6;
+  background-color: #111111;
   color: #ffffff;
-  border: none;
+  border: 1.5px solid #111111;
   border-radius: 6px;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-view-more:hover {
-  background-color: #7c3aed;
+  background-color: #333333;
+  border-color: #333333;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-view-more:active {

@@ -1,10 +1,8 @@
-/* ===== Notifications — RōninHire theme ===== */
-
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap");
 
 .notif-root {
   min-height: 100vh;
-  background: #ffffff;
+  background: #f9f9f9;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
@@ -168,6 +166,7 @@
   border-radius: 6px;
 
   transition: background-color 0.15s ease;
+
 }
 
 /* ===== Pagination ===== */
@@ -186,7 +185,7 @@
   align-items: center;
   justify-content: center;
 
-  min-width: 96px;
+  min-width: 56px;
   padding: 9px 20px;
 
   border: 1.5px solid #111111;
