@@ -198,6 +198,24 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      <div className="stats-divider"><br /></div>
+      <section className="stats-section">
+        <div className="stats-grid">
+          <div className="stat-item">
+            <span className="stat-number">2100+</span>
+            <span className="stat-label">Registered Candidates</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">100%</span>
+            <span className="stat-label">Free for Students &amp; Recruiters</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">21+</span>
+            <span className="stat-label">Active Job Listings</span>
+          </div>
+        </div>
+        <p className="stats-disclaimer">*All figures are demo data for illustration — platform is in active development</p>
+      </section>
 
       <section className="faq-section">
         <h2 className="section-heading">Frequently Asked Questions</h2>
@@ -260,14 +278,14 @@ export default function LandingPage() {
         </div>
 
         <div className="footer-legal">
-          <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>
-          <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+          <Link to="/terms-and-privacy#terms">Terms &amp; Conditions</Link>
+          <Link to="/terms-and-privacy#privacy">Privacy Policy</Link>
           <a href="#">Cookie Policy</a>
         </div>
 
         <div className="footer-bottom">
           <span>© 2026 RōninHire. All rights reserved.</span>
-          <span>Developed by DEVSENSEI404</span>
+          <span>Developed by DEVSENSEI404 · NIT Durgapur, 2nd Year Mechanical Engineering</span>
         </div>
       </footer>
     </div>

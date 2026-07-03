@@ -17,9 +17,11 @@ import Chats from "./pages/Chats.jsx";
 import ChatWindow from "./pages/ChatWindow.jsx";
 import ResumeBuilder from "./pages/ResumeBuilder.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
+import TermsAndPrivacy from "./pages/TermsAndPrivacy.jsx";
 
 const router = createBrowserRouter([
-  {path:"/", element: <LandingPage /> },
+  { path:"/", element: <LandingPage /> },
+  { path: "/terms-and-privacy", element: <TermsAndPrivacy /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   { path: "/student-dashboard", element: <ProtectedRoute><StudentDashboard /></ProtectedRoute> },
