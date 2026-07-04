@@ -20,7 +20,7 @@ I started this as a way to learn Spring Boot and React properly, following a tut
 - AI-powered ATS resume generation using Google Gemini
 - Dockerized full-stack deployment
 
-![Landing Page](./frontend/src/assets/landing.mp4)
+![Landing Page](./frontend/src/assets/landing.gif)
 ![Landing Page](./frontend/src/assets/landingimg.png)
 
 
@@ -54,10 +54,10 @@ I started this as a way to learn Spring Boot and React properly, following a tut
 
 | | | |
 |---|---|---|
-| ![Student Dashboard](screenshots/student-dashboard.png) | ![Recruiter Dashboard](screenshots/recruiter-dashboard.png) |
+| ![Student Dashboard](./frontend/src/assets/studentdash.png) | ![Recruiter Dashboard](./frontend/src/assets/recruiterdash.png) | ![Resume Generator](./frontend/src/assets/image.png)
 | *Student Dashboard* | *Recruiter Dashboard* | *Resume Generator* |
-| ![Job Details](screenshots/job-details.png) | ![Chat](screenshots/chat.png) |
-| *Job Details and Reviews* | *Messaging* | ** |
+| ![Job Details](./frontend/src/assets/jobdetails.gif) | ![Chat](./frontend/src/assets/chats.gif) | ![My Jobs](./frontend/src/assets/posted%20jobs.gif)
+| *Job Details and Reviews* | *Messaging* | *Posted Jobs* |
 
 
 
