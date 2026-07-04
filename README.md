@@ -21,7 +21,6 @@ I started this as a way to learn Spring Boot and React properly, following a tut
 - Dockerized full-stack deployment
 
 ![Landing Page](./frontend/src/assets/landing.gif)
-![Landing Page](./frontend/src/assets/landingimg.png)
 
 
 ---
@@ -83,7 +82,7 @@ I started this as a way to learn Spring Boot and React properly, following a tut
 - Docker, with multi-stage builds for both backend and frontend, orchestrated with `docker-compose`
 - Nginx serving the frontend build with SPA routing and API proxying
 - PostgreSQL hosted on Supabase
-- Backend on Railway, frontend on Vercel
+- Backend on Azure, frontend on Vercel
 
 I kept the frontend deliberately light on dependencies. No Redux, no Axios, no TypeScript. Not because I have anything against them. I wanted to understand what React and the browser fetch API actually do without a framework doing the thinking for me. That constraint made some things slower to build and made other things much easier to debug.
 
@@ -101,7 +100,7 @@ I kept the frontend deliberately light on dependencies. No Redux, no Axios, no T
 ### Deployment
 
 - Dockerized backend and frontend
-- Railway (Spring Boot API)
+- Azure (Spring Boot API)
 - Vercel (React frontend)
 - Supabase PostgreSQL
 - Nginx reverse proxy
@@ -115,7 +114,7 @@ flowchart LR
 
     User -->|HTTPS| Frontend[Vercel - React + Vite]
 
-    Frontend -->|REST API| Backend[Railway - Spring Boot]
+    Frontend -->|REST API| Backend[Azure - Spring Boot]
 
     Backend --> Database[(Supabase PostgreSQL)]
     Backend --> Cloudinary[Cloudinary]
@@ -130,7 +129,7 @@ flowchart LR
 
 Complete API documentation generated directly from the backend is included in this repository.
 
-- **OpenAPI Documentation:** [`docs/API Documentation.pdf`](docs/API%20Documentation.pdf)
+- **OpenAPI Documentation:** [`docs/API Documentation.pdf`](./docs/API%20documentation%20v1.pdf)
 
 The backend currently exposes **53 REST endpoints** across **9 modules**, covering authentication, jobs, profiles, chat, notifications, interview experiences, assessments, and AI resume generation.
 
@@ -214,7 +213,7 @@ placement-portal/
 │   │   └── api.js        : single source of truth for the backend base URL
 │   └── Dockerfile
 ├── docs/
-│   └── API Documentation.pdf
+│   └── API Documentation v1.pdf
 └── docker-compose.yml
 ```
 
