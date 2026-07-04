@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import BASE_URL from "../api";
+import Navbar from "../components/Navbar";
 import "./ResumeBuilder.css";
 
 const emptyEducation = () => ({ degree: "", institution: "", year: "", grade: "" });
@@ -189,6 +190,8 @@ export default function ResumeBuilder() {
   // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
+    <>
+     <Navbar />
     <div className="rb-root">
       {prefilling && <p className="rb-prefill-note">Pre-filling from your profile…</p>}
 
@@ -396,7 +399,23 @@ export default function ResumeBuilder() {
 
           {!resumeData ? (
             <div className="rb-preview-placeholder">
-              <div className="rb-placeholder-icon">📄</div>
+              <svg
+                className="rb-placeholder-icon"
+                viewBox="0 0 24 24"
+                width="44"
+                height="44"
+                fill="none"
+                stroke="#111111"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6" />
+                <line x1="8" y1="13" x2="16" y2="13" />
+                <line x1="8" y1="17" x2="16" y2="17" />
+              </svg>
               <p>Your AI-generated resume will appear here.</p>
               <p className="rb-placeholder-sub">Fill in the form and click <strong>Generate Resume</strong>.</p>
             </div>
@@ -527,5 +546,6 @@ export default function ResumeBuilder() {
         </div>
       </div>
     </div>
+    </>
   );
 }

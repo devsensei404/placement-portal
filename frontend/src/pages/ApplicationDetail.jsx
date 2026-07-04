@@ -59,18 +59,18 @@ export default function ApplicationDetail() {
   }
 
   if (loading) return (
-    <div className="app-detail-page">
+    <div className="apd-page">
       <Navbar />
-      <p className="detail-loading">Loading…</p>
+      <p className="apd-loading">Loading…</p>
     </div>
   );
 
   if (error) return (
-    <div className="app-detail-page">
+    <div className="apd-page">
       <Navbar />
-      <div className="detail-error-wrap">
-        <p className="detail-error">{error}</p>
-        <button className="btn-back" onClick={() => navigate("/my-applications")}>
+      <div className="apd-error-wrap">
+        <p className="apd-error">{error}</p>
+        <button className="apd-btn-back" onClick={() => navigate("/my-applications")}>
           ← Back to My Applications
         </button>
       </div>
@@ -78,48 +78,48 @@ export default function ApplicationDetail() {
   );
 
   return (
-    <div className="app-detail-page">
+    <div className="apd-page">
       <Navbar />
-      <main className="app-detail-main">
+      <main className="apd-main">
 
-        <button className="btn-back" onClick={() => navigate("/my-applications")}>
+        <button className="apd-btn-back" onClick={() => navigate("/my-applications")}>
           ← Back to My Applications
         </button>
 
-        <h1 className="detail-page-title">Application Details</h1>
+        <h1 className="apd-page-title">Application Details</h1>
 
-        <div className="detail-grid">
+        <div className="apd-grid">
 
           {/* ── Section 1: Job Info ── */}
-          <div className="detail-card">
-            <h2 className="detail-card-heading">Job Info</h2>
+          <div className="apd-card">
+            <h2 className="apd-card-heading">Job Info</h2>
 
-            <p className="detail-job-title">{job.jobTitle}</p>
-            <p className="detail-company">{job.company}</p>
+            <p className="apd-job-title">{job.jobTitle}</p>
+            <p className="apd-company">{job.company}</p>
 
-            <div className="detail-meta-list">
+            <div className="apd-meta-list">
               {job.location && (
-                <div className="detail-meta-row">
-                  <span className="detail-meta-label">Location</span>
-                  <span className="detail-meta-value">{job.location}</span>
+                <div className="apd-meta-row">
+                  <span className="apd-meta-label">Location</span>
+                  <span className="apd-meta-value">{job.location}</span>
                 </div>
               )}
               {job.jobType && (
-                <div className="detail-meta-row">
-                  <span className="detail-meta-label">Type</span>
-                  <span className="detail-meta-value">{job.jobType}</span>
+                <div className="apd-meta-row">
+                  <span className="apd-meta-label">Type</span>
+                  <span className="apd-meta-value">{job.jobType}</span>
                 </div>
               )}
               {job.experience && (
-                <div className="detail-meta-row">
-                  <span className="detail-meta-label">Experience</span>
-                  <span className="detail-meta-value">{job.experience}</span>
+                <div className="apd-meta-row">
+                  <span className="apd-meta-label">Experience</span>
+                  <span className="apd-meta-value">{job.experience}</span>
                 </div>
               )}
               {job.packageOffered && (
-                <div className="detail-meta-row">
-                  <span className="detail-meta-label">Package</span>
-                  <span className="detail-meta-value">
+                <div className="apd-meta-row">
+                  <span className="apd-meta-label">Package</span>
+                  <span className="apd-meta-value">
                     ₹ {job.packageOffered}{" "}
                     {job.jobType === "FULL_TIME" ? "LPA" : job.jobType === "INTERNSHIP" ? "/ month" : "/ hr"}
                   </span>
@@ -128,11 +128,11 @@ export default function ApplicationDetail() {
             </div>
 
             {job.skillsRequired?.length > 0 && (
-              <div className="detail-skills-section">
-                <p className="detail-skills-label">Skills Required</p>
-                <div className="detail-skills-list">
+              <div className="apd-skills-section">
+                <p className="apd-skills-label">Skills Required</p>
+                <div className="apd-skills-list">
                   {job.skillsRequired.map((skill, i) => (
-                    <span key={i} className="skill-tag">{skill}</span>
+                    <span key={i} className="apd-skill-tag">{skill}</span>
                   ))}
                 </div>
               </div>
@@ -140,41 +140,60 @@ export default function ApplicationDetail() {
           </div>
 
           {/* ── Section 2: Your Application ── */}
-          <div className="detail-card">
-            <h2 className="detail-card-heading">Your Application</h2>
+          <div className="apd-card">
+            <h2 className="apd-card-heading">Your Application</h2>
 
             {/* Big status badge */}
-            <div className="status-section">
-              <p className="detail-meta-label" style={{ marginBottom: "8px" }}>Current Status</p>
+            <div className="apd-status-section">
+              <p className="apd-meta-label">Current Status</p>
               <StatusBadge status={applicant.applicationStatus} large={true} />
             </div>
 
             {/* Interview time — only shown when INTERVIEWING */}
             {applicant.applicationStatus === "INTERVIEWING" && applicant.interviewTime && (
-              <div className="interview-block">
-                <p className="interview-label">📅 Interview Scheduled</p>
-                <p className="interview-time">{formatDate(applicant.interviewTime)}</p>
+              <div className="apd-interview-block">
+                <p className="apd-interview-label">
+                  <svg
+                    className="apd-interview-icon"
+                    viewBox="0 0 24 24"
+                    width="14"
+                    height="14"
+                    fill="none"
+                    stroke="#111111"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  Interview Scheduled
+                </p>
+                <p className="apd-interview-time">{formatDate(applicant.interviewTime)}</p>
               </div>
             )}
 
-            <div className="detail-meta-list" style={{ marginTop: "20px" }}>
-              <div className="detail-meta-row">
-                <span className="detail-meta-label">Name</span>
-                <span className="detail-meta-value">{applicant.name}</span>
+            <div className="apd-meta-list apd-meta-list--applicant">
+              <div className="apd-meta-row">
+                <span className="apd-meta-label">Name</span>
+                <span className="apd-meta-value">{applicant.name}</span>
               </div>
-              <div className="detail-meta-row">
-                <span className="detail-meta-label">Email</span>
-                <span className="detail-meta-value">{applicant.email}</span>
+              <div className="apd-meta-row">
+                <span className="apd-meta-label">Email</span>
+                <span className="apd-meta-value">{applicant.email}</span>
               </div>
-              <div className="detail-meta-row">
-                <span className="detail-meta-label">Applied on</span>
-                <span className="detail-meta-value">{formatDate(applicant.timestamp)}</span>
+              <div className="apd-meta-row">
+                <span className="apd-meta-label">Applied on</span>
+                <span className="apd-meta-value">{formatDate(applicant.timestamp)}</span>
               </div>
               {applicant.website && (
-                <div className="detail-meta-row">
-                  <span className="detail-meta-label">Website</span>
+                <div className="apd-meta-row">
+                  <span className="apd-meta-label">Website</span>
                   <a
-                    className="detail-meta-link"
+                    className="apd-meta-link"
                     href={applicant.website}
                     target="_blank"
                     rel="noreferrer"
@@ -184,10 +203,10 @@ export default function ApplicationDetail() {
                 </div>
               )}
               {applicant.resume && (
-                <div className="detail-meta-row">
-                  <span className="detail-meta-label">Resume</span>
+                <div className="apd-meta-row">
+                  <span className="apd-meta-label">Resume</span>
                   <a
-                    className="detail-meta-link"
+                    className="apd-meta-link"
                     href={applicant.resume}
                     target="_blank"
                     rel="noreferrer"
@@ -199,9 +218,9 @@ export default function ApplicationDetail() {
             </div>
 
             {applicant.coverLetter && (
-              <div className="cover-letter-section">
-                <p className="detail-skills-label">Cover Letter</p>
-                <p className="cover-letter-text">{applicant.coverLetter}</p>
+              <div className="apd-cover-letter-section">
+                <p className="apd-skills-label">Cover Letter</p>
+                <p className="apd-cover-letter-text">{applicant.coverLetter}</p>
               </div>
             )}
 

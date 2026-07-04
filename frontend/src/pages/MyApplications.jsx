@@ -16,6 +16,20 @@ import StatusBadge from "../components/StatusBadge.jsx";
 import "./MyApplications.css";
 import BASE_URL from "../api";
 
+function IconPin() {
+  return (
+    <svg className="ma2-pin-icon" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 21.5s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"
+        stroke="#555555"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="9.5" r="2.4" stroke="#555555" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
 export default function MyApplications() {
   const token  = localStorage.getItem("token");
   const userId = Number(localStorage.getItem("userId")); // stored as string, need number to compare
@@ -67,47 +81,51 @@ export default function MyApplications() {
   }
 
   return (
-    <div className="my-apps-page">
+    <div className="ma2-page">
       <Navbar />
-      <main className="my-apps-main">
+      <main className="ma2-main">
 
-        <div className="my-apps-header">
-          <h1 className="my-apps-title">My Applications</h1>
-          <p className="my-apps-sub">
+        <div className="ma2-header">
+          <h1 className="ma2-title">My Applications</h1>
+          <p className="ma2-sub">
             {loading ? "Loading…" : `${applications.length} application${applications.length !== 1 ? "s" : ""} found`}
           </p>
         </div>
 
-        {error && <p className="my-apps-error">{error}</p>}
+        {error && <p className="ma2-error">{error}</p>}
 
         {!loading && !error && applications.length === 0 && (
-          <div className="empty-state">
-            <p className="empty-title">No applications yet</p>
-            <p className="empty-sub">Browse open jobs and hit Apply to get started.</p>
-            <button className="btn-primary" onClick={() => navigate("/browse-jobs")}>
+          <div className="ma2-empty-state">
+            <p className="ma2-empty-title">No applications yet</p>
+            <p className="ma2-empty-sub">Browse open jobs and hit Apply to get started.</p>
+            <button className="ma2-btn-primary" onClick={() => navigate("/browse-jobs")}>
               Browse Jobs
             </button>
           </div>
         )}
 
-        <div className="apps-list">
+        <div className="ma2-apps-list">
           {applications.map(({ job, applicant }) => (
-            <div className="app-card" key={applicant.applicantId + "-" + job.id}>
+            <div className="ma2-app-card" key={applicant.applicantId + "-" + job.id}>
 
-              <div className="app-card-left">
-                <h2 className="app-job-title">{job.jobTitle}</h2>
-                <p className="app-company">{job.company}</p>
-                <div className="app-meta-row">
-                  {job.location && <span className="app-meta-chip">📍 {job.location}</span>}
-                  {job.jobType  && <span className="app-meta-chip">{job.jobType}</span>}
+              <div className="ma2-app-card-left">
+                <h2 className="ma2-app-job-title">{job.jobTitle}</h2>
+                <p className="ma2-app-company">{job.company}</p>
+                <div className="ma2-app-meta-row">
+                  {job.location && (
+                    <span className="ma2-app-meta-chip">
+                      <IconPin /> {job.location}
+                    </span>
+                  )}
+                  {job.jobType && <span className="ma2-app-meta-chip">{job.jobType}</span>}
                 </div>
-                <p className="app-date">Applied on {formatDate(applicant.timestamp)}</p>
+                <p className="ma2-app-date">Applied on {formatDate(applicant.timestamp)}</p>
               </div>
 
-              <div className="app-card-right">
+              <div className="ma2-app-card-right">
                 <StatusBadge status={applicant.applicationStatus} />
                 <button
-                  className="btn-view-details"
+                  className="ma2-btn-view-details"
                   onClick={() =>
                     navigate(`/application-detail?id=${job.id}&applicantId=${applicant.applicantId}`)
                   }

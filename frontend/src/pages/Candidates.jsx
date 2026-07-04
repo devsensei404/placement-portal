@@ -109,10 +109,11 @@ export default function Candidates() {
                 <>
                     <div className="cand-grid">
 
-                        {displayedProfiles.map(profile => (
+                        {displayedProfiles.map((profile, index) => (
                             <div
                                 key={profile.id}
                                 className="cand-card"
+                                style={{ animationDelay: `${index * 0.05}s` }}
                                 onClick={() => navigate(`/candidate/${profile.id}`)}
                             >
 
@@ -136,7 +137,22 @@ export default function Candidates() {
 
                                 {profile.location && (
                                     <p className="cand-location">
-                                        📍 {profile.location}
+                                        <svg
+                                            className="cand-pin-icon"
+                                            viewBox="0 0 24 24"
+                                            width="13"
+                                            height="13"
+                                            fill="none"
+                                            stroke="#111111"
+                                            strokeWidth="1.6"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                            <circle cx="12" cy="10" r="3" />
+                                        </svg>
+                                        {profile.location}
                                     </p>
                                 )}
 

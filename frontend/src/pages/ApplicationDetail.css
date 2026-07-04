@@ -1,209 +1,332 @@
-/* ApplicationDetail.css */
-
-.app-detail-page {
+.apd-page {
   min-height: 100vh;
-  background: #f5f0ff;
+  background: #f9f9f9;
 }
 
-.app-detail-main {
+.apd-main {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 40px 32px;
+  padding: 40px 32px 60px;
 }
 
-.detail-loading,
-.detail-error-wrap {
+.apd-loading,
+.apd-error-wrap {
   max-width: 1000px;
   margin: 60px auto;
   padding: 0 32px;
   text-align: center;
-  color: #202020;
+  color: #444444;
+  font-family: "Inter", sans-serif;
   font-size: 15px;
 }
 
-.detail-error {
+.apd-error {
   color: #b91c1c;
   margin-bottom: 16px;
 }
 
-.btn-back {
-  background: none;
-  border: none;
-  color: #8b5cf6;
-  font-size: 14px;
-  font-weight: 500;
+/* ── Back button (secondary/outline) ── */
+
+.apd-btn-back {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #ffffff;
+  color: #111111;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0;
-  margin-bottom: 24px;
   display: inline-block;
+  margin-bottom: 24px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
-.btn-back:hover {
-  background: none;
-  text-decoration: underline;
+.apd-btn-back:hover {
+  background-color: #111111;
+  color: #ffffff;
 }
 
-.detail-page-title {
-  font-size: 24px;
+.apd-btn-back:active {
+  transform: scale(0.96);
+}
+
+.apd-page-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 26px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.02em;
+  color: #111111;
   margin-bottom: 28px;
 }
 
-/* Two-column grid — stacks on small screens */
-.detail-grid {
+/* Two-column grid — stacks on tablet/mobile */
+.apd-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
   align-items: start;
 }
 
-@media (max-width: 680px) {
-  .detail-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.detail-card {
+.apd-card {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
-  border-radius: 12px;
+  border: 1px solid #111111;
+  border-radius: 14px;
   padding: 28px;
-  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  animation: apd-fade-up 0.4s ease forwards;
 }
 
-.detail-card-heading {
+.apd-grid .apd-card:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.apd-card-heading {
+  font-family: "Inter", sans-serif;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #202020;
+  color: #888888;
   margin-bottom: 16px;
 }
 
-.detail-job-title {
+.apd-job-title {
+  font-family: "Space Grotesk", sans-serif;
   font-size: 20px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.01em;
+  color: #111111;
   margin-bottom: 4px;
 }
 
-.detail-company {
+.apd-company {
+  font-family: "Inter", sans-serif;
   font-size: 15px;
-  color: #202020;
   font-weight: 500;
+  color: #444444;
   margin-bottom: 20px;
 }
 
 /* Key-value metadata rows */
-.detail-meta-list {
+.apd-meta-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-top: 1px solid #f3efff;
+  border-top: 1px solid #f0f0f0;
   padding-top: 16px;
 }
 
-.detail-meta-row {
+.apd-meta-list--applicant {
+  margin-top: 20px;
+}
+
+.apd-meta-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
 }
 
-.detail-meta-label {
+.apd-meta-label {
+  font-family: "Inter", sans-serif;
   font-size: 12px;
-  font-weight: 600;
-  color: #323232;
+  font-weight: 700;
+  color: #888888;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   flex-shrink: 0;
 }
 
-.detail-meta-value {
+.apd-status-section .apd-meta-label {
+  margin-bottom: 8px;
+}
+
+.apd-meta-value {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  color: #111827;
+  font-weight: 500;
+  color: #111111;
   text-align: right;
 }
 
-.detail-meta-link {
+.apd-meta-link {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  color: #8b5cf6;
+  font-weight: 500;
+  color: #111111;
   text-align: right;
   word-break: break-all;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.detail-meta-link:hover {
-  text-decoration: underline;
+.apd-meta-link:hover {
+  color: #444444;
 }
 
 /* Skills */
-.detail-skills-section {
+.apd-skills-section {
   margin-top: 20px;
 }
 
-.detail-skills-label {
+.apd-skills-label {
+  font-family: "Inter", sans-serif;
   font-size: 12px;
-  font-weight: 600;
-  color: #2b2b2c;
+  font-weight: 700;
+  color: #888888;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 10px;
 }
 
-.detail-skills-list {
+.apd-skills-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.skill-tag {
-  background: #f3efff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
+.apd-skill-tag {
+  background: #f9f9f9;
+  color: #111111;
+  border: 1px solid #111111;
   padding: 4px 12px;
   border-radius: 999px;
+  font-family: "Inter", sans-serif;
   font-size: 12px;
   font-weight: 500;
 }
 
-/* Status section */
-.status-section {
+/* Status section (StatusBadge itself is untouched — this only spaces it) */
+.apd-status-section {
   margin-bottom: 16px;
 }
 
-/* Interview block */
-.interview-block {
-  background: #f3efff;
-  border: 1px solid #ddd6fe;
-  border-radius: 8px;
+/* Interview block — neutral callout, not a semantic status */
+.apd-interview-block {
+  background: #f9f9f9;
+  border: 1px solid #111111;
+  border-radius: 10px;
   padding: 12px 16px;
   margin-bottom: 4px;
 }
 
-.interview-label {
+.apd-interview-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Inter", sans-serif;
   font-size: 12px;
-  font-weight: 600;
-  color: #7c3aed;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #111111;
   margin-bottom: 4px;
 }
 
-.interview-time {
+.apd-interview-icon {
+  flex-shrink: 0;
+}
+
+.apd-interview-time {
+  font-family: "Space Grotesk", sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: #5b21b6;
+  letter-spacing: -0.01em;
+  color: #111111;
 }
 
 /* Cover letter */
-.cover-letter-section {
+.apd-cover-letter-section {
   margin-top: 20px;
-  border-top: 1px solid #f3efff;
+  border-top: 1px solid #f0f0f0;
   padding-top: 16px;
 }
 
-.cover-letter-text {
+.apd-cover-letter-text {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  color: #2c2b2b;
+  font-weight: 400;
+  color: #444444;
   line-height: 1.65;
   white-space: pre-wrap;
+}
+
+/* ── Entrance animation ── */
+
+@keyframes apd-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apd-card {
+    animation: none;
+    opacity: 1;
+  }
+
+  .apd-btn-back,
+  .apd-meta-link {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 900px) {
+  .apd-main {
+    padding: 32px 24px 48px;
+  }
+
+  .apd-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .apd-main {
+    padding: 24px 16px 40px;
+  }
+
+  .apd-card {
+    padding: 20px;
+  }
+
+  .apd-page-title {
+    font-size: 22px;
+  }
+
+  .apd-meta-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .apd-meta-value,
+  .apd-meta-link {
+    text-align: left;
+  }
+}
+
+@media (max-width: 400px) {
+  .apd-card {
+    padding: 16px;
+  }
+
+  .apd-job-title {
+    font-size: 18px;
+  }
+
+  .apd-page-title {
+    font-size: 20px;
+  }
 }

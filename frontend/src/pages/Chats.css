@@ -1,67 +1,80 @@
 /* Chats.css */
+/* NOTE: Google Fonts are loaded via <link> tags in index.html per the design
+   system spec (avoids @import reliability issues with some build tools).
+   Add these to index.html <head> if not already present:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+*/
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
-
-.chats-page {
+.cht-page {
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
-  background: #f9f9f9;
+  background: #ffffff;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.chats-main {
+.cht-main {
   max-width: 640px;
   margin: 0 auto;
   padding: 40px 24px;
 }
 
-.chats-title {
+.cht-title {
   font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 26px;
   font-weight: 700;
   color: #111111;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   margin-bottom: 28px;
+  opacity: 0;
+  animation: cht-fade-up 0.45s ease forwards;
 }
 
-.chats-status {
+.cht-status {
   text-align: center;
-  color: #777777;
+  color: #888888;
   font-size: 14px;
   margin-top: 60px;
+  font-family: "Inter", sans-serif;
 }
 
-.chats-error {
+.cht-error {
   color: #111111;
   font-weight: 600;
 }
 
 /* ===== Empty state ===== */
 
-.chats-empty {
+.cht-empty {
   text-align: center;
   padding: 64px 32px;
   background: #ffffff;
   border: 1px solid #111111;
-  border-radius: 16px;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  animation: cht-fade-up 0.45s ease forwards;
+  animation-delay: 0.05s;
 }
 
-.chats-empty-icon {
+.cht-empty-icon {
   width: 40px;
   height: 40px;
   margin-bottom: 16px;
 }
 
-.chats-empty-title {
+.cht-empty-title {
   font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 17px;
   font-weight: 700;
   color: #111111;
+  letter-spacing: -0.01em;
   margin-bottom: 8px;
 }
 
-.chats-empty-sub {
+.cht-empty-sub {
   font-size: 14px;
   color: #666666;
   line-height: 1.6;
@@ -69,7 +82,7 @@
 
 /* ===== Partners list ===== */
 
-.partners-list {
+.cht-partners-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -78,7 +91,7 @@
   gap: 8px;
 }
 
-.partner-row {
+.cht-partner-row {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -87,18 +100,38 @@
   border-radius: 12px;
   padding: 16px 20px;
   cursor: pointer;
-  transition: box-shadow 0.18s ease, background-color 0.18s ease, transform 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  opacity: 0;
+  animation: cht-fade-up 0.4s ease forwards;
 }
 
-.partner-row:hover {
+/* Staggered entrance for list items (first 12 covered; beyond that all share last delay) */
+.cht-partner-row:nth-child(1)  { animation-delay: 0.05s; }
+.cht-partner-row:nth-child(2)  { animation-delay: 0.10s; }
+.cht-partner-row:nth-child(3)  { animation-delay: 0.15s; }
+.cht-partner-row:nth-child(4)  { animation-delay: 0.20s; }
+.cht-partner-row:nth-child(5)  { animation-delay: 0.25s; }
+.cht-partner-row:nth-child(6)  { animation-delay: 0.30s; }
+.cht-partner-row:nth-child(7)  { animation-delay: 0.35s; }
+.cht-partner-row:nth-child(8)  { animation-delay: 0.40s; }
+.cht-partner-row:nth-child(9)  { animation-delay: 0.45s; }
+.cht-partner-row:nth-child(10) { animation-delay: 0.50s; }
+.cht-partner-row:nth-child(n+11) { animation-delay: 0.55s; }
+
+.cht-partner-row:hover {
   background: #f9f9f9;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.cht-partner-row:active {
+  transform: scale(0.98);
 }
 
 /* Avatar circle with initial */
 
-.partner-avatar {
+.cht-partner-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -113,12 +146,12 @@
   flex-shrink: 0;
 }
 
-.partner-info {
-  flex: 1;
+.cht-partner-info {
+  flex: 1 1 0;
   min-width: 0;
 }
 
-.partner-name {
+.cht-partner-name {
   font-size: 15px;
   font-weight: 600;
   color: #111111;
@@ -128,41 +161,92 @@
   text-overflow: ellipsis;
 }
 
-.partner-chevron {
+.cht-partner-chevron {
   font-size: 20px;
+  line-height: 1;
   color: #999999;
   flex-shrink: 0;
-  transition: color 0.18s ease, transform 0.18s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.partner-row:hover .partner-chevron {
+.cht-partner-row:hover .cht-partner-chevron {
   color: #111111;
-  transform: translateX(2px);
+  transform: translateX(3px);
+}
+
+/* ===== Animations ===== */
+
+@keyframes cht-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cht-title,
+  .cht-empty,
+  .cht-partner-row {
+    animation: none !important;
+    opacity: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ===== Responsive ===== */
 
-@media (max-width: 480px) {
-  .chats-main {
+@media (max-width: 900px) {
+  .cht-main {
+    max-width: 100%;
+    padding: 36px 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cht-main {
     padding: 28px 16px;
   }
 
-  .chats-title {
+  .cht-title {
     font-size: 22px;
+    margin-bottom: 22px;
   }
 
-  .partner-row {
+  .cht-partner-row {
     padding: 14px 16px;
     gap: 12px;
   }
 
-  .partner-avatar {
+  .cht-partner-avatar {
     width: 38px;
     height: 38px;
     font-size: 16px;
   }
 
-  .chats-empty {
+  .cht-empty {
     padding: 48px 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .cht-main {
+    padding: 22px 12px;
+  }
+
+  .cht-title {
+    font-size: 20px;
+  }
+
+  .cht-partner-row {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .cht-partner-name {
+    font-size: 14px;
   }
 }

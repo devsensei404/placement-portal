@@ -1,143 +1,201 @@
 /* MyApplications.css */
+/* All classes prefixed ma2- to avoid collisions with other pages using
+   generic names (.app-card, .empty-state, .btn-primary, etc).
 
-.my-apps-page {
-  min-height: 100vh;
-  background: #f5f0ff;
+   IMPORTANT: this file does NOT touch red/green/yellow status colors —
+   those live inside StatusBadge.jsx, a separate component not included
+   here, so its internal styling is completely untouched by this retheme. */
+
+@keyframes ma2-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
-.my-apps-main {
+@keyframes ma2-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ma2-page {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background: #f9f9f9;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.ma2-main {
   max-width: 860px;
   margin: 0 auto;
-  padding: 40px 32px;
+  padding: 40px 32px 60px;
 }
 
-.my-apps-header {
+.ma2-header {
   margin-bottom: 32px;
+  animation: ma2-fade-in 0.4s ease both;
 }
 
-.my-apps-title {
-  font-size: 24px;
+.ma2-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 26px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.01em;
+  color: #111111;
   margin-bottom: 4px;
 }
 
-.my-apps-sub {
+.ma2-sub {
   font-size: 14px;
-  color: #6b7280;
+  color: #666666;
 }
 
-.my-apps-error {
-  background: #fee2e2;
-  color: #b91c1c;
+.ma2-error {
+  background: #f9f9f9;
+  color: #111111;
+  border: 1px solid #111111;
   padding: 12px 16px;
   border-radius: 8px;
   font-size: 14px;
+  font-weight: 500;
   margin-bottom: 24px;
 }
 
-/* Empty state */
-.empty-state {
+/* ── Empty state ── */
+.ma2-empty-state {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   padding: 60px 32px;
   text-align: center;
+  animation: ma2-fade-up 0.4s ease both;
 }
 
-.empty-title {
+.ma2-empty-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 18px;
-  font-weight: 600;
-  color: #111827;
+  font-weight: 700;
+  color: #111111;
   margin-bottom: 8px;
 }
 
-.empty-sub {
+.ma2-empty-sub {
   font-size: 14px;
-  color: #6b7280;
+  color: #666666;
   margin-bottom: 24px;
 }
 
-.btn-primary {
+.ma2-btn-primary {
   padding: 10px 24px;
-  background: #8b5cf6;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
+  width: auto;
+  transition: background-color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-.btn-primary:hover {
-  background: #7c3aed;
+.ma2-btn-primary:hover {
+  background-color: #333333 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
 }
 
-/* Application cards list */
-.apps-list {
+.ma2-btn-primary:active {
+  transform: scale(0.96);
+}
+
+/* ── Application cards list ── */
+.ma2-apps-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.app-card {
+.ma2-app-card {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
+  border: 1px solid #111111;
   border-radius: 12px;
   padding: 24px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.06);
-  transition: box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  animation: ma2-fade-up 0.4s ease forwards;
 }
 
-.app-card:hover {
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+.ma2-apps-list .ma2-app-card:nth-child(1) { animation-delay: 0.05s; }
+.ma2-apps-list .ma2-app-card:nth-child(2) { animation-delay: 0.1s; }
+.ma2-apps-list .ma2-app-card:nth-child(3) { animation-delay: 0.15s; }
+.ma2-apps-list .ma2-app-card:nth-child(4) { animation-delay: 0.2s; }
+.ma2-apps-list .ma2-app-card:nth-child(5) { animation-delay: 0.25s; }
+
+.ma2-app-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
-.app-card-left {
+.ma2-app-card-left {
   display: flex;
   flex-direction: column;
   gap: 6px;
   flex: 1;
+  min-width: 0;
 }
 
-.app-job-title {
+.ma2-app-job-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: 17px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
 }
 
-.app-company {
+.ma2-app-company {
   font-size: 14px;
-  color: #374151;
+  color: #333333;
   font-weight: 500;
 }
 
-.app-meta-row {
+.ma2-app-meta-row {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 2px;
 }
 
-.app-meta-chip {
+.ma2-app-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 12px;
-  color: #49494a;
-  background: #f3efff;
+  color: #444444;
+  background: #ffffff;
+  border: 1px solid #111111;
   padding: 3px 10px;
   border-radius: 999px;
+  font-weight: 500;
 }
 
-.app-date {
+.ma2-pin-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.ma2-app-date {
   font-size: 12px;
-  color: #454545;
+  color: #888888;
   margin-top: 4px;
 }
 
-.app-card-right {
+.ma2-app-card-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -145,18 +203,47 @@
   flex-shrink: 0;
 }
 
-.btn-view-details {
+.ma2-btn-view-details {
   padding: 8px 18px;
-  background: #f3efff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #111111;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+  width: auto;
 }
 
-.btn-view-details:hover {
-  background: #ede9fe;
+.ma2-btn-view-details:hover {
+  background: #111111;
+  color: #ffffff;
+}
+
+.ma2-btn-view-details:active {
+  transform: scale(0.95);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .ma2-main {
+    padding: 28px 18px 48px;
+  }
+
+  .ma2-title {
+    font-size: 22px;
+  }
+
+  .ma2-app-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .ma2-app-card-right {
+    align-items: stretch;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }

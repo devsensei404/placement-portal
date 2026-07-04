@@ -6,7 +6,7 @@
 // Sends new message via POST /chat/send.
 
 import { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import BASE_URL from "../api.js";
 import "./ChatWindow.css";
@@ -16,6 +16,13 @@ export default function ChatWindow() {
   const token           = localStorage.getItem("token");
   const myId            = Number(localStorage.getItem("userId"));
   const navigate        = useNavigate();
+  const location        = useLocation();
+
+  // Name is passed via navigation state from the Chats list.
+  // Falls back to a generic label if this page is opened directly
+  // (e.g. refresh or a bookmarked/shared link), since we have no
+  // endpoint yet to look up a user's name by id from here.
+  const otherUserName = location.state?.name || "Conversation";
 
   const [messages, setMessages] = useState([]);
   const [content, setContent]   = useState("");
@@ -111,46 +118,56 @@ export default function ChatWindow() {
   }
 
   return (
-    <div className="chatwindow-page">
+    <div className="cw2-page">
       <Navbar />
 
-      <div className="chatwindow-container">
+      <div className="cw2-container">
 
         {/* Header */}
-        <div className="chatwindow-header">
+        <div className="cw2-header">
           <button
-            className="chatwindow-back"
+            className="cw2-back"
             onClick={() => navigate("/chats")}
           >
-            ← Back
+            <svg className="cw2-back-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M15 18l-6-6 6-6"
+                stroke="#111111"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Back
           </button>
-          <div className="chatwindow-header-avatar">
+          <div className="cw2-header-avatar">
             {/* We only have userId here, no name — show generic label */}
           </div>
-          <span className="chatwindow-header-title">Conversation</span>
+          <span className="cw2-header-title">{otherUserName}</span>
         </div>
 
         {/* Error */}
-        {error && <p className="chatwindow-error">{error}</p>}
+        {error && <p className="cw2-error">{error}</p>}
 
         {/* Messages */}
-        <div className="chatwindow-messages">
+        <div className="cw2-messages">
           {messages.length === 0 && !error && (
-            <p className="chatwindow-empty">
+            <p className="cw2-empty">
               No messages yet. Say hello!
             </p>
           )}
 
-          {messages.map((msg) => {
+          {messages.map((msg, index) => {
             const isOwn = Number(msg.senderId) === myId;
             return (
               <div
                 key={msg.id}
-                className={`bubble-row ${isOwn ? "bubble-row--own" : "bubble-row--other"}`}
+                className={`cw2-bubble-row ${isOwn ? "cw2-bubble-row--own" : "cw2-bubble-row--other"}`}
+                style={{ animationDelay: `${Math.min(index, 10) * 0.03}s` }}
               >
-                <div className={`bubble ${isOwn ? "bubble--own" : "bubble--other"}`}>
-                  <p className="bubble-text">{msg.content}</p>
-                  <span className="bubble-time">{formatTime(msg.timestamp)}</span>
+                <div className={`cw2-bubble ${isOwn ? "cw2-bubble--own" : "cw2-bubble--other"}`}>
+                  <p className="cw2-bubble-text">{msg.content}</p>
+                  <span className="cw2-bubble-time">{formatTime(msg.timestamp)}</span>
                 </div>
               </div>
             );
@@ -161,9 +178,9 @@ export default function ChatWindow() {
         </div>
 
         {/* Input area */}
-        <div className="chatwindow-input-area">
+        <div className="cw2-input-area">
           <textarea
-            className="chatwindow-input"
+            className="cw2-input"
             placeholder="Type a message… (Enter to send)"
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -171,7 +188,7 @@ export default function ChatWindow() {
             rows={1}
           />
           <button
-            className="chatwindow-send"
+            className="cw2-send"
             onClick={handleSend}
             disabled={sending || !content.trim()}
           >

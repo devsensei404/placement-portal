@@ -1,7 +1,12 @@
 /* ═══════════════════════════════════════════════
    ResumeBuilder.css
-   Page chrome → purple theme
-   Resume preview → strict black & white, print-ready
+   Page chrome → black & white minimalist system
+   Resume preview → UNCHANGED. It was already a
+   deliberate, self-contained "printed document" look
+   (Times New Roman, black ink, print media query) —
+   that's the actual PDF a candidate hands to an
+   employer, so it's left exactly as it was, same as
+   a shared component like StatusBadge would be.
    ═══════════════════════════════════════════════ */
 
 /* ── Root container ── */
@@ -9,11 +14,14 @@
   padding: 24px 20px;
   max-width: 1400px;
   margin: 0 auto;
+  background: #ffffff;
 }
 
 .rb-prefill-note {
+  font-family: "Inter", sans-serif;
   font-size: 13px;
-  color: #7c3aed;
+  font-weight: 400;
+  color: #888888;
   margin-bottom: 12px;
   font-style: italic;
 }
@@ -26,14 +34,14 @@
   align-items: start;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .rb-columns {
     grid-template-columns: 1fr;
   }
 }
 
 /* ═══════════════════════════════════════════════
-   FORM COLUMN (purple chrome)
+   FORM COLUMN
    ═══════════════════════════════════════════════ */
 
 .rb-form-col {
@@ -44,17 +52,28 @@
 
 .rb-section {
   margin-bottom: 28px;
+  opacity: 0;
+  animation: rb-fade-up 0.4s ease forwards;
 }
 
+.rb-section:nth-of-type(1) { animation-delay: 0s; }
+.rb-section:nth-of-type(2) { animation-delay: 0.05s; }
+.rb-section:nth-of-type(3) { animation-delay: 0.1s; }
+.rb-section:nth-of-type(4) { animation-delay: 0.15s; }
+.rb-section:nth-of-type(5) { animation-delay: 0.2s; }
+.rb-section:nth-of-type(6) { animation-delay: 0.25s; }
+.rb-section:nth-of-type(7) { animation-delay: 0.3s; }
+
 .rb-section-title {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #7c3aed;
+  color: #111111;
   margin: 0 0 12px 0;
   padding-bottom: 6px;
-  border-bottom: 2px solid #ede9fe;
+  border-bottom: 2px solid #f0f0f0;
 }
 
 .rb-field {
@@ -63,9 +82,10 @@
 
 .rb-label {
   display: block;
+  font-family: "Inter", sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #4b5563;
+  color: #444444;
   margin-bottom: 4px;
 }
 
@@ -73,28 +93,46 @@
   width: 100%;
   box-sizing: border-box;
   padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border: 1px solid #111111;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  color: #111827;
-  background: #fff;
-  transition: border-color 0.15s;
+  color: #111111;
+  background: #ffffff;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: box-shadow 0.15s ease, background-color 0.15s ease;
   outline: none;
 }
 
+.rb-input::placeholder {
+  color: #999999;
+}
+
 .rb-input:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+  border-color: #111111;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
 }
 
 /* ── Cards for repeatable entries ── */
 .rb-card {
-  background: #faf5ff;
-  border: 1px solid #ede9fe;
-  border-radius: 8px;
+  background: #f9f9f9;
+  border: 1px solid #111111;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   padding: 14px;
   margin-bottom: 12px;
+  opacity: 0;
+  animation: rb-fade-up 0.35s ease forwards;
 }
+
+.rb-card:nth-child(1) { animation-delay: 0s; }
+.rb-card:nth-child(2) { animation-delay: 0.05s; }
+.rb-card:nth-child(3) { animation-delay: 0.1s; }
+.rb-card:nth-child(4) { animation-delay: 0.15s; }
+.rb-card:nth-child(5) { animation-delay: 0.2s; }
+.rb-card:nth-child(6) { animation-delay: 0.25s; }
 
 .rb-card-header {
   display: flex;
@@ -104,9 +142,10 @@
 }
 
 .rb-card-label {
+  font-family: "Inter", sans-serif;
   font-size: 12px;
   font-weight: 700;
-  color: #7c3aed;
+  color: #888888;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -130,34 +169,56 @@
 
 /* ── Buttons ── */
 .rb-add-btn {
-  background: none;
-  border: 1.5px dashed #a78bfa;
-  color: #7c3aed;
-  border-radius: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #ffffff;
+  border: 1.5px dashed #111111;
+  color: #111111;
+  border-radius: 8px;
   padding: 7px 14px;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background-color 0.15s ease;
   display: inline-block;
   margin-top: 4px;
 }
 
 .rb-add-btn:hover {
-  background: #f5f3ff;
-  border-color: #7c3aed;
+  background: #f9f9f9;
 }
 
+.rb-add-btn:active {
+  transform: scale(0.97);
+}
+
+/* Solid variant used as a real action button (e.g. "Add" next to the skill input) */
 .rb-add-btn--inline {
   margin-top: 0;
   border-style: solid;
+  border-width: 1.5px;
   white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.rb-add-btn--inline:hover {
+  background-color: #111111;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.rb-add-btn--inline:active {
+  transform: scale(0.96);
 }
 
 .rb-add-btn--small {
   font-size: 12px;
   padding: 4px 10px;
 }
+
+/* Delete actions keep their red as a functional/danger signal — not decorative color */
 .rb-remove-btn {
   display: inline-flex;
   align-items: center;
@@ -167,6 +228,7 @@
   background: none;
   border: none;
   color: #ef4444;
+  font-family: "Inter", sans-serif;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -183,13 +245,14 @@
   font-size: 16px;
   line-height: 1;
   padding: 0 6px;
-  color: #9ca3af;
+  color: #999999;
 }
 
 .rb-remove-btn--small:hover {
-  background: #f3f4f6;
+  background: #f9f9f9;
   color: #ef4444;
 }
+
 /* ── Skills chips ── */
 .rb-skill-chips {
   display: flex;
@@ -202,8 +265,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #ede9fe;
-  color: #5b21b6;
+  background: #f9f9f9;
+  color: #111111;
+  border: 1px solid #111111;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
   font-weight: 500;
   border-radius: 99px;
@@ -213,13 +278,14 @@
 .rb-chip-remove {
   background: none;
   border: none;
-  color: #7c3aed;
+  color: #111111;
   font-size: 16px;
   line-height: 1;
   cursor: pointer;
   padding: 0;
   display: flex;
   align-items: center;
+  transition: color 0.15s ease;
 }
 
 .rb-chip-remove:hover {
@@ -236,36 +302,48 @@
   min-width: 0;
 }
 
-/* ── Generate button ── */
+/* ── Generate button (primary) ── */
 .rb-generate-btn {
+  appearance: none;
+  -webkit-appearance: none;
   width: 100%;
   padding: 13px;
-  background: #7c3aed;
-  color: #fff;
-  border: none;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
   border-radius: 8px;
+  font-family: "Inter", sans-serif;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease, opacity 0.15s ease;
   margin-top: 4px;
   letter-spacing: 0.02em;
 }
 
 .rb-generate-btn:hover:not(:disabled) {
-  background: #6d28d9;
+  background-color: #333333 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.rb-generate-btn:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .rb-generate-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-/* ── Error ── */
+/* ── Error (functional/danger — kept red) ── */
 .rb-error {
   background: #fef2f2;
   border: 1px solid #fecaca;
   color: #b91c1c;
+  font-family: "Inter", sans-serif;
   border-radius: 6px;
   padding: 10px 14px;
   font-size: 13px;
@@ -273,7 +351,7 @@
 }
 
 /* ═══════════════════════════════════════════════
-   PREVIEW COLUMN
+   PREVIEW COLUMN (chrome around the resume)
    ═══════════════════════════════════════════════ */
 
 .rb-preview-col {
@@ -282,54 +360,127 @@
 }
 
 .rb-download-btn {
+  appearance: none;
+  -webkit-appearance: none;
   display: block;
   width: 100%;
   padding: 10px;
   margin-bottom: 14px;
-  background: #7c3aed;
-  color: #fff;
-  border: none;
-  border-radius: 7px;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
   text-align: center;
 }
 
 .rb-download-btn:hover {
-  background: #6d28d9;
+  background-color: #333333 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.rb-download-btn:active {
+  transform: scale(0.97);
 }
 
 /* ── Placeholder ── */
 .rb-preview-placeholder {
-  border: 2px dashed #d1d5db;
-  border-radius: 10px;
+  border: 1.5px dashed #111111;
+  border-radius: 12px;
   padding: 60px 24px;
   text-align: center;
-  color: #9ca3af;
-  background: #fafafa;
+  color: #666666;
+  background: #f9f9f9;
 }
 
 .rb-placeholder-icon {
-  font-size: 48px;
   margin-bottom: 12px;
 }
 
 .rb-preview-placeholder p {
+  font-family: "Inter", sans-serif;
   margin: 0 0 6px 0;
   font-size: 15px;
-  color: #6b7280;
+  color: #444444;
 }
 
 .rb-placeholder-sub {
   font-size: 13px !important;
-  color: #9ca3af !important;
+  color: #888888 !important;
+}
+
+/* ── Entrance animation ── */
+
+@keyframes rb-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rb-section,
+  .rb-card {
+    animation: none;
+    opacity: 1;
+  }
+
+  .rb-input,
+  .rb-add-btn,
+  .rb-add-btn--inline,
+  .rb-generate-btn,
+  .rb-download-btn,
+  .rb-chip-remove,
+  .rb-remove-btn,
+  .rb-remove-btn--small {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 600px) {
+  .rb-root {
+    padding: 20px 14px;
+  }
+
+  .rb-preview-col {
+    position: static;
+  }
+
+  .rb-card {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .rb-section-title {
+    font-size: 13px;
+  }
+
+  .rb-generate-btn {
+    font-size: 14px;
+  }
 }
 
 /* ═══════════════════════════════════════════════
-   RESUME PREVIEW — black & white, print-ready
-   No purple, no color — pure A4 document look
+   RESUME PREVIEW — INTENTIONALLY UNCHANGED
+   This is the actual printable A4 document a
+   candidate downloads and sends to employers.
+   It was already black & white / print-ready with
+   its own deliberate typography (Times New Roman),
+   so none of the app's Space Grotesk / Inter /
+   monochrome-UI system is applied here — same rule
+   as leaving a shared StatusBadge component alone.
    ═══════════════════════════════════════════════ */
 
 #resume-preview {

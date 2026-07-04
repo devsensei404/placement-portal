@@ -36,46 +36,47 @@ export default function Chats() {
   }
 
   return (
-    <div className="chats-page">
+    <div className="cht-page">
       <Navbar />
-      <main className="chats-main">
-        <h1 className="chats-title">Messages</h1>
+      <main className="cht-main">
+        <h1 className="cht-title">Messages</h1>
 
-        {loading && <p className="chats-status">Loading…</p>}
-        {error   && <p className="chats-status chats-error">{error}</p>}
+        {loading && <p className="cht-status">Loading…</p>}
+        {error   && <p className="cht-status cht-error">{error}</p>}
 
         {!loading && !error && partners.length === 0 && (
-          <div className="chats-empty">
-            <svg className="chats-empty-icon" viewBox="0 0 48 48" fill="none">
+          <div className="cht-empty">
+            <svg className="cht-empty-icon" viewBox="0 0 24 24" fill="none">
               <path
-                d="M8 12a3 3 0 0 1 3-3h26a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H20l-8 7v-7h-1a3 3 0 0 1-3-3V12z"
+                d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-4 3.5V17H6a2 2 0 0 1-2-2V6z"
                 stroke="#111111"
-                strokeWidth="2"
+                strokeWidth="1.6"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
-            <p className="chats-empty-title">No conversations yet</p>
-            <p className="chats-empty-sub">
+            <p className="cht-empty-title">No conversations yet</p>
+            <p className="cht-empty-sub">
               Start a conversation from a job listing or an applicant card.
             </p>
           </div>
         )}
 
         {!loading && !error && partners.length > 0 && (
-          <ul className="partners-list">
+          <ul className="cht-partners-list">
             {partners.map((partner) => (
               <li
                 key={partner.userId}
-                className="partner-row"
-                onClick={() => navigate(`/chats/${partner.userId}`)}
+                className="cht-partner-row"
+                onClick={() => navigate(`/chats/${partner.userId}`, { state: { name: partner.name } })}
               >
-                <div className="partner-avatar">
+                <div className="cht-partner-avatar">
                   {getInitial(partner.name)}
                 </div>
-                <div className="partner-info">
-                  <span className="partner-name">{partner.name}</span>
+                <div className="cht-partner-info">
+                  <span className="cht-partner-name">{partner.name}</span>
                 </div>
-                <span className="partner-chevron">›</span>
+                <span className="cht-partner-chevron">›</span>
               </li>
             ))}
           </ul>

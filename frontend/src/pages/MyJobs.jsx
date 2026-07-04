@@ -33,6 +33,50 @@ const EMPTY_FORM = {
   description: "",
 };
 
+// Small hand-drawn line icons (feather-style) — replace the emoji that used
+// to sit inline in the applicant/interview copy.
+function LinkIcon() {
+  return (
+    <svg
+      className="mj2-icon-inline"
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#111111"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg
+      className="mj2-icon-inline"
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#111111"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
 export default function MyJobs() {
   const token  = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
@@ -357,119 +401,119 @@ export default function MyJobs() {
   // RENDER
   // ─────────────────────────────────
   return (
-    <div className="mj-page">
+    <div className="mj2-page">
       <Navbar />
-      <main className="mj-main">
+      <main className="mj2-main">
 
         {/* ── Header ── */}
-        <div className="mj-header">
+        <div className="mj2-header">
           <div>
-            <h1 className="mj-title">My Jobs</h1>
-            <p className="mj-subtitle">Manage your postings and review applicants</p>
+            <h1 className="mj2-title">My Jobs</h1>
+            <p className="mj2-subtitle">Manage your postings and review applicants</p>
           </div>
-          <button className="mj-btn-post" onClick={() => setShowPostModal(true)}>
+          <button className="mj2-btn-post" onClick={() => setShowPostModal(true)}>
             + Post New Job
           </button>
         </div>
 
         {/* ── Stats ── */}
-        <div className="mj-stats">
-          <div className="mj-stat">
-            <p className="mj-stat-label">Jobs Posted</p>
-            <p className="mj-stat-value">{jobsLoading ? "—" : totalJobs}</p>
+        <div className="mj2-stats">
+          <div className="mj2-stat">
+            <p className="mj2-stat-label">Jobs Posted</p>
+            <p className="mj2-stat-value">{jobsLoading ? "—" : totalJobs}</p>
           </div>
-          <div className="mj-stat">
-            <p className="mj-stat-label">Open</p>
-            <p className="mj-stat-value mj-stat-purple">{jobsLoading ? "—" : openJobs}</p>
+          <div className="mj2-stat">
+            <p className="mj2-stat-label">Open</p>
+            <p className="mj2-stat-value mj2-stat-accent">{jobsLoading ? "—" : openJobs}</p>
           </div>
-          <div className="mj-stat">
-            <p className="mj-stat-label">Total Applicants</p>
-            <p className="mj-stat-value">{jobsLoading ? "—" : totalApplicants}</p>
+          <div className="mj2-stat">
+            <p className="mj2-stat-label">Total Applicants</p>
+            <p className="mj2-stat-value">{jobsLoading ? "—" : totalApplicants}</p>
           </div>
         </div>
 
         {/* ── Error ── */}
-        {jobsError && <p className="mj-error">{jobsError}</p>}
+        {jobsError && <p className="mj2-error">{jobsError}</p>}
 
         {/* ── Job List ── */}
         {!jobsLoading && !jobsError && jobs.length === 0 && (
-          <div className="mj-empty">
-            <p className="mj-empty-title">No jobs posted yet</p>
-            <p className="mj-empty-sub">Hit "Post New Job" to get started.</p>
+          <div className="mj2-empty">
+            <p className="mj2-empty-title">No jobs posted yet</p>
+            <p className="mj2-empty-sub">Hit "Post New Job" to get started.</p>
           </div>
         )}
 
         {!jobsLoading && jobs.length > 0 && (
-          <div className="mj-job-list">
+          <div className="mj2-job-list">
             {jobs.slice().reverse().map((job) => {
               const isExpanded = expandedJobId === job.id;
               return (
-                <div key={job.id} className={`mj-job-card ${isExpanded ? "mj-job-card-open" : ""}`}>
+                <div key={job.id} className={`mj2-job-card ${isExpanded ? "mj2-job-card-open" : ""}`}>
 
                   {/* ── Card header (clickable) ── */}
                   <div
-                    className="mj-job-card-header"
+                    className="mj2-job-card-header"
                     onClick={() => setExpandedJobId(isExpanded ? null : job.id)}
                   >
-                    <div className="mj-job-card-left">
-                      <div className="mj-job-card-top">
-                        <span className={`mj-status-pill ${job.status === "OPEN" ? "mj-pill-open" : "mj-pill-closed"}`}>
+                    <div className="mj2-job-card-left">
+                      <div className="mj2-job-card-top">
+                        <span className={`mj2-status-pill ${job.status === "OPEN" ? "mj2-pill-open" : "mj2-pill-closed"}`}>
                           {job.status}
                         </span>
-                        <span className="mj-job-type-chip">{job.jobType?.replace("_", " ")}</span>
+                        <span className="mj2-job-type-chip">{job.jobType?.replace("_", " ")}</span>
                       </div>
-                      <h2 className="mj-job-title">{job.jobTitle}</h2>
-                      <p className="mj-job-meta">
+                      <h2 className="mj2-job-title">{job.jobTitle}</h2>
+                      <p className="mj2-job-meta">
                         {job.company}
                         {job.location ? ` · ${job.location}` : ""}
                       </p>
-                      <p className="mj-job-footer-meta">
+                      <p className="mj2-job-footer-meta">
                         {job.applicants?.length || 0} applicant{job.applicants?.length !== 1 ? "s" : ""}
                         {job.postTime ? ` · Posted ${formatDate(job.postTime)}` : ""}
                       </p>
                     </div>
 
-                    <div className="mj-job-card-right">
-                      <div className="mj-job-actions">
+                    <div className="mj2-job-card-right">
+                      <div className="mj2-job-actions">
                         <button
-                          className="mj-btn-sm mj-btn-ghost"
+                          className="mj2-btn-sm mj2-btn-ghost"
                           onClick={(e) => openEditModal(job, e)}
                         >
                           Edit
                         </button>
                         <button
-                          className={`mj-btn-sm ${job.status === "OPEN" ? "mj-btn-orange" : "mj-btn-green"}`}
+                          className={`mj2-btn-sm ${job.status === "OPEN" ? "mj2-btn-orange" : "mj2-btn-green"}`}
                           onClick={(e) => toggleJobStatus(job, e)}
                         >
                           {job.status === "OPEN" ? "Close" : "Reopen"}
                         </button>
                         <button
-                          className="mj-btn-sm mj-btn-red"
+                          className="mj2-btn-sm mj2-btn-red"
                           onClick={(e) => deleteJob(job, e)}
                         >
                           Delete
                         </button>
                       </div>
-                      <span className="mj-accordion-arrow">{isExpanded ? "▲" : "▼"}</span>
+                      <span className="mj2-accordion-arrow">{isExpanded ? "▲" : "▼"}</span>
                     </div>
                   </div>
 
                   {/* ── Applicants accordion ── */}
                   {isExpanded && (
-                    <div className="mj-applicants-panel">
-                      <div className="mj-applicants-header">
-                        <span className="mj-applicants-title">
+                    <div className="mj2-applicants-panel">
+                      <div className="mj2-applicants-header">
+                        <span className="mj2-applicants-title">
                           Applicants
                         </span>
-                        <span className="mj-applicants-count">
+                        <span className="mj2-applicants-count">
                           {job.applicants?.length || 0} total
                         </span>
                       </div>
 
                       {!job.applicants?.length ? (
-                        <p className="mj-no-applicants">No applicants yet for this job.</p>
+                        <p className="mj2-no-applicants">No applicants yet for this job.</p>
                       ) : (
-                        <div className="mj-applicant-list">
+                        <div className="mj2-applicant-list">
                           {job.applicants.map((applicant,idx) => {
                             // Lazy-init per-applicant state
                             if (!appState[applicant.applicationId]) {
@@ -483,31 +527,31 @@ export default function MyJobs() {
                             };
 
                             return (
-                               <div key={`${job.id}-${applicant.applicationId ?? idx}`} className="mj-applicant-row">
+                               <div key={`${job.id}-${applicant.applicationId ?? idx}`} className="mj2-applicant-row">
 
                                 {/* Top: name + current badge */}
-                                <div className="mj-applicant-row-top">
+                                <div className="mj2-applicant-row-top">
                                   <div>
-                                    <p className="mj-applicant-name">{applicant.name}</p>
-                                    <p className="mj-applicant-email">{applicant.email}</p>
+                                    <p className="mj2-applicant-name">{applicant.name}</p>
+                                    <p className="mj2-applicant-email">{applicant.email}</p>
                                   </div>
                                   <StatusBadge status={applicant.applicationStatus} />
                                 </div>
 
                                 {/* Applied date + phone */}
-                                <p className="mj-applicant-meta">
+                                <p className="mj2-applicant-meta">
                                   Applied {formatDate(applicant.timestamp)}
                                   {applicant.phone ? ` · ${applicant.phone}` : ""}
                                 </p>
 
                                 {/* Links */}
-                                <div className="mj-applicant-links">
+                                <div className="mj2-applicant-links">
                                   {applicant.resume && (
                                     <a
                                       href={applicant.resume}
                                       target="_blank"
                                       rel="noreferrer"
-                                      className="mj-applicant-link"
+                                      className="mj2-applicant-link"
                                     >
                                        Resume ↗
                                     </a>
@@ -517,9 +561,9 @@ export default function MyJobs() {
                                       href={applicant.website}
                                       target="_blank"
                                       rel="noreferrer"
-                                      className="mj-applicant-link"
+                                      className="mj2-applicant-link"
                                     >
-                                      🔗 Portfolio ↗
+                                      <LinkIcon /> Portfolio ↗
                                     </a>
                                   )}
                                 </div>
@@ -528,7 +572,7 @@ export default function MyJobs() {
                                 {applicant.coverLetter && (
                                   <>
                                     <button
-                                      className="mj-btn-sm mj-btn-ghost"
+                                      className="mj2-btn-sm mj2-btn-ghost"
                                       style={{ marginTop: "8px", alignSelf: "flex-start" }}
                                       onClick={() =>
                                         setExpandedCL((prev) => ({
@@ -540,15 +584,15 @@ export default function MyJobs() {
                                       {expandedCL[applicant.applicationId] ? "Hide" : "Read"} Cover Letter
                                     </button>
                                     {expandedCL[applicant.applicationId] && (
-                                      <p className="mj-cover-letter">{applicant.coverLetter}</p>
+                                      <p className="mj2-cover-letter">{applicant.coverLetter}</p>
                                     )}
                                   </>
                                 )}
 
                                 {/* Status controls */}
-                                <div className="mj-status-controls">
+                                <div className="mj2-status-controls">
                                   <select
-                                    className="mj-status-select"
+                                    className="mj2-status-select"
                                     value={aState.status}
                                     onChange={(e) =>
                                       updateAppField(applicant.applicationId, "status", e.target.value)
@@ -562,7 +606,7 @@ export default function MyJobs() {
 
                                   {aState.status === "INTERVIEWING" && (
                                     <input
-                                      className="mj-interview-input"
+                                      className="mj2-interview-input"
                                       type="datetime-local"
                                       value={aState.interviewTime}
                                       onChange={(e) =>
@@ -572,7 +616,7 @@ export default function MyJobs() {
                                   )}
 
                                   <button
-                                    className="mj-btn-sm mj-btn-purple"
+                                    className="mj2-btn-sm mj2-btn-primary"
                                     onClick={() => saveAppStatus(applicant)}
                                     disabled={aState.saving}
                                   >
@@ -580,7 +624,7 @@ export default function MyJobs() {
                                   </button>
 
                                   <button
-                                    className="mj-btn-sm mj-btn-ghost"
+                                    className="mj2-btn-sm mj2-btn-ghost"
                                     onClick={() => navigate(`/chats/${applicant.applicantId}`)}
                                   >
                                      Message
@@ -590,8 +634,8 @@ export default function MyJobs() {
                                     <span
                                       className={
                                         aState.msg.startsWith("✓")
-                                          ? "mj-save-success"
-                                          : "mj-save-error"
+                                          ? "mj2-save-success"
+                                          : "mj2-save-error"
                                       }
                                     >
                                       {aState.msg}
@@ -601,8 +645,8 @@ export default function MyJobs() {
 
                                 {/* Already-scheduled interview time */}
                                 {applicant.applicationStatus === "INTERVIEWING" && applicant.interviewTime && (
-                                  <p className="mj-interview-scheduled">
-                                    📅 Interview scheduled: {formatDateTime(applicant.interviewTime)}
+                                  <p className="mj2-interview-scheduled">
+                                    <CalendarIcon /> Interview scheduled: {formatDateTime(applicant.interviewTime)}
                                   </p>
                                 )}
 
@@ -624,16 +668,16 @@ export default function MyJobs() {
           POST JOB MODAL
       ══════════════════════════════ */}
       {showPostModal && (
-        <div className="mj-overlay" onClick={closePostModal}>
-          <div className="mj-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="mj-modal-header">
+        <div className="mj2-overlay" onClick={closePostModal}>
+          <div className="mj2-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="mj2-modal-header">
               <h2>Post a New Job</h2>
-              <button className="mj-modal-close" onClick={closePostModal}>✕</button>
+              <button className="mj2-modal-close" onClick={closePostModal}>✕</button>
             </div>
 
-            <div className="mj-modal-body">
-              <div className="mj-form-row">
-                <div className="mj-form-field">
+            <div className="mj2-modal-body">
+              <div className="mj2-form-row">
+                <div className="mj2-form-field">
                   <label>Job Title *</label>
                   <input
                     name="jobTitle"
@@ -642,7 +686,7 @@ export default function MyJobs() {
                     placeholder="e.g. Software Engineer"
                   />
                 </div>
-                <div className="mj-form-field">
+                <div className="mj2-form-field">
                   <label>Company *</label>
                   <input
                     name="company"
@@ -653,8 +697,8 @@ export default function MyJobs() {
                 </div>
               </div>
 
-              <div className="mj-form-row">
-                <div className="mj-form-field">
+              <div className="mj2-form-row">
+                <div className="mj2-form-field">
                   <label>Location</label>
                   <input
                     name="location"
@@ -663,7 +707,7 @@ export default function MyJobs() {
                     placeholder="City / Remote"
                   />
                 </div>
-                <div className="mj-form-field">
+                <div className="mj2-form-field">
                   <label>Experience</label>
                   <input
                     name="experience"
@@ -674,8 +718,8 @@ export default function MyJobs() {
                 </div>
               </div>
 
-              <div className="mj-form-row">
-                <div className="mj-form-field">
+              <div className="mj2-form-row">
+                <div className="mj2-form-field">
                   <label>Job Type</label>
                   <select name="jobType" value={form.jobType} onChange={handleFormChange}>
                     <option value="FULL_TIME">Full Time</option>
@@ -683,10 +727,10 @@ export default function MyJobs() {
                     <option value="INTERNSHIP">Internship</option>
                   </select>
                 </div>
-                <div className="mj-form-field">
+                <div className="mj2-form-field">
                   <label>
                     Package{" "}
-                    <span className="mj-label-hint">
+                    <span className="mj2-label-hint">
                       ({form.jobType === "FULL_TIME" ? "LPA" : form.jobType === "INTERNSHIP" ? "₹/month" : "₹/hr"})
                     </span>
                   </label>
@@ -700,7 +744,7 @@ export default function MyJobs() {
                 </div>
               </div>
 
-              <div className="mj-form-field">
+              <div className="mj2-form-field">
                 <label>About the Role</label>
                 <textarea
                   name="about"
@@ -711,7 +755,7 @@ export default function MyJobs() {
                 />
               </div>
 
-              <div className="mj-form-field">
+              <div className="mj2-form-field">
                 <label>Job Description</label>
                 <textarea
                   name="description"
@@ -722,23 +766,23 @@ export default function MyJobs() {
                 />
               </div>
 
-              <div className="mj-form-field">
+              <div className="mj2-form-field">
                 <label>Skills Required</label>
-                <div className="mj-skill-row">
+                <div className="mj2-skill-row">
                   <input
                     value={skillInput}
                     onChange={(e) => setSkillInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && addSkill()}
                     placeholder="Type a skill and press Enter or Add"
                   />
-                  <button className="mj-btn-sm mj-btn-ghost" onClick={addSkill}>Add</button>
+                  <button className="mj2-btn-sm mj2-btn-ghost" onClick={addSkill}>Add</button>
                 </div>
                 {skills.length > 0 && (
-                  <div className="mj-skill-tags">
+                  <div className="mj2-skill-tags">
                     {skills.map((s, i) => (
-                      <span key={i} className="mj-skill-tag">
+                      <span key={i} className="mj2-skill-tag">
                         {s}
-                        <button className="mj-skill-remove" onClick={() => removeSkill(s)}>×</button>
+                        <button className="mj2-skill-remove" onClick={() => removeSkill(s)}>×</button>
                       </span>
                     ))}
                   </div>
@@ -746,15 +790,15 @@ export default function MyJobs() {
               </div>
 
               {postMsg.text && (
-                <p className={postMsg.type === "success" ? "mj-msg-success" : "mj-msg-error"}>
+                <p className={postMsg.type === "success" ? "mj2-msg-success" : "mj2-msg-error"}>
                   {postMsg.text}
                 </p>
               )}
             </div>
 
-            <div className="mj-modal-footer">
-              <button className="mj-btn-cancel" onClick={closePostModal}>Cancel</button>
-              <button className="mj-btn-post" onClick={handlePostJob} disabled={posting}>
+            <div className="mj2-modal-footer">
+              <button className="mj2-btn-cancel" onClick={closePostModal}>Cancel</button>
+              <button className="mj2-btn-post" onClick={handlePostJob} disabled={posting}>
                 {posting ? "Posting..." : "Post Job"}
               </button>
             </div>
@@ -766,38 +810,38 @@ export default function MyJobs() {
           EDIT JOB MODAL
       ══════════════════════════════ */}
       {editTarget && (
-        <div className="mj-overlay" onClick={() => setEditTarget(null)}>
-          <div className="mj-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="mj-modal-header">
+        <div className="mj2-overlay" onClick={() => setEditTarget(null)}>
+          <div className="mj2-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="mj2-modal-header">
               <h2>Edit Job</h2>
-              <button className="mj-modal-close" onClick={() => setEditTarget(null)}>✕</button>
+              <button className="mj2-modal-close" onClick={() => setEditTarget(null)}>✕</button>
             </div>
 
-            <div className="mj-modal-body">
-              <div className="mj-form-row">
-                <div className="mj-form-field">
+            <div className="mj2-modal-body">
+              <div className="mj2-form-row">
+                <div className="mj2-form-field">
                   <label>Job Title</label>
                   <input name="jobTitle" value={editForm.jobTitle} onChange={handleEditFormChange} />
                 </div>
-                <div className="mj-form-field">
+                <div className="mj2-form-field">
                   <label>Company</label>
                   <input name="company" value={editForm.company} onChange={handleEditFormChange} />
                 </div>
               </div>
 
-              <div className="mj-form-row">
-                <div className="mj-form-field">
+              <div className="mj2-form-row">
+                <div className="mj2-form-field">
                   <label>Location</label>
                   <input name="location" value={editForm.location} onChange={handleEditFormChange} />
                 </div>
-                <div className="mj-form-field">
+                <div className="mj2-form-field">
                   <label>Experience</label>
                   <input name="experience" value={editForm.experience} onChange={handleEditFormChange} placeholder="e.g. 2–4 years" />
                 </div>
               </div>
 
-              <div className="mj-form-row">
-                <div className="mj-form-field">
+              <div className="mj2-form-row">
+                <div className="mj2-form-field">
                   <label>Job Type</label>
                   <select name="jobType" value={editForm.jobType} onChange={handleEditFormChange}>
                     <option value="FULL_TIME">Full Time</option>
@@ -805,51 +849,51 @@ export default function MyJobs() {
                     <option value="INTERNSHIP">Internship</option>
                   </select>
                 </div>
-                <div className="mj-form-field">
+                <div className="mj2-form-field">
                   <label>Package</label>
                   <input name="packageOffered" type="number" value={editForm.packageOffered} onChange={handleEditFormChange} />
                 </div>
               </div>
 
-              <div className="mj-form-field">
+              <div className="mj2-form-field">
                 <label>About the Role</label>
                 <textarea name="about" value={editForm.about} onChange={handleEditFormChange} rows={2} />
               </div>
 
-              <div className="mj-form-field">
+              <div className="mj2-form-field">
                 <label>Job Description</label>
                 <textarea name="description" value={editForm.description} onChange={handleEditFormChange} rows={3} />
               </div>
 
-              <div className="mj-form-field">
+              <div className="mj2-form-field">
                 <label>Skills Required</label>
-                <div className="mj-skill-row">
+                <div className="mj2-skill-row">
                   <input
                     value={editSkillInput}
                     onChange={(e) => setEditSkillInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && addEditSkill()}
                     placeholder="Add a skill"
                   />
-                  <button className="mj-btn-sm mj-btn-ghost" onClick={addEditSkill}>Add</button>
+                  <button className="mj2-btn-sm mj2-btn-ghost" onClick={addEditSkill}>Add</button>
                 </div>
                 {editSkills.length > 0 && (
-                  <div className="mj-skill-tags">
+                  <div className="mj2-skill-tags">
                     {editSkills.map((s, i) => (
-                      <span key={i} className="mj-skill-tag">
+                      <span key={i} className="mj2-skill-tag">
                         {s}
-                        <button className="mj-skill-remove" onClick={() => removeEditSkill(s)}>×</button>
+                        <button className="mj2-skill-remove" onClick={() => removeEditSkill(s)}>×</button>
                       </span>
                     ))}
                   </div>
                 )}
               </div>
 
-              {editError && <p className="mj-msg-error">{editError}</p>}
+              {editError && <p className="mj2-msg-error">{editError}</p>}
             </div>
 
-            <div className="mj-modal-footer">
-              <button className="mj-btn-cancel" onClick={() => setEditTarget(null)}>Cancel</button>
-              <button className="mj-btn-post" onClick={saveEditJob} disabled={editSaving}>
+            <div className="mj2-modal-footer">
+              <button className="mj2-btn-cancel" onClick={() => setEditTarget(null)}>Cancel</button>
+              <button className="mj2-btn-post" onClick={saveEditJob} disabled={editSaving}>
                 {editSaving ? "Saving..." : "Save Changes"}
               </button>
             </div>

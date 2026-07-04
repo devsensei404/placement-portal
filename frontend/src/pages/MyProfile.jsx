@@ -5,6 +5,46 @@ import BASE_URL from "../api";
 
 const BASE = BASE_URL;
 
+// ── Line icons (replace emoji glyphs; stroke follows currentColor so they
+// automatically pick up button text color, including on hover-invert states) ──
+function EditIcon({ size = 14 }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
+  );
+}
+
+function CloseIcon({ size = 14 }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M18 6 6 18" />
+      <path d="M6 6l12 12" />
+    </svg>
+  );
+}
+
 export default function MyProfile() {
   const token     = localStorage.getItem("token");
   const profileId = localStorage.getItem("userId");
@@ -402,14 +442,14 @@ export default function MyProfile() {
   // RENDER GUARDS
   // ─────────────────────────────────────────
   if (loading) return (
-    <div className="profile-page"><Navbar />
-      <p className="profile-status">Loading...</p>
+    <div className="mpf-page"><Navbar />
+      <p className="mpf-status">Loading...</p>
     </div>
   );
 
   if (error) return (
-    <div className="profile-page"><Navbar />
-      <p className="profile-status profile-error">{error}</p>
+    <div className="mpf-page"><Navbar />
+      <p className="mpf-status mpf-error">{error}</p>
     </div>
   );
 
@@ -421,16 +461,16 @@ export default function MyProfile() {
   // RENDER
   // ─────────────────────────────────────────
   return (
-    <div className="profile-page">
+    <div className="mpf-page">
       <Navbar />
-      <main className="profile-main">
+      <main className="mpf-main">
 
         {/* ── Hero Card ── */}
-        <div className="profile-hero-card">
+        <div className="mpf-hero-card">
 
           {/* Banner / cover photo */}
           <div
-            className="profile-banner"
+            className="mpf-banner"
             style={profile.coverPhotoUrl ? {
               backgroundImage: `url(${profile.coverPhotoUrl})`,
               backgroundSize: "cover",
@@ -438,11 +478,11 @@ export default function MyProfile() {
             } : {}}
           >
             <button
-              className="btn-upload-cover"
+              className="mpf-btn-upload-cover"
               onClick={() => coverInputRef.current.click()}
               disabled={uploadingCover}
             >
-              {uploadingCover ? "Uploading..." : "✎ Edit Cover"}
+              {uploadingCover ? "Uploading..." : (<><EditIcon /> Edit Cover</>)}
             </button>
             <input
               ref={coverInputRef}
@@ -453,16 +493,16 @@ export default function MyProfile() {
             />
           </div>
 
-          <div className="profile-hero-body">
+          <div className="mpf-hero-body">
             {/* Avatar with upload overlay */}
-            <div className="profile-avatar-wrap" onClick={() => picInputRef.current.click()}>
+            <div className="mpf-avatar-wrap" onClick={() => picInputRef.current.click()}>
               {profile.profilePictureUrl ? (
-                <img src={profile.profilePictureUrl} alt="Profile" className="profile-avatar-image" />
+                <img src={profile.profilePictureUrl} alt="Profile" className="mpf-avatar-image" />
               ) : (
-                <div className="profile-avatar">{initials}</div>
+                <div className="mpf-avatar">{initials}</div>
               )}
-              <div className="profile-avatar-overlay">
-                {uploadingPic ? "..." : "✎"}
+              <div className="mpf-avatar-overlay">
+                {uploadingPic ? "..." : <EditIcon size={18} />}
               </div>
               <input
                 ref={picInputRef}
@@ -473,38 +513,38 @@ export default function MyProfile() {
               />
             </div>
 
-            <div className="profile-hero-info">
+            <div className="mpf-hero-info">
               {editingBasic ? (
                 /* ── Basic Info Edit Form ── */
-                <div className="basic-edit-form">
-                  <div className="basic-edit-row">
-                    <div className="basic-edit-field">
+                <div className="mpf-basic-edit-form">
+                  <div className="mpf-basic-edit-row">
+                    <div className="mpf-basic-edit-field">
                       <label>Name</label>
                       <input name="name" value={basicForm.name} onChange={handleBasicChange} placeholder="Your full name" />
                     </div>
-                    <div className="basic-edit-field">
+                    <div className="mpf-basic-edit-field">
                       <label>Job Title</label>
                       <input name="jobTitle" value={basicForm.jobTitle} onChange={handleBasicChange} placeholder="e.g. Software Engineer" />
                     </div>
                   </div>
-                  <div className="basic-edit-row">
-                    <div className="basic-edit-field">
+                  <div className="mpf-basic-edit-row">
+                    <div className="mpf-basic-edit-field">
                       <label>Company</label>
                       <input name="company" value={basicForm.company} onChange={handleBasicChange} placeholder="Current company" />
                     </div>
-                    <div className="basic-edit-field">
+                    <div className="mpf-basic-edit-field">
                       <label>Location</label>
                       <input name="location" value={basicForm.location} onChange={handleBasicChange} placeholder="City, Country" />
                     </div>
                   </div>
-                  <div className="basic-edit-field">
+                  <div className="mpf-basic-edit-field">
                     <label>About</label>
                     <textarea name="about" value={basicForm.about} onChange={handleBasicChange} placeholder="Write a short bio..." rows={3} />
                   </div>
-                  {basicError && <p className="form-error">{basicError}</p>}
-                  <div className="edit-actions">
-                    <button className="btn-cancel-edit" onClick={() => setEditingBasic(false)}>Cancel</button>
-                    <button className="btn-save-edit" onClick={saveBasicInfo} disabled={basicSaving}>
+                  {basicError && <p className="mpf-form-error">{basicError}</p>}
+                  <div className="mpf-edit-actions">
+                    <button className="mpf-btn-cancel-edit" onClick={() => setEditingBasic(false)}>Cancel</button>
+                    <button className="mpf-btn-save-edit" onClick={saveBasicInfo} disabled={basicSaving}>
                       {basicSaving ? "Saving..." : "Save"}
                     </button>
                   </div>
@@ -512,12 +552,12 @@ export default function MyProfile() {
               ) : (
                 /* ── Basic Info Display ── */
                 <>
-                  <h1 className="profile-hero-name">{profile.name || "No name set"}</h1>
-                  {profile.jobTitle && <p className="profile-hero-headline">{profile.jobTitle}</p>}
-                  <p className="profile-hero-meta">
+                  <h1 className="mpf-hero-name">{profile.name || "No name set"}</h1>
+                  {profile.jobTitle && <p className="mpf-hero-headline">{profile.jobTitle}</p>}
+                  <p className="mpf-hero-meta">
                     {[profile.company, profile.location].filter(Boolean).join(" · ")}
                   </p>
-                  <button className="btn-edit-section" onClick={openBasicEdit}>✎ Edit</button>
+                  <button className="mpf-btn-edit-section" onClick={openBasicEdit}><EditIcon /> Edit</button>
                 </>
               )}
             </div>
@@ -526,149 +566,151 @@ export default function MyProfile() {
 
         {/* ── About (shown only when not editing basic — about is edited inline above) ── */}
         {!editingBasic && profile.about && (
-          <section className="profile-card">
-            <h2 className="profile-card-title">About</h2>
-            <p className="profile-about-text">{profile.about}</p>
+          <section className="mpf-card">
+            <h2 className="mpf-card-title">About</h2>
+            <p className="mpf-about-text">{profile.about}</p>
           </section>
         )}
 
         {/* ── Skills ── */}
-        <section className="profile-card">
-          <div className="profile-card-header">
-            <h2 className="profile-card-title">Skills</h2>
+        <section className="mpf-card">
+          <div className="mpf-card-header">
+            <h2 className="mpf-card-title">Skills</h2>
             {!editingSkills && (
-              <button className="btn-edit-section" onClick={openSkillsEdit}>✎ Edit</button>
+              <button className="mpf-btn-edit-section" onClick={openSkillsEdit}><EditIcon /> Edit</button>
             )}
           </div>
 
           {editingSkills ? (
-            <div className="skills-edit">
-              <div className="skill-input-row">
+            <div className="mpf-skills-edit">
+              <div className="mpf-skill-input-row">
                 <input
                   value={skillInput}
                   onChange={(e) => setSkillInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addSkill()}
                   placeholder="Type a skill and press Enter or Add"
                 />
-                <button className="btn-add-skill" onClick={addSkill}>Add</button>
+                <button className="mpf-btn-add-skill" onClick={addSkill}>Add</button>
               </div>
-              <div className="profile-tags" style={{ marginTop: "12px" }}>
+              <div className="mpf-tags" style={{ marginTop: "12px" }}>
                 {skillsList.map((skill, i) => (
-                  <span key={i} className="profile-tag profile-tag-removable">
+                  <span key={i} className="mpf-tag mpf-tag-removable">
                     {skill}
-                    <button className="btn-remove-skill" onClick={() => removeSkill(skill)}>×</button>
+                    <button className="mpf-btn-remove-skill" onClick={() => removeSkill(skill)}>
+                      <CloseIcon size={12} />
+                    </button>
                   </span>
                 ))}
               </div>
-              <div className="edit-actions" style={{ marginTop: "16px" }}>
-                <button className="btn-cancel-edit" onClick={() => setEditingSkills(false)}>Cancel</button>
-                <button className="btn-save-edit" onClick={saveSkills} disabled={skillsSaving}>
+              <div className="mpf-edit-actions" style={{ marginTop: "16px" }}>
+                <button className="mpf-btn-cancel-edit" onClick={() => setEditingSkills(false)}>Cancel</button>
+                <button className="mpf-btn-save-edit" onClick={saveSkills} disabled={skillsSaving}>
                   {skillsSaving ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>
           ) : (
             profile.skills?.length > 0 ? (
-              <div className="profile-tags">
+              <div className="mpf-tags">
                 {profile.skills.map((skill, i) => (
-                  <span key={i} className="profile-tag">{skill}</span>
+                  <span key={i} className="mpf-tag">{skill}</span>
                 ))}
               </div>
             ) : (
-              <p className="profile-empty">No skills added yet.</p>
+              <p className="mpf-empty">No skills added yet.</p>
             )
           )}
         </section>
 
         {/* ── Two-column grid ── */}
-        <div className="profile-two-col">
+        <div className="mpf-two-col">
 
           {/* ── Experience ── */}
-          <section className="profile-card">
-            <div className="profile-card-header">
-              <h2 className="profile-card-title">Experience &amp; Internships</h2>
-              <button className="btn-add-section" onClick={openAddExp}>+ Add</button>
+          <section className="mpf-card">
+            <div className="mpf-card-header">
+              <h2 className="mpf-card-title">Experience &amp; Internships</h2>
+              <button className="mpf-btn-add-section" onClick={openAddExp}>+ Add</button>
             </div>
             {profile.experience?.length > 0 ? (
-              <div className="profile-entry-list">
+              <div className="mpf-entry-list">
                 {profile.experience.map((exp) => (
-                  <div key={exp.id} className="profile-entry">
-                    <div className="entry-header">
-                      <p className="profile-entry-title">{exp.title}</p>
-                      <div className="entry-actions">
-                        <button className="btn-entry-action" onClick={() => openEditExp(exp)}>✎</button>
-                        <button className="btn-entry-action btn-entry-delete" onClick={() => deleteExp(exp.id)}>✕</button>
+                  <div key={exp.id} className="mpf-entry">
+                    <div className="mpf-entry-header">
+                      <p className="mpf-entry-title">{exp.title}</p>
+                      <div className="mpf-entry-actions">
+                        <button className="mpf-btn-entry-action" onClick={() => openEditExp(exp)}><EditIcon /></button>
+                        <button className="mpf-btn-entry-action mpf-btn-entry-delete" onClick={() => deleteExp(exp.id)}><CloseIcon /></button>
                       </div>
                     </div>
-                    <p className="profile-entry-sub">
+                    <p className="mpf-entry-sub">
                       {exp.company}{exp.location ? ` · ${exp.location}` : ""}
                     </p>
                     {exp.startDate && (
-                      <p className="profile-entry-dates">
+                      <p className="mpf-entry-dates">
                         {formatDate(exp.startDate)} — {exp.working ? "Present" : formatDate(exp.endDate)}
                       </p>
                     )}
                     {exp.description && (
-                      <p className="profile-entry-desc">{exp.description}</p>
+                      <p className="mpf-entry-desc">{exp.description}</p>
                     )}
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="profile-empty">No experience added yet.</p>
+              <p className="mpf-empty">No experience added yet.</p>
             )}
           </section>
 
           {/* ── Right column ── */}
-          <div className="profile-right-col">
+          <div className="mpf-right-col">
 
             {/* ── Certifications ── */}
-            <section className="profile-card">
-              <div className="profile-card-header">
-                <h2 className="profile-card-title">Certifications</h2>
-                <button className="btn-add-section" onClick={openAddCert}>+ Add</button>
+            <section className="mpf-card">
+              <div className="mpf-card-header">
+                <h2 className="mpf-card-title">Certifications</h2>
+                <button className="mpf-btn-add-section" onClick={openAddCert}>+ Add</button>
               </div>
               {profile.certifications?.length > 0 ? (
-                <div className="profile-entry-list">
+                <div className="mpf-entry-list">
                   {profile.certifications.map((cert) => (
-                    <div key={cert.id} className="profile-entry">
-                      <div className="entry-header">
-                        <p className="profile-entry-title">{cert.name}</p>
-                        <div className="entry-actions">
-                          <button className="btn-entry-action" onClick={() => openEditCert(cert)}>✎</button>
-                          <button className="btn-entry-action btn-entry-delete" onClick={() => deleteCert(cert.id)}>✕</button>
+                    <div key={cert.id} className="mpf-entry">
+                      <div className="mpf-entry-header">
+                        <p className="mpf-entry-title">{cert.name}</p>
+                        <div className="mpf-entry-actions">
+                          <button className="mpf-btn-entry-action" onClick={() => openEditCert(cert)}><EditIcon /></button>
+                          <button className="mpf-btn-entry-action mpf-btn-entry-delete" onClick={() => deleteCert(cert.id)}><CloseIcon /></button>
                         </div>
                       </div>
-                      <p className="profile-entry-sub">{cert.issuer}</p>
+                      <p className="mpf-entry-sub">{cert.issuer}</p>
                       {cert.issueDate && (
-                        <p className="profile-entry-dates">Issued {formatDate(cert.issueDate)}</p>
+                        <p className="mpf-entry-dates">Issued {formatDate(cert.issueDate)}</p>
                       )}
                       {cert.certificateId && (
-                        <p className="profile-entry-desc">ID: {cert.certificateId}</p>
+                        <p className="mpf-entry-desc">ID: {cert.certificateId}</p>
                       )}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="profile-empty">No certifications added yet.</p>
+                <p className="mpf-empty">No certifications added yet.</p>
               )}
             </section>
 
             {/* ── Resume ── */}
-            <section className="profile-card profile-resume-card">
-              <h2 className="profile-card-title">Resume</h2>
+            <section className="mpf-card mpf-resume-card">
+              <h2 className="mpf-card-title">Resume</h2>
               {profile.resumeUrl ? (
-                <div className="resume-exists-row">
+                <div className="mpf-resume-exists-row">
                   <a
                     href={profile.resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-resume"
+                    className="mpf-btn-resume"
                   >
                     View Resume ↗
                   </a>
                   <button
-                    className="btn-resume-reupload"
+                    className="mpf-btn-resume-reupload"
                     onClick={() => resumeInputRef.current.click()}
                     disabled={uploadingResume}
                   >
@@ -677,12 +719,12 @@ export default function MyProfile() {
                 </div>
               ) : (
                 <>
-                  <div className="resume-placeholder-row">
-                    <div className="resume-pdf-icon">PDF</div>
-                    <p className="resume-placeholder-text">No resume uploaded yet.</p>
+                  <div className="mpf-resume-placeholder-row">
+                    <div className="mpf-resume-pdf-icon">PDF</div>
+                    <p className="mpf-resume-placeholder-text">No resume uploaded yet.</p>
                   </div>
                   <button
-                    className="btn-resume"
+                    className="mpf-btn-resume"
                     onClick={() => resumeInputRef.current.click()}
                     disabled={uploadingResume}
                   >
@@ -706,8 +748,8 @@ export default function MyProfile() {
 
       {/* ── Experience Modal ── */}
       {expModalOpen && (
-        <div className="modal-overlay" onClick={() => setExpModalOpen(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div className="mpf-modal-overlay" onClick={() => setExpModalOpen(false)}>
+          <div className="mpf-modal" onClick={(e) => e.stopPropagation()}>
             <h2>{expEditTarget ? "Edit Experience" : "Add Experience"}</h2>
 
             <label>Job Title</label>
@@ -722,7 +764,7 @@ export default function MyProfile() {
             <label>Start Date</label>
             <input name="startDate" type="date" value={expForm.startDate} onChange={handleExpChange} />
 
-            <div className="checkbox-row">
+            <div className="mpf-checkbox-row">
               <input
                 type="checkbox"
                 id="working"
@@ -744,11 +786,11 @@ export default function MyProfile() {
             <label>Description</label>
             <textarea name="description" value={expForm.description} onChange={handleExpChange} placeholder="What did you do?" rows={3} />
 
-            {expError && <p className="form-error">{expError}</p>}
+            {expError && <p className="mpf-form-error">{expError}</p>}
 
-            <div className="modal-actions">
-              <button className="btn-cancel" onClick={() => setExpModalOpen(false)}>Cancel</button>
-              <button className="btn-apply" onClick={saveExp} disabled={expSaving}>
+            <div className="mpf-modal-actions">
+              <button className="mpf-btn-cancel" onClick={() => setExpModalOpen(false)}>Cancel</button>
+              <button className="mpf-btn-apply" onClick={saveExp} disabled={expSaving}>
                 {expSaving ? "Saving..." : "Save"}
               </button>
             </div>
@@ -758,8 +800,8 @@ export default function MyProfile() {
 
       {/* ── Certification Modal ── */}
       {certModalOpen && (
-        <div className="modal-overlay" onClick={() => setCertModalOpen(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div className="mpf-modal-overlay" onClick={() => setCertModalOpen(false)}>
+          <div className="mpf-modal" onClick={(e) => e.stopPropagation()}>
             <h2>{certEditTarget ? "Edit Certification" : "Add Certification"}</h2>
 
             <label>Certificate Name</label>
@@ -774,11 +816,11 @@ export default function MyProfile() {
             <label>Certificate ID</label>
             <input name="certificateId" value={certForm.certificateId} onChange={handleCertChange} placeholder="Optional credential ID" />
 
-            {certError && <p className="form-error">{certError}</p>}
+            {certError && <p className="mpf-form-error">{certError}</p>}
 
-            <div className="modal-actions">
-              <button className="btn-cancel" onClick={() => setCertModalOpen(false)}>Cancel</button>
-              <button className="btn-apply" onClick={saveCert} disabled={certSaving}>
+            <div className="mpf-modal-actions">
+              <button className="mpf-btn-cancel" onClick={() => setCertModalOpen(false)}>Cancel</button>
+              <button className="mpf-btn-apply" onClick={saveCert} disabled={certSaving}>
                 {certSaving ? "Saving..." : "Save"}
               </button>
             </div>

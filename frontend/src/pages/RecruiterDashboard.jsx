@@ -28,6 +28,44 @@ const EMPTY_FORM = {
   description: "",
 };
 
+// ── Inline SVG icons (replace emoji) ──
+function IconClipboard() {
+  return (
+    <svg className="rd2-icon" viewBox="0 0 24 24" fill="none">
+      <rect x="6" y="4" width="12" height="17" rx="2" stroke="#111111" strokeWidth="1.6" />
+      <rect x="9" y="2.5" width="6" height="3" rx="1" fill="#ffffff" stroke="#111111" strokeWidth="1.6" />
+      <line x1="9" y1="11" x2="15" y2="11" stroke="#111111" strokeWidth="1.4" strokeLinecap="round" />
+      <line x1="9" y1="14.5" x2="15" y2="14.5" stroke="#111111" strokeWidth="1.4" strokeLinecap="round" />
+      <line x1="9" y1="18" x2="12.5" y2="18" stroke="#111111" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconCalendar() {
+  return (
+    <svg className="rd2-icon" viewBox="0 0 24 24" fill="none">
+      <rect x="3.5" y="5" width="17" height="16" rx="2" stroke="#111111" strokeWidth="1.6" />
+      <line x1="3.5" y1="9.5" x2="20.5" y2="9.5" stroke="#111111" strokeWidth="1.6" />
+      <line x1="7.5" y1="2.5" x2="7.5" y2="7" stroke="#111111" strokeWidth="1.6" strokeLinecap="round" />
+      <line x1="16.5" y1="2.5" x2="16.5" y2="7" stroke="#111111" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="8" cy="13.5" r="1" fill="#111111" />
+      <circle cx="12" cy="13.5" r="1" fill="#111111" />
+      <circle cx="8" cy="17" r="1" fill="#111111" />
+    </svg>
+  );
+}
+
+function IconUsers() {
+  return (
+    <svg className="rd2-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="9" cy="8" r="3.2" stroke="#111111" strokeWidth="1.6" />
+      <path d="M3.5 19c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5" stroke="#111111" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="16.5" cy="8.5" r="2.4" stroke="#111111" strokeWidth="1.4" />
+      <path d="M14.7 13.7c2.4.2 4.3 2.1 4.3 4.8" stroke="#111111" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function RecruiterDashboard() {
   const token  = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
@@ -159,78 +197,81 @@ export default function RecruiterDashboard() {
 
   // ── Render ──
   return (
-    <div className="rd-page">
+    <div className="rd2-page">
       <Navbar />
-      <main className="rd-main">
+      <main className="rd2-main">
 
         {/* ── Header ── */}
-        <div className="rd-header">
+        <div className="rd2-header">
           <div>
-            <h1 className="rd-title">Recruiter Dashboard</h1>
-            <p className="rd-subtitle">Overview of your hiring activity</p>
+            <h1 className="rd2-title">Recruiter Dashboard</h1>
+            <p className="rd2-subtitle">Overview of your hiring activity</p>
           </div>
-          <button className="rd-btn-post" onClick={() => setShowModal(true)}>
+          <button className="rd2-btn-post" onClick={() => setShowModal(true)}>
             + Post New Job
           </button>
         </div>
 
         {/* ── Stats ── */}
-        <div className="rd-stats">
-          <div className="rd-stat-card">
-            <p className="rd-stat-label">Jobs Posted</p>
-            <p className="rd-stat-value">{jobsLoading ? "—" : totalJobs}</p>
+        <div className="rd2-stats">
+          <div className="rd2-stat-card">
+            <p className="rd2-stat-label">Jobs Posted</p>
+            <p className="rd2-stat-value">{jobsLoading ? "—" : totalJobs}</p>
           </div>
-          <div className="rd-stat-card">
-            <p className="rd-stat-label">Open Jobs</p>
-            <p className="rd-stat-value rd-stat-open">{jobsLoading ? "—" : openJobs}</p>
+          <div className="rd2-stat-card">
+            <p className="rd2-stat-label">Open Jobs</p>
+            <p className="rd2-stat-value rd2-stat-open">{jobsLoading ? "—" : openJobs}</p>
           </div>
-          <div className="rd-stat-card">
-            <p className="rd-stat-label">Total Applicants</p>
-            <p className="rd-stat-value">{jobsLoading ? "—" : totalApplicants}</p>
+          <div className="rd2-stat-card">
+            <p className="rd2-stat-label">Total Applicants</p>
+            <p className="rd2-stat-value">{jobsLoading ? "—" : totalApplicants}</p>
           </div>
         </div>
 
         {/* ── Quick link ── */}
-        <div className="rd-quick-links">
-          <div className="rd-quick-card" onClick={() => navigate("/my-jobs")}>
-            <div className="rd-quick-icon">📋</div>
+        <div className="rd2-quick-links">
+          <div className="rd2-quick-card" onClick={() => navigate("/my-jobs")}>
+            <div className="rd2-quick-icon"><IconClipboard /></div>
             <div>
-              <p className="rd-quick-title">Manage Jobs</p>
-              <p className="rd-quick-sub">View, edit, close or delete your postings — and review applicants</p>
+              <p className="rd2-quick-title">Manage Jobs</p>
+              <p className="rd2-quick-sub">View, edit, close or delete your postings — and review applicants</p>
             </div>
-            <span className="rd-quick-arrow">→</span>
+            <span className="rd2-quick-arrow">→</span>
           </div>
         </div>
 
         {/* ── Lower two-column section ── */}
-        <div className="rd-lower-grid">
+        <div className="rd2-lower-grid">
 
           {/* ── LEFT: Upcoming Interviews ── */}
-          <div className="rd-panel">
-            <div className="rd-panel-header">
-              <h2 className="rd-panel-title">📅 Upcoming Interviews</h2>
+          <div className="rd2-panel">
+            <div className="rd2-panel-header">
+              <h2 className="rd2-panel-title">
+                <IconCalendar />
+                Upcoming Interviews
+              </h2>
             </div>
 
             {jobsLoading ? (
-              <p className="rd-panel-empty">Loading…</p>
+              <p className="rd2-panel-empty">Loading…</p>
             ) : interviews.length === 0 ? (
-              <div className="rd-panel-empty-state">
-                <p className="rd-panel-empty-title">No interviews scheduled</p>
-                <p className="rd-panel-empty-sub">Shortlisted applicants will appear here once you set an interview time.</p>
+              <div className="rd2-panel-empty-state">
+                <p className="rd2-panel-empty-title">No interviews scheduled</p>
+                <p className="rd2-panel-empty-sub">Shortlisted applicants will appear here once you set an interview time.</p>
               </div>
             ) : (
-              <div className="rd-interview-list">
+              <div className="rd2-interview-list">
                 {interviews.map((interview, idx) => (
-                  <div key={idx} className="rd-interview-row">
-                    <div className="rd-interview-avatar">
+                  <div key={idx} className="rd2-interview-row">
+                    <div className="rd2-interview-avatar">
                       {getInitials(interview.name)}
                     </div>
-                    <div className="rd-interview-info">
-                      <p className="rd-interview-name">{interview.name}</p>
-                      <p className="rd-interview-job">{interview.jobTitle}</p>
+                    <div className="rd2-interview-info">
+                      <p className="rd2-interview-name">{interview.name}</p>
+                      <p className="rd2-interview-job">{interview.jobTitle}</p>
                     </div>
-                    <div className="rd-interview-time">
-                      <p className="rd-interview-datetime">{formatDateTime(interview.interviewTime)}</p>
+                    <div className="rd2-interview-time">
+                      <p className="rd2-interview-datetime">{formatDateTime(interview.interviewTime)}</p>
                     </div>
                   </div>
                 ))}
@@ -239,11 +280,14 @@ export default function RecruiterDashboard() {
           </div>
 
           {/* ── RIGHT: Browse Candidates ── */}
-          <div className="rd-panel">
-            <div className="rd-panel-header">
-              <h2 className="rd-panel-title">👥 Browse Candidates</h2>
+          <div className="rd2-panel">
+            <div className="rd2-panel-header">
+              <h2 className="rd2-panel-title">
+                <IconUsers />
+                Browse Candidates
+              </h2>
               <button
-                className="rd-panel-link"
+                className="rd2-panel-link"
                 onClick={() => navigate("/candidates")}
               >
                 View All →
@@ -251,41 +295,41 @@ export default function RecruiterDashboard() {
             </div>
 
             {candidatesLoading ? (
-              <p className="rd-panel-empty">Loading…</p>
+              <p className="rd2-panel-empty">Loading…</p>
             ) : candidates.length === 0 ? (
-              <div className="rd-panel-empty-state">
-                <p className="rd-panel-empty-title">No candidates yet</p>
-                <p className="rd-panel-empty-sub">Registered students will appear here.</p>
+              <div className="rd2-panel-empty-state">
+                <p className="rd2-panel-empty-title">No candidates yet</p>
+                <p className="rd2-panel-empty-sub">Registered students will appear here.</p>
               </div>
             ) : (
-              <div className="rd-candidates-scroll">
+              <div className="rd2-candidates-scroll">
                 {candidates.slice(0, 3).map((candidate) => (
                   <div
                     key={candidate.id}
-                    className="rd-candidate-card"
+                    className="rd2-candidate-card"
                     onClick={() => navigate(`/candidate/${candidate.id}`)}
                   >
-                    <div className="rd-candidate-avatar">
+                    <div className="rd2-candidate-avatar">
                       {getInitials(candidate.name)}
                     </div>
-                    <div className="rd-candidate-info">
-                      <p className="rd-candidate-name">{candidate.name || "Unnamed"}</p>
-                      <p className="rd-candidate-title">
+                    <div className="rd2-candidate-info">
+                      <p className="rd2-candidate-name">{candidate.name || "Unnamed"}</p>
+                      <p className="rd2-candidate-title">
                         {candidate.jobTitle || "No title set"}
                         {candidate.company ? ` · ${candidate.company}` : ""}
                       </p>
                       {candidate.skills?.length > 0 && (
-                        <div className="rd-candidate-skills">
+                        <div className="rd2-candidate-skills">
                           {candidate.skills.slice(0, 3).map((s, i) => (
-                            <span key={i} className="rd-skill-chip">{s}</span>
+                            <span key={i} className="rd2-skill-chip">{s}</span>
                           ))}
                           {candidate.skills.length > 3 && (
-                            <span className="rd-skill-chip rd-skill-more">+{candidate.skills.length - 3}</span>
+                            <span className="rd2-skill-chip rd2-skill-more">+{candidate.skills.length - 3}</span>
                           )}
                         </div>
                       )}
                     </div>
-                    <span className="rd-candidate-arrow">→</span>
+                    <span className="rd2-candidate-arrow">→</span>
                   </div>
                 ))}
               </div>
@@ -297,38 +341,38 @@ export default function RecruiterDashboard() {
 
       {/* ── Post Job Modal ── */}
       {showModal && (
-        <div className="rd-modal-overlay" onClick={closeModal}>
-          <div className="rd-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="rd-modal-header">
+        <div className="rd2-modal-overlay" onClick={closeModal}>
+          <div className="rd2-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="rd2-modal-header">
               <h2>Post a New Job</h2>
-              <button className="rd-modal-close" onClick={closeModal}>✕</button>
+              <button className="rd2-modal-close" onClick={closeModal}>✕</button>
             </div>
 
-            <div className="rd-modal-body">
-              <div className="rd-form-row">
-                <div className="rd-form-field">
+            <div className="rd2-modal-body">
+              <div className="rd2-form-row">
+                <div className="rd2-form-field">
                   <label>Job Title *</label>
                   <input name="jobTitle" value={form.jobTitle} onChange={handleFormChange} placeholder="e.g. Software Engineer" />
                 </div>
-                <div className="rd-form-field">
+                <div className="rd2-form-field">
                   <label>Company *</label>
                   <input name="company" value={form.company} onChange={handleFormChange} placeholder="Company name" />
                 </div>
               </div>
 
-              <div className="rd-form-row">
-                <div className="rd-form-field">
+              <div className="rd2-form-row">
+                <div className="rd2-form-field">
                   <label>Location</label>
                   <input name="location" value={form.location} onChange={handleFormChange} placeholder="City / Remote" />
                 </div>
-                <div className="rd-form-field">
+                <div className="rd2-form-field">
                   <label>Experience</label>
                   <input name="experience" value={form.experience} onChange={handleFormChange} placeholder="e.g. 2–4 years" />
                 </div>
               </div>
 
-              <div className="rd-form-row">
-                <div className="rd-form-field">
+              <div className="rd2-form-row">
+                <div className="rd2-form-field">
                   <label>Job Type</label>
                   <select name="jobType" value={form.jobType} onChange={handleFormChange}>
                     <option value="FULL_TIME">Full Time</option>
@@ -336,10 +380,10 @@ export default function RecruiterDashboard() {
                     <option value="INTERNSHIP">Internship</option>
                   </select>
                 </div>
-                <div className="rd-form-field">
+                <div className="rd2-form-field">
                   <label>
                     Package{" "}
-                    <span className="rd-label-hint">
+                    <span className="rd2-label-hint">
                       ({form.jobType === "FULL_TIME" ? "LPA" : form.jobType === "INTERNSHIP" ? "₹/month" : "₹/hr"})
                     </span>
                   </label>
@@ -347,33 +391,33 @@ export default function RecruiterDashboard() {
                 </div>
               </div>
 
-              <div className="rd-form-field">
+              <div className="rd2-form-field">
                 <label>About the Role</label>
                 <textarea name="about" value={form.about} onChange={handleFormChange} placeholder="Short summary..." rows={2} />
               </div>
 
-              <div className="rd-form-field">
+              <div className="rd2-form-field">
                 <label>Job Description</label>
                 <textarea name="description" value={form.description} onChange={handleFormChange} placeholder="Detailed responsibilities..." rows={3} />
               </div>
 
-              <div className="rd-form-field">
+              <div className="rd2-form-field">
                 <label>Skills Required</label>
-                <div className="rd-skill-row">
+                <div className="rd2-skill-row">
                   <input
                     value={skillInput}
                     onChange={(e) => setSkillInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && addSkill()}
                     placeholder="Type a skill and press Enter or Add"
                   />
-                  <button className="rd-btn-sm-ghost" onClick={addSkill}>Add</button>
+                  <button className="rd2-btn-sm-ghost" onClick={addSkill}>Add</button>
                 </div>
                 {skills.length > 0 && (
-                  <div className="rd-skill-tags">
+                  <div className="rd2-skill-tags">
                     {skills.map((s, i) => (
-                      <span key={i} className="rd-skill-tag">
+                      <span key={i} className="rd2-skill-tag">
                         {s}
-                        <button className="rd-skill-remove" onClick={() => removeSkill(s)}>×</button>
+                        <button className="rd2-skill-remove" onClick={() => removeSkill(s)}>×</button>
                       </span>
                     ))}
                   </div>
@@ -381,15 +425,15 @@ export default function RecruiterDashboard() {
               </div>
 
               {postMsg.text && (
-                <p className={postMsg.type === "success" ? "rd-msg-success" : "rd-msg-error"}>
+                <p className={postMsg.type === "success" ? "rd2-msg-success" : "rd2-msg-error"}>
                   {postMsg.text}
                 </p>
               )}
             </div>
 
-            <div className="rd-modal-footer">
-              <button className="rd-btn-cancel" onClick={closeModal}>Cancel</button>
-              <button className="rd-btn-post" onClick={handlePostJob} disabled={posting}>
+            <div className="rd2-modal-footer">
+              <button className="rd2-btn-cancel" onClick={closeModal}>Cancel</button>
+              <button className="rd2-btn-post" onClick={handlePostJob} disabled={posting}>
                 {posting ? "Posting..." : "Post Job"}
               </button>
             </div>

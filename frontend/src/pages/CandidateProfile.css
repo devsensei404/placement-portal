@@ -1,14 +1,12 @@
-/* CandidateProfile.css */
-
 .cp-page {
   min-height: 100vh;
-  background: #f5f0ff;
+  background: #f9f9f9;
 }
 
 .cp-main {
   max-width: 960px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 32px 24px 60px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -18,7 +16,8 @@
   max-width: 960px;
   margin: 60px auto;
   padding: 0 24px;
-  color: #374151;
+  color: #444444;
+  font-family: "Inter", sans-serif;
   font-size: 15px;
   text-align: center;
   display: flex;
@@ -29,35 +28,45 @@
 
 .cp-error {
   color: #b91c1c;
+  font-family: "Inter", sans-serif;
 }
 
-/* ── Back button ── */
-
 .cp-btn-back {
-  background: #f3efff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
-  border-radius: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #ffffff;
+  color: #111111;
+  border: 1.5px solid #111111;
+  border-radius: 8px;
   padding: 7px 16px;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   width: fit-content;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
 .cp-btn-back:hover {
-  background: #ede9fe;
+  background-color: #111111;
+  color: #ffffff;
+}
+
+.cp-btn-back:active {
+  transform: scale(0.96);
 }
 
 /* ── Hero Card ── */
 
 .cp-hero-card {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
-  border-radius: 12px;
+  border: 1px solid #111111;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   padding-bottom: 28px;
+  opacity: 0;
+  animation: cp-fade-up 0.4s ease forwards;
 }
 
 /* Cover photo */
@@ -77,7 +86,7 @@
 .cp-cover-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 40%, #818cf8 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 55%, #111111 100%);
 }
 
 /* Avatar */
@@ -102,8 +111,9 @@
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: #7c3aed;
-  color: #ffffff;
+  background: #f0f0f0;
+  color: #111111;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 34px;
   font-weight: 700;
   display: flex;
@@ -122,15 +132,19 @@
 }
 
 .cp-name {
+  font-family: "Space Grotesk", sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.02em;
+  color: #111111;
   margin: 0;
 }
 
 .cp-job-title {
+  font-family: "Inter", sans-serif;
   font-size: 15px;
-  color: #374151;
+  font-weight: 500;
+  color: #444444;
   margin: 0;
 }
 
@@ -142,53 +156,81 @@
 }
 
 .cp-meta-chip {
-  background: #f3efff;
-  color: #5b21b6;
-  border: 1px solid #ddd6fe;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f9f9f9;
+  color: #111111;
+  border: 1px solid #111111;
   border-radius: 999px;
   padding: 3px 12px;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
+  font-weight: 500;
+}
+
+.cp-chip-icon {
+  flex-shrink: 0;
 }
 
 .cp-resume-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  appearance: none;
+  -webkit-appearance: none;
   margin-top: 6px;
-  background: #7c3aed;
-  color: #ffffff;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
   text-decoration: none;
   border-radius: 8px;
   padding: 10px 18px;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 600;
   width: fit-content;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .cp-resume-link:hover {
-  background: #6d28d9;
+  background-color: #333333 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
 
-/* ── Generic Card ── */
+.cp-resume-link:active {
+  transform: scale(0.97);
+}
+
+/* ── Generic Card (static, non-interactive — no hover lift) ── */
 
 .cp-card {
   background: #ffffff;
-  border: 1px solid #e9e2ff;
-  border-radius: 12px;
+  border: 1px solid #111111;
+  border-radius: 14px;
   padding: 24px 28px;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  animation: cp-fade-up 0.4s ease forwards;
 }
 
 .cp-section-title {
-  font-size: 16px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 17px;
   font-weight: 700;
-  color: #111827;
+  letter-spacing: -0.01em;
+  color: #111111;
   margin: 0 0 16px 0;
 }
 
 /* ── About ── */
 
 .cp-about-text {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  color: #374151;
+  font-weight: 400;
+  color: #444444;
   line-height: 1.7;
   margin: 0;
 }
@@ -202,11 +244,12 @@
 }
 
 .cp-skill-tag {
-  background: #f3efff;
-  color: #7c3aed;
-  border: 1px solid #ddd6fe;
+  background: #f9f9f9;
+  color: #111111;
+  border: 1px solid #111111;
   padding: 4px 14px;
   border-radius: 999px;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
   font-weight: 500;
 }
@@ -224,6 +267,8 @@
   gap: 16px;
   padding-bottom: 20px;
   position: relative;
+  opacity: 0;
+  animation: cp-fade-up 0.4s ease forwards;
 }
 
 /* vertical line connecting dots */
@@ -234,15 +279,15 @@
   top: 16px;
   bottom: 0;
   width: 2px;
-  background: #e9e2ff;
+  background: #e0e0e0;
 }
 
 .cp-timeline-dot {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #7c3aed;
-  border: 3px solid #ede9fe;
+  background: #111111;
+  border: 3px solid #f0f0f0;
   flex-shrink: 0;
   margin-top: 3px;
 }
@@ -257,34 +302,40 @@
 .cp-exp-title,
 .cp-exp-company,
 .cp-exp-desc {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .cp-exp-title {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
   margin: 0 0 2px 0;
 }
 
 .cp-exp-company {
+  font-family: "Inter", sans-serif;
   font-size: 13px;
-  color: #374151;
+  font-weight: 400;
+  color: #444444;
   margin: 0 0 2px 0;
 }
 
 .cp-exp-dates {
+  font-family: "Inter", sans-serif;
   font-size: 12px;
-  color: #6b7280;
+  font-weight: 400;
+  color: #888888;
   margin: 0 0 4px 0;
 }
 
 .cp-exp-desc {
-  white-space: normal;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
-  color: #4b5563;
+  font-weight: 400;
+  color: #444444;
   line-height: 1.5;
   margin: 0;
 }
@@ -302,7 +353,9 @@
   gap: 14px;
   align-items: flex-start;
   padding-bottom: 16px;
-  border-bottom: 1px solid #f3efff;
+  border-bottom: 1px solid #f0f0f0;
+  opacity: 0;
+  animation: cp-fade-up 0.4s ease forwards;
 }
 
 .cp-cert-row:last-child {
@@ -311,9 +364,15 @@
 }
 
 .cp-cert-icon {
-  font-size: 22px;
   flex-shrink: 0;
   margin-top: 2px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cp-cert-info {
@@ -322,21 +381,26 @@
 }
 
 .cp-cert-name {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: #111827;
+  color: #111111;
   margin: 0 0 2px 0;
 }
 
 .cp-cert-meta {
+  font-family: "Inter", sans-serif;
   font-size: 13px;
-  color: #374151;
+  font-weight: 400;
+  color: #444444;
   margin: 0 0 2px 0;
 }
 
 .cp-cert-id {
+  font-family: "Inter", sans-serif;
   font-size: 12px;
-  color: #6b7280;
+  font-weight: 400;
+  color: #888888;
   margin: 0;
 }
 
@@ -348,30 +412,127 @@
 }
 
 .cp-empty-title {
+  font-family: "Inter", sans-serif;
   font-size: 16px;
   font-weight: 600;
-  color: #374151;
+  color: #111111;
   margin: 0 0 6px 0;
 }
 
 .cp-empty-sub {
+  font-family: "Inter", sans-serif;
   font-size: 14px;
-  color: #9ca3af;
+  font-weight: 400;
+  color: #888888;
   margin: 0;
+}
+
+/* ── Entrance animation ── */
+
+@keyframes cp-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-hero-card,
+  .cp-card,
+  .cp-timeline-item,
+  .cp-cert-row {
+    animation: none;
+    opacity: 1;
+  }
+
+  .cp-btn-back,
+  .cp-resume-link {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ── Responsive ── */
 
-@media (max-width: 680px) {
+@media (max-width: 900px) {
+  .cp-main {
+    max-width: 100%;
+    padding: 28px 20px 48px;
+  }
+
+  .cp-card {
+    padding: 20px 22px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cp-main {
+    padding: 24px 16px 40px;
+    gap: 16px;
+  }
+
   .cp-avatar-wrap {
     margin-left: 20px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .cp-avatar-img,
+  .cp-avatar-initials {
+    width: 100px;
+    height: 100px;
+  }
+
+  .cp-avatar-initials {
+    font-size: 28px;
   }
 
   .cp-hero-info {
-    padding: 16px 20px 0;
+    padding: 14px 20px 0;
   }
 
   .cp-name {
     font-size: 22px;
+  }
+
+  .cp-card {
+    padding: 18px 18px;
+  }
+
+  .cp-cert-row {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .cp-cover {
+    height: 130px;
+  }
+
+  .cp-avatar-wrap {
+    margin-left: 16px;
+    width: 84px;
+    height: 84px;
+  }
+
+  .cp-avatar-img,
+  .cp-avatar-initials {
+    width: 84px;
+    height: 84px;
+  }
+
+  .cp-avatar-initials {
+    font-size: 22px;
+  }
+
+  .cp-name {
+    font-size: 20px;
+  }
+
+  .cp-meta-chip {
+    font-size: 12px;
   }
 }
