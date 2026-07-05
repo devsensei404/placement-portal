@@ -1,0 +1,301 @@
+/* TakeAssessment.css — scoped tokens, same monochrome system.
+   Timer stays ink/black by default; only flips to red in the final
+   minute (functional warning), matching the red used for "Rejected" /
+   error states elsewhere in the app. */
+
+.ta-page {
+  --ta-ink: #111111;
+  --ta-text-secondary: #4b4b4b;
+  --ta-text-tertiary: #8f8f8f;
+  --ta-bg-subtle: #f9f9f9;
+  --ta-border: #111111;
+  --ta-radius-lg: 14px;
+  --ta-radius-md: 10px;
+  --ta-radius-sm: 8px;
+  --ta-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ta-font-display: "Space Grotesk", "Inter", -apple-system, sans-serif;
+  --ta-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  min-height: 100vh;
+  background: #f9f9f9;
+  font-family: var(--ta-font-body);
+  color: var(--ta-ink);
+}
+
+.ta-status {
+  padding: 60px;
+  text-align: center;
+  color: var(--ta-text-secondary);
+}
+
+.ta-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+.ta-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #b91c1c;
+  padding: 12px 16px;
+  border-radius: var(--ta-radius-sm);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.ta-btn-cancel {
+  appearance: none;
+  padding: 10px 22px;
+  background-color: #ffffff;
+  color: #111111;
+  border: 1.5px solid #111111;
+  border-radius: var(--ta-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--ta-font-body);
+  cursor: pointer;
+  width: auto;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ta-btn-cancel:hover {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+.ta-timer-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #ffffff;
+  border-bottom: 1px solid var(--ta-border);
+  padding: 14px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.ta-timer-label {
+  font-size: 13px;
+  color: var(--ta-text-secondary);
+  font-weight: 500;
+}
+
+.ta-timer-value {
+  font-family: var(--ta-font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ta-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Functional warning — kept as color intentionally */
+.ta-timer-critical {
+  color: #dc2626;
+}
+
+.ta-title {
+  font-family: var(--ta-font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ta-ink);
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+
+.ta-negative-note {
+  font-size: 13px;
+  color: #92400e;
+  background: #fff7ed;
+  border: 1px solid #92400e;
+  padding: 8px 14px;
+  border-radius: var(--ta-radius-sm);
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.ta-question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.ta-question-card {
+  background: #ffffff;
+  border: 1px solid var(--ta-border);
+  border-radius: var(--ta-radius-lg);
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  animation: ta-fade-up 0.4s var(--ta-ease-spring) both;
+}
+
+.ta-question-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ta-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.ta-question-text {
+  font-size: 15px;
+  color: var(--ta-ink);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.ta-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ta-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid #dddddd;
+  border-radius: var(--ta-radius-sm);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ta-text-secondary);
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.ta-option:has(input:checked) {
+  border-color: var(--ta-ink);
+  background: var(--ta-bg-subtle);
+  color: var(--ta-ink);
+}
+
+.ta-option input {
+  width: auto;
+}
+
+.ta-option-letter {
+  font-weight: 700;
+  color: var(--ta-ink);
+}
+
+.ta-submit-bar {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ta-answered-count {
+  font-size: 13px;
+  color: var(--ta-text-tertiary);
+}
+
+.ta-btn-primary {
+  appearance: none;
+  padding: 12px 32px;
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #111111;
+  border-radius: var(--ta-radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--ta-font-body);
+  cursor: pointer;
+  width: auto;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.ta-btn-primary:hover:not(:disabled) {
+  background-color: #333333 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.ta-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ta-result-card {
+  background: #ffffff;
+  border: 1px solid var(--ta-border);
+  border-radius: var(--ta-radius-lg);
+  padding: 40px;
+  text-align: center;
+  margin-top: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  animation: ta-fade-up 0.45s var(--ta-ease-spring) both;
+}
+
+.ta-result-title {
+  font-family: var(--ta-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ta-ink);
+  margin-bottom: 24px;
+}
+
+.ta-result-note {
+  font-size: 15px;
+  color: var(--ta-text-secondary);
+  margin-bottom: 24px;
+}
+
+.ta-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.ta-result-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ta-result-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ta-text-tertiary);
+}
+
+.ta-result-value {
+  font-family: var(--ta-font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ta-ink);
+}
+
+/* Functional colors — correctness signal, kept intentionally */
+.ta-green {
+  color: #166534;
+}
+
+.ta-red {
+  color: #b91c1c;
+}
+
+@keyframes ta-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ta-page * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

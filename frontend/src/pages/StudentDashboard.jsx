@@ -48,6 +48,11 @@ export default function StudentDashboard() {
   const [loading,     setLoading    ] = useState(true);
   const [progressActive, setProgressActive] = useState(false);
 
+  // ── Pending assessments (jobs where this user is APPLIED/INTERVIEWING
+  //    and an OPEN assessment exists) ──
+  const [pendingAssessments, setPendingAssessments] = useState([]);
+  const [assessmentsLoading, setAssessmentsLoading] = useState(true);
+
   useEffect(() => {
     Promise.all([
       fetch(`${BASE_URL}/jobs/getAll`, {
@@ -64,8 +69,42 @@ export default function StudentDashboard() {
         setJobs(jobsData);
         setProfile(profileData);
         setUnreadCount(Array.isArray(notifData) ? notifData.length : (notifData.totalUnread ?? 0));
+
+        // Find jobs this user applied to with status APPLIED/INTERVIEWING,
+        // then check each one for an OPEN assessment.
+        const eligibleJobs = jobsData.filter((job) =>
+          (job.applicants || []).some(
+            (a) =>
+              Number(a.applicantId) === Number(userId) &&
+              (a.applicationStatus === "APPLIED" || a.applicationStatus === "INTERVIEWING")
+          )
+        );
+
+        if (eligibleJobs.length === 0) {
+          setAssessmentsLoading(false);
+          return;
+        }
+
+        Promise.all(
+          eligibleJobs.map((job) =>
+            fetch(`${BASE_URL}/assessments/job/${job.id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+              .then((r) => (r.ok ? r.json() : []))
+              .then((assessmentsForJob) => {
+                const open = assessmentsForJob.find((a) => a.status === "OPEN");
+                return open ? { job, assessment: open } : null;
+              })
+              .catch(() => null)
+          )
+        )
+          .then((results) => setPendingAssessments(results.filter(Boolean)))
+          .finally(() => setAssessmentsLoading(false));
       })
-      .catch((err) => console.error("Dashboard fetch failed:", err))
+      .catch((err) => {
+        console.error("Dashboard fetch failed:", err);
+        setAssessmentsLoading(false);
+      })
       .finally(() => {
         setLoading(false);
         // Trigger progress bar animation after cards appear
@@ -176,6 +215,30 @@ export default function StudentDashboard() {
             </div>
             <div className="sd-interview-time">
               {formatDateTime(upcomingInterview.interviewTime)}
+            </div>
+          </div>
+        )}
+
+        {/* ── Pending Assessments ── */}
+        {!assessmentsLoading && pendingAssessments.length > 0 && (
+          <div className="sd-assessment-card sd-slide-up">
+            <div className="sd-assessment-accent" />
+            <div className="sd-assessment-body">
+              <p className="sd-assessment-eyebrow">Assessment Pending</p>
+              {pendingAssessments.map(({ job, assessment }) => (
+                <div key={assessment.assessmentId} className="sd-assessment-row">
+                  <div>
+                    <p className="sd-assessment-title">{assessment.title}</p>
+                    <p className="sd-assessment-company">{job.jobTitle} · {job.company}</p>
+                  </div>
+                  <button
+                    className="sd-assessment-btn"
+                    onClick={() => navigate(`/assessments/${assessment.assessmentId}/take`)}
+                  >
+                    Take Assessment
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         )}

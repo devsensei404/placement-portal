@@ -477,6 +477,12 @@ export default function MyJobs() {
                       <div className="mj2-job-actions">
                         <button
                           className="mj2-btn-sm mj2-btn-ghost"
+                          onClick={(e) => { e.stopPropagation(); navigate(`/assessments/manage/${job.id}`); }}
+                        >
+                          Assessments
+                        </button>
+                        <button
+                          className="mj2-btn-sm mj2-btn-ghost"
                           onClick={(e) => openEditModal(job, e)}
                         >
                           Edit

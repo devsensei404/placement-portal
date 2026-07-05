@@ -1,0 +1,212 @@
+/* AssessmentResults.css — scoped tokens, same monochrome system */
+
+.ar-page {
+  --ar-ink: #111111;
+  --ar-text-secondary: #4b4b4b;
+  --ar-text-tertiary: #8f8f8f;
+  --ar-bg-subtle: #f9f9f9;
+  --ar-border: #111111;
+  --ar-radius-lg: 14px;
+  --ar-radius-md: 10px;
+  --ar-radius-sm: 8px;
+  --ar-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ar-font-display: "Space Grotesk", "Inter", -apple-system, sans-serif;
+  --ar-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  min-height: 100vh;
+  background: #f9f9f9;
+  font-family: var(--ar-font-body);
+  color: var(--ar-ink);
+}
+
+.ar-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+@media (max-width: 600px) {
+  .ar-main {
+    padding: 28px 18px;
+  }
+}
+
+.ar-btn-back {
+  appearance: none;
+  background: none;
+  border: none;
+  color: var(--ar-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 16px;
+  font-family: var(--ar-font-body);
+}
+
+.ar-btn-back:hover {
+  color: var(--ar-ink);
+  text-decoration: underline;
+}
+
+.ar-loading,
+.ar-error {
+  font-size: 14px;
+  color: var(--ar-text-secondary);
+}
+
+.ar-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #b91c1c;
+  padding: 12px 16px;
+  border-radius: var(--ar-radius-sm);
+  margin-bottom: 16px;
+}
+
+.ar-header {
+  margin-bottom: 24px;
+}
+
+.ar-title {
+  font-family: var(--ar-font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ar-ink);
+}
+
+.ar-subtitle {
+  font-size: 13px;
+  color: var(--ar-text-secondary);
+  margin-top: 4px;
+}
+
+.ar-empty {
+  background: #ffffff;
+  border: 1px solid var(--ar-border);
+  border-radius: var(--ar-radius-lg);
+  padding: 56px 32px;
+  text-align: center;
+}
+
+.ar-empty-title {
+  font-family: var(--ar-font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ar-ink);
+  margin-bottom: 6px;
+}
+
+.ar-empty-sub {
+  font-size: 14px;
+  color: var(--ar-text-secondary);
+}
+
+.ar-table {
+  background: #ffffff;
+  border: 1px solid var(--ar-border);
+  border-radius: var(--ar-radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.ar-table-header,
+.ar-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.6fr 1fr 24px;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 20px;
+}
+
+@media (max-width: 600px) {
+  .ar-table-header,
+  .ar-table-row {
+    grid-template-columns: 1fr 1fr 24px;
+  }
+  .ar-table-header span:nth-child(3),
+  .ar-table-header span:nth-child(4),
+  .ar-table-row span:nth-child(3),
+  .ar-table-row span:nth-child(4) {
+    display: none;
+  }
+}
+
+.ar-table-header {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ar-text-tertiary);
+  border-bottom: 1px solid #dddddd;
+}
+
+.ar-table-row {
+  font-size: 14px;
+  color: var(--ar-ink);
+  border-bottom: 1px solid #eeeeee;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ar-row-group:last-child .ar-table-row {
+  border-bottom: none;
+}
+
+.ar-table-row:hover {
+  background: var(--ar-bg-subtle);
+}
+
+.ar-arrow {
+  color: var(--ar-ink);
+  font-size: 11px;
+}
+
+.ar-detail-panel {
+  background: var(--ar-bg-subtle);
+  padding: 16px 20px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.ar-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ar-detail-item {
+  background: #ffffff;
+  border: 1px solid var(--ar-border);
+  border-radius: var(--ar-radius-sm);
+  padding: 12px 16px;
+}
+
+.ar-detail-q {
+  font-size: 13px;
+  color: var(--ar-ink);
+  margin-bottom: 4px;
+}
+
+.ar-detail-meta {
+  font-size: 12px;
+  color: var(--ar-text-tertiary);
+}
+
+/* Functional colors — correctness signal, kept intentionally */
+.ar-correct {
+  color: #166534;
+}
+
+.ar-wrong {
+  color: #b91c1c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-page * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

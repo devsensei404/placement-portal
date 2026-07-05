@@ -18,6 +18,10 @@ import ChatWindow from "./pages/ChatWindow.jsx";
 import ResumeBuilder from "./pages/ResumeBuilder.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import TermsAndPrivacy from "./pages/TermsAndPrivacy.jsx";
+import ManageAssessments from "./pages/ManageAssessments.jsx";
+import ManageQuestions from "./pages/ManageQuestions.jsx";
+import AssessmentResults from "./pages/AssessmentResults.jsx";
+import TakeAssessment from "./pages/TakeAssessment.jsx";
 
 const router = createBrowserRouter([
   { path:"/", element: <LandingPage /> },
@@ -38,6 +42,10 @@ const router = createBrowserRouter([
   { path: "/chats", element: <ProtectedRoute><Chats /></ProtectedRoute> },
   { path: "/chats/:otherUserId", element: <ProtectedRoute><ChatWindow /></ProtectedRoute> },
   { path: "/resume-builder", element: <ProtectedRoute><ResumeBuilder /></ProtectedRoute> },
+  { path: "/assessments/manage/:jobId", element: <ProtectedRoute><ManageAssessments /></ProtectedRoute> },
+  { path: "/assessments/:assessmentId/questions", element: <ProtectedRoute><ManageQuestions /></ProtectedRoute> },
+  { path: "/assessments/:assessmentId/results", element: <ProtectedRoute><AssessmentResults /></ProtectedRoute> },
+  { path: "/assessments/:assessmentId/take", element: <ProtectedRoute><TakeAssessment /></ProtectedRoute> },
 ])
 
 export default function App() {

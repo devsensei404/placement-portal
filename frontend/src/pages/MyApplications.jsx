@@ -39,6 +39,11 @@ export default function MyApplications() {
   const [loading, setLoading]           = useState(true);
   const [error, setError]               = useState("");
 
+  // ── Open assessments, keyed by jobId ──
+  // Only populated for applications whose status is APPLIED/INTERVIEWING,
+  // since only those are eligible to take an assessment right now.
+  const [openAssessmentByJobId, setOpenAssessmentByJobId] = useState({});
+
   useEffect(() => {
     fetch(`${BASE_URL}/jobs/getAll`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -66,6 +71,39 @@ export default function MyApplications() {
         matched.sort((a, b) => new Date(b.applicant.timestamp) - new Date(a.applicant.timestamp));
 
         setApplications(matched);
+
+        // For each eligible, distinct job, check whether it has an OPEN assessment.
+        const eligibleJobIds = [
+          ...new Set(
+            matched
+              .filter(
+                ({ applicant }) =>
+                  applicant.applicationStatus === "APPLIED" ||
+                  applicant.applicationStatus === "INTERVIEWING"
+              )
+              .map(({ job }) => job.id)
+          ),
+        ];
+
+        Promise.all(
+          eligibleJobIds.map((jobId) =>
+            fetch(`${BASE_URL}/assessments/job/${jobId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+              .then((r) => (r.ok ? r.json() : []))
+              .then((assessmentsForJob) => {
+                const open = assessmentsForJob.find((a) => a.status === "OPEN");
+                return [jobId, open || null];
+              })
+              .catch(() => [jobId, null])
+          )
+        ).then((pairs) => {
+          const map = {};
+          pairs.forEach(([jobId, assessment]) => {
+            if (assessment) map[jobId] = assessment;
+          });
+          setOpenAssessmentByJobId(map);
+        });
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -124,6 +162,18 @@ export default function MyApplications() {
 
               <div className="ma2-app-card-right">
                 <StatusBadge status={applicant.applicationStatus} />
+                {(applicant.applicationStatus === "APPLIED" ||
+                  applicant.applicationStatus === "INTERVIEWING") &&
+                  openAssessmentByJobId[job.id] && (
+                    <button
+                      className="ma2-btn-take-assessment"
+                      onClick={() =>
+                        navigate(`/assessments/${openAssessmentByJobId[job.id].assessmentId}/take`)
+                      }
+                    >
+                      Take Assessment
+                    </button>
+                  )}
                 <button
                   className="ma2-btn-view-details"
                   onClick={() =>

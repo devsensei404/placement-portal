@@ -225,6 +225,32 @@
   transform: scale(0.95);
 }
 
+/* Take Assessment — filled/primary counterpart to ma2-btn-view-details,
+   same footprint (padding/radius/font) so the two sit as a matched pair
+   when both appear on a card; this one reads as the primary action. */
+.ma2-btn-take-assessment {
+  padding: 8px 18px;
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+  width: auto;
+  white-space: nowrap;
+}
+
+.ma2-btn-take-assessment:hover {
+  background: #333333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ma2-btn-take-assessment:active {
+  transform: scale(0.95);
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .ma2-main {
@@ -244,6 +270,14 @@
   .ma2-app-card-right {
     align-items: stretch;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
+    gap: 10px;
+  }
+
+  .ma2-btn-take-assessment,
+  .ma2-btn-view-details {
+    flex: 1;
+    text-align: center;
   }
 }
