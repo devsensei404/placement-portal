@@ -62,7 +62,6 @@ export default function Navbar() {
             <Link to="/chats" onClick={closeMenu}>Messages</Link>
             <Link to="/my-profile" onClick={closeMenu}>My Profile</Link>
             <Link to="/notifications" onClick={closeMenu}>Notifications</Link>
-            <Link to="/resume-builder" onClick={closeMenu}>Resume Builder</Link>
           </>
         )}
 
