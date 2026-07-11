@@ -1,2 +1,5 @@
 .env
-.env.localbackend/target/
+.env.local
+backend/target/
+backend/src/main/resources/application.properties
+docker-compose.yml

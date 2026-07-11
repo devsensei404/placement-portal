@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ResumeRequestDTO {
 
-    private String resumeImageUrl;   // optional — Cloudinary / Drive link
+    private String resumeImageUrl;   // optional - Cloudinary / Drive link
 
     // Personal info (user can override what's in profile)
     private String name;
@@ -30,7 +30,7 @@ public class ResumeRequestDTO {
     private List<String> achievements;
     private List<CertificationEntry> certifications; // NEW
 
-    // ── nested input types ────────────────────────────────────────────────
+    // --- nested input types ---
 
     @Data
     @NoArgsConstructor
