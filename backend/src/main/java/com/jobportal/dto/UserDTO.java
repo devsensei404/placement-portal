@@ -32,7 +32,9 @@ public class UserDTO {
 
     private Long profileId;
 
+    private boolean enabled = true;
+
     public User toEntity(){
-        return new User(this.id, this.name, this.email, this.password, this.accountType,this.profileId);
+        return new User(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled);
     }
 }

@@ -19,7 +19,7 @@ public class JobDTO {
 
     private String jobTitle;
 
-    private String company;
+    private Long companyId;
 
     private List<ApplicantDTO> applicants;
 
@@ -44,6 +44,6 @@ public class JobDTO {
     private Long postedBy;
 
     public Job toEntity(){
-        return new Job(this.id,this.jobTitle,this.company, this.applicants == null ? null : this.applicants.stream().map(x -> x.toEntity()).collect(Collectors.toList()), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy);
+        return new Job(this.id,this.jobTitle,this.companyId, this.applicants == null ? null : this.applicants.stream().map(x -> x.toEntity()).collect(Collectors.toList()), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy);
     }
 }
