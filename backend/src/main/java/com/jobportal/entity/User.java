@@ -30,7 +30,9 @@ public class User {
 
     private Long profileId;
 
+    private boolean enabled = true;
+
     public UserDTO toDTO(){
-        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType,this.profileId);
+        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled);
     }
 }

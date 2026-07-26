@@ -25,7 +25,7 @@ public class Job {
 
     private String jobTitle;
 
-    private String company;
+    private Long companyId; // FK to Company, replaces the old String company field
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "job")
     private List<Applicant> applicants;
@@ -56,7 +56,7 @@ public class Job {
     private Long postedBy;
 
     public JobDTO toDTO(){
-        return new JobDTO(this.id,this.jobTitle,this.company,this.applicants == null ? new ArrayList<>() : this.applicants.stream().map(x->x.toDTO()).toList(), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy);
+        return new JobDTO(this.id,this.jobTitle,this.companyId,this.applicants == null ? new ArrayList<>() : this.applicants.stream().map(x->x.toDTO()).toList(), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy);
     }
 
 }
