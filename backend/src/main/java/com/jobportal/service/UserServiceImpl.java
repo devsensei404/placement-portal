@@ -50,6 +50,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtHelper jwtHelper;
 
+    @Autowired
+    private CompanyService companyService;
+
     @Override
     public AuthenticationResponse registerUser(UserDTO userDTO) throws JobPortalException {
         Optional<User> optional = userRepository.findByEmail(userDTO.getEmail());
@@ -66,6 +69,10 @@ public class UserServiceImpl implements UserService {
 
         User user = userDTO.toEntity();
         user = userRepository.save(user);
+
+        if (user.getAccountType() == AccountType.COMPANY) {
+            companyService.createCompanyForUser(user.getId());
+        }
 
         // generate JWT
         UserDetails userDetails = new CustomUserDetails(

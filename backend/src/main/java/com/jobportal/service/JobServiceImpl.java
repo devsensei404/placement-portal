@@ -47,7 +47,7 @@ public class JobServiceImpl implements JobService{
             NotificationDTO notiDto = new NotificationDTO();
             notiDto.setUserId(user.getId());
             notiDto.setAction("New Job Posted");
-            notiDto.setMessage("New job posted: " + jobDTO.getJobTitle() + " at " + jobDTO.getCompany());
+            notiDto.setMessage("New job posted: " + jobDTO.getJobTitle());
             notiDto.setRoute("/jobs/" + savedJob.getId());
             try {
                 notificationService.sendNotification(notiDto);
@@ -99,7 +99,7 @@ public class JobServiceImpl implements JobService{
 
         NotificationDTO notiDto = new NotificationDTO();
         notiDto.setAction("Application Submitted");
-        notiDto.setMessage("Your application has been received for " + job.getJobTitle() + " at " + job.getCompany());
+        notiDto.setMessage("Your application has been received for " + job.getJobTitle());
         notiDto.setUserId(applicantDTO.getApplicantId());
         notiDto.setRoute("/job-history");
         try {
@@ -176,7 +176,6 @@ public class JobServiceImpl implements JobService{
         if (!job.getPostedBy().equals(loggedInUser.getId()))
             throw new JobPortalException("UNAUTHORIZED_ACTION");
         if (jobDTO.getJobTitle() != null) job.setJobTitle(jobDTO.getJobTitle());
-        if (jobDTO.getCompany() != null) job.setCompany(jobDTO.getCompany());
         if (jobDTO.getAbout() != null) job.setAbout(jobDTO.getAbout());
         if (jobDTO.getExperience() != null) job.setExperience(jobDTO.getExperience());
         if (jobDTO.getJobType() != null) job.setJobType(jobDTO.getJobType());
