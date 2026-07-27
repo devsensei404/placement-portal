@@ -11,5 +11,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     public List<Job> findByPostedBy(Long postedBY, Sort sort);
     public List<Job> findByStatus(JobStatus status, Sort sort);
+    public List<Job> findByPostedByAndStatus(Long postedBy, JobStatus status);
 
 }

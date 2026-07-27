@@ -11,4 +11,6 @@ public interface CompanyAssociationRequestRepository extends JpaRepository<Compa
     List<CompanyAssociationRequest> findByCompanyIdAndStatus(Long companyId, AssociationStatus status);
 
     List<CompanyAssociationRequest> findByRecruiterId(Long recruiterId);
+
+    List<CompanyAssociationRequest> findByRecruiterIdAndStatus(Long recruiterId, AssociationStatus status);
 }
