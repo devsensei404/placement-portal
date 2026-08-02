@@ -3,10 +3,12 @@ package com.jobportal.service;
 import com.jobportal.dto.*;
 import com.jobportal.entity.Applicant;
 import com.jobportal.entity.Job;
+import com.jobportal.entity.Profile;
 import com.jobportal.entity.User;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.ApplicantRepository;
 import com.jobportal.repository.JobRepository;
+import com.jobportal.repository.ProfileRepository;
 import com.jobportal.repository.UserRepository;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class JobServiceImpl implements JobService{
     private ApplicantRepository applicantRepository;
 
     @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
     private NotificationService notificationService;
 
     @Autowired
@@ -37,7 +42,10 @@ public class JobServiceImpl implements JobService{
     @Override
     public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
         Long userId = securityUtils.getLoggedInUser().getId();
+        Profile recruiterProfile = getActiveRecruiterProfile();
+
         jobDTO.setPostedBy(userId);
+        jobDTO.setCompanyId(recruiterProfile.getCompanyId()); // server-derived, never client-trusted — same pattern as postedBy
         jobDTO.setStatus(JobStatus.OPEN);
         jobDTO.setPostTime(LocalDateTime.now());
         Job savedJob = jobRepository.save(jobDTO.toEntity());
@@ -175,6 +183,7 @@ public class JobServiceImpl implements JobService{
         UserDTO loggedInUser = securityUtils.getLoggedInUser();
         if (!job.getPostedBy().equals(loggedInUser.getId()))
             throw new JobPortalException("UNAUTHORIZED_ACTION");
+        getActiveRecruiterProfile();
         if (jobDTO.getJobTitle() != null) job.setJobTitle(jobDTO.getJobTitle());
         if (jobDTO.getAbout() != null) job.setAbout(jobDTO.getAbout());
         if (jobDTO.getExperience() != null) job.setExperience(jobDTO.getExperience());
@@ -196,5 +205,17 @@ public class JobServiceImpl implements JobService{
         if (!job.getPostedBy().equals(loggedInUserId))
             throw new JobPortalException("UNAUTHORIZED_ACTION");
         jobRepository.deleteById(id);
+    }
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+
+    private Profile getActiveRecruiterProfile() throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        Profile profile = profileRepository.findById(loggedInUser.getProfileId())
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        if (profile.getListingStatus() != ListingStatus.ACTIVE) {
+            throw new JobPortalException("RECRUITER_NOT_ACTIVE");
+        }
+        return profile;
     }
 }

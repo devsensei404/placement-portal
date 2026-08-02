@@ -14,6 +14,7 @@ import com.jobportal.repository.ProfileRepository;
 import com.jobportal.repository.UserRepository;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,6 +54,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CompanyService companyService;
 
+    @Value("${admin.secret.key}")
+    private String adminSecretKey;
+
     @Override
     public AuthenticationResponse registerUser(UserDTO userDTO) throws JobPortalException {
         Optional<User> optional = userRepository.findByEmail(userDTO.getEmail());
@@ -62,6 +66,14 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getAccountType() == AccountType.APPLICANT &&
                 !userDTO.getEmail().endsWith("@nitdgp.ac.in")) {
             throw new JobPortalException("INVALID_STUDENT_EMAIL");
+        }
+
+        // ADMIN cannot self-register through the normal public flow — the provided
+        // adminKey must match the configured secret. Checked before any Profile/User
+        // creation side effect runs, so a mismatch never leaves a half-registered account.
+        if (userDTO.getAccountType() == AccountType.ADMIN &&
+                !adminSecretKey.equals(userDTO.getAdminKey())) {
+            throw new JobPortalException("INVALID_ADMIN_KEY");
         }
 
         userDTO.setProfileId(profileService.createProfile(userDTO.getEmail()));
