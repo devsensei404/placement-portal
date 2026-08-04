@@ -91,7 +91,8 @@ public class UserServiceImpl implements UserService {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getAccountType()
+                user.getAccountType(),
+                user.isEnabled()
         );
         String jwt = jwtHelper.generateToken(userDetails);
         return new AuthenticationResponse(jwt);

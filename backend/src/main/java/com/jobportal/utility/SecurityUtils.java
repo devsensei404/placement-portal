@@ -15,8 +15,12 @@ public class SecurityUtils {
 
     public UserDTO getLoggedInUser() throws JobPortalException {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email)
+        UserDTO user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"))
                 .toDTO();
+        if (!user.isEnabled()) {
+            throw new JobPortalException("ACCOUNT_DISABLED");
+        }
+        return user;
     }
 }
