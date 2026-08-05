@@ -1,5 +1,6 @@
 package com.jobportal.entity;
 
+import com.jobportal.dto.ListingStatus;
 import com.jobportal.dto.ProfileDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,11 @@ public class Profile {
     @ElementCollection
     private List<Long>savedJobs;
 
+    private Long companyId; // nullable, FK to Company
+
+    @Enumerated(EnumType.STRING)
+    private ListingStatus listingStatus = ListingStatus.UNASSOCIATED;
+
     public ProfileDTO toDTO(){
         ProfileDTO dto = new ProfileDTO();
         dto.setId(this.id);
@@ -55,6 +61,8 @@ public class Profile {
         dto.setExperience(this.experience.stream().map(exp -> exp.toDTO()).toList());
         dto.setCertifications(this.certifications.stream().map(cert -> cert.toDTO()).toList());
         dto.setSavedJobs(this.savedJobs);
+        dto.setCompanyId(this.companyId);
+        dto.setListingStatus(this.listingStatus);
         return dto;
     }
 

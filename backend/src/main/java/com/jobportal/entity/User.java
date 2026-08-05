@@ -30,7 +30,11 @@ public class User {
 
     private Long profileId;
 
+    private boolean enabled = true;
+
     public UserDTO toDTO(){
-        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType,this.profileId);
+        // adminKey is a registration-request-only field, never persisted on User —
+        // always null when converting an existing entity back to a DTO.
+        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled, null);
     }
 }
