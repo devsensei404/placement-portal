@@ -21,6 +21,8 @@ public class JobDTO {
 
     private Long companyId;
 
+    private String companyName; // NEW — resolved by JobServiceImpl from companyId, never set by Job.toDTO() directly
+
     private List<ApplicantDTO> applicants;
 
     private String about;
