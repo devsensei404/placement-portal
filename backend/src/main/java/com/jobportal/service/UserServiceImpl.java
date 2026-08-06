@@ -14,11 +14,13 @@ import com.jobportal.repository.ProfileRepository;
 import com.jobportal.repository.UserRepository;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.jobportal.jwt.MyUserDetailsService;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -50,10 +52,31 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtHelper jwtHelper;
 
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private OtpService otpService;
+
+    @Value("${admin.secret.key}")
+    private String adminSecretKey;
+
     @Override
     public AuthenticationResponse registerUser(UserDTO userDTO) throws JobPortalException {
         Optional<User> optional = userRepository.findByEmail(userDTO.getEmail());
         if (optional.isPresent()) throw new JobPortalException("USER_FOUND");
+
+        // Gate: this email must have completed OTP verification within the
+        // last 30 minutes (see OtpService.assertVerifiedForRegistration).
+        // Consuming immediately, right after the check passes, rather than
+        // at the end of this method — verification-and-consumption is one
+        // atomic step. If anything below this point fails (nitdgp check,
+        // adminKey check, or any entity-creation error), the OTP is already
+        // spent and the user must request a new one to retry. Accepted
+        // tradeoff — cheaper than tracking partial-failure state to allow
+        // OTP reuse across a failed registration attempt.
+        otpService.assertVerifiedForRegistration(userDTO.getEmail());
+        otpService.consumeOtp(userDTO.getEmail());
 
         //So that students can register with school/college domain only.No such restrictions on recruiters as of now.
         if (userDTO.getAccountType() == AccountType.APPLICANT &&
@@ -61,11 +84,23 @@ public class UserServiceImpl implements UserService {
             throw new JobPortalException("INVALID_STUDENT_EMAIL");
         }
 
+        // ADMIN cannot self-register through the normal public flow — the provided
+        // adminKey must match the configured secret. Checked before any Profile/User
+        // creation side effect runs, so a mismatch never leaves a half-registered account.
+        if (userDTO.getAccountType() == AccountType.ADMIN &&
+                !adminSecretKey.equals(userDTO.getAdminKey())) {
+            throw new JobPortalException("INVALID_ADMIN_KEY");
+        }
+
         userDTO.setProfileId(profileService.createProfile(userDTO.getEmail()));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         User user = userDTO.toEntity();
         user = userRepository.save(user);
+
+        if (user.getAccountType() == AccountType.COMPANY) {
+            companyService.createCompanyForUser(user.getId());
+        }
 
         // generate JWT
         UserDetails userDetails = new CustomUserDetails(
