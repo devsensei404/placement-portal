@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.jobportal.jwt.MyUserDetailsService;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -107,7 +106,8 @@ public class UserServiceImpl implements UserService {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getAccountType()
+                user.getAccountType(),
+                user.isEnabled()
         );
         String jwt = jwtHelper.generateToken(userDetails);
         return new AuthenticationResponse(jwt);
