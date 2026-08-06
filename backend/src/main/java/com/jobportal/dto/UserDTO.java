@@ -32,7 +32,15 @@ public class UserDTO {
 
     private Long profileId;
 
+    private boolean enabled = true;
+
+    // Registration-request-only field. Required (and validated) only when
+    // accountType == ADMIN; never passed into User.toEntity()'s constructor,
+    // never persisted, irrelevant/unused on every other UserDTO usage
+    // (getUserByEmail, getLoggedInUser, AdminService.getAllUsers, etc).
+    private String adminKey;
+
     public User toEntity(){
-        return new User(this.id, this.name, this.email, this.password, this.accountType,this.profileId);
+        return new User(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled);
     }
 }

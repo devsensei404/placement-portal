@@ -28,6 +28,9 @@ public class ProfileDTO {
     private List<CertificationDTO> certifications;
     private List<Long>savedJobs;
 
+    private Long companyId;
+    private ListingStatus listingStatus;
+
     public Profile toEntity() {
         Profile p = new Profile();
         p.setId(this.id);
@@ -42,6 +45,8 @@ public class ProfileDTO {
         p.setResumeUrl(this.resumeUrl);
         p.setSkills(this.skills);
         p.setSavedJobs(this.savedJobs);
+        p.setCompanyId(this.companyId);
+        if (this.listingStatus != null) p.setListingStatus(this.listingStatus);
         return p;
     }
 }

@@ -17,10 +17,16 @@ public class CustomUserDetails implements UserDetails {
     private String username;
     private String password;
     private AccountType accountType;
+    private boolean enabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + accountType.name()));
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
 }
