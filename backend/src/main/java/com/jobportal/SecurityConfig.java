@@ -34,7 +34,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/auth/login").permitAll().requestMatchers("/users/register").permitAll().requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        .requestMatchers("/auth/login").permitAll().requestMatchers("/users/register").permitAll().requestMatchers("/otp/**").permitAll().requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().requestMatchers("/actuator/health", "/actuator/info").permitAll()
                         .anyRequest().authenticated()
                 )
 

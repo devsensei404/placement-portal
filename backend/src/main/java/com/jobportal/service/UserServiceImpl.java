@@ -54,6 +54,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private OtpService otpService;
+
     @Value("${admin.secret.key}")
     private String adminSecretKey;
 
@@ -61,6 +64,18 @@ public class UserServiceImpl implements UserService {
     public AuthenticationResponse registerUser(UserDTO userDTO) throws JobPortalException {
         Optional<User> optional = userRepository.findByEmail(userDTO.getEmail());
         if (optional.isPresent()) throw new JobPortalException("USER_FOUND");
+
+        // Gate: this email must have completed OTP verification within the
+        // last 30 minutes (see OtpService.assertVerifiedForRegistration).
+        // Consuming immediately, right after the check passes, rather than
+        // at the end of this method — verification-and-consumption is one
+        // atomic step. If anything below this point fails (nitdgp check,
+        // adminKey check, or any entity-creation error), the OTP is already
+        // spent and the user must request a new one to retry. Accepted
+        // tradeoff — cheaper than tracking partial-failure state to allow
+        // OTP reuse across a failed registration attempt.
+        otpService.assertVerifiedForRegistration(userDTO.getEmail());
+        otpService.consumeOtp(userDTO.getEmail());
 
         //So that students can register with school/college domain only.No such restrictions on recruiters as of now.
         if (userDTO.getAccountType() == AccountType.APPLICANT &&
