@@ -41,6 +41,9 @@ public class AssociationServiceImpl implements AssociationService {
     @Autowired
     private SecurityUtils securityUtils;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public CompanyAssociationRequestDTO requestAssociation(Long companyId) throws JobPortalException {
         UserDTO loggedInUser = securityUtils.getLoggedInUser();
@@ -113,6 +116,17 @@ public class AssociationServiceImpl implements AssociationService {
         recruiterProfile.setListingStatus(ListingStatus.ACTIVE);
         profileRepository.save(recruiterProfile);
 
+        NotificationDTO notiDto = new NotificationDTO();
+        notiDto.setUserId(request.getRecruiterId());
+        notiDto.setAction("Association Request Approved");
+        notiDto.setMessage("Your request to join \"" + company.getName() + "\" has been approved.");
+        notiDto.setRoute("/profile");
+        try {
+            notificationService.sendNotification(notiDto);
+        } catch (JobPortalException e) {
+            e.printStackTrace();
+        }
+
         return request.toDTO();
     }
 
@@ -132,7 +146,20 @@ public class AssociationServiceImpl implements AssociationService {
         request.setStatus(AssociationStatus.REJECTED);
         request.setResolvedAt(LocalDateTime.now());
         // Recruiter's Profile is intentionally left untouched — stays UNASSOCIATED
-        return associationRequestRepository.save(request).toDTO();
+        CompanyAssociationRequestDTO result = associationRequestRepository.save(request).toDTO();
+
+        NotificationDTO notiDto = new NotificationDTO();
+        notiDto.setUserId(request.getRecruiterId());
+        notiDto.setAction("Association Request Rejected");
+        notiDto.setMessage("Your request to join \"" + company.getName() + "\" has been rejected.");
+        notiDto.setRoute("/profile");
+        try {
+            notificationService.sendNotification(notiDto);
+        } catch (JobPortalException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override
@@ -162,6 +189,8 @@ public class AssociationServiceImpl implements AssociationService {
         Profile profile = profileRepository.findById(loggedInUser.getProfileId())
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
 
+        Long companyId = profile.getCompanyId();
+
         profile.setCompanyId(null);
         profile.setListingStatus(ListingStatus.UNASSOCIATED);
         profileRepository.save(profile);
@@ -171,5 +200,18 @@ public class AssociationServiceImpl implements AssociationService {
             job.setStatus(JobStatus.CLOSED);
             jobRepository.save(job);
         }
+
+        companyRepository.findById(companyId).ifPresent(company -> {
+            NotificationDTO notiDto = new NotificationDTO();
+            notiDto.setUserId(company.getUserId());
+            notiDto.setAction("Recruiter Left Company");
+            notiDto.setMessage("\"" + loggedInUser.getName() + "\" has left your company.");
+            notiDto.setRoute("/company/recruiters");
+            try {
+                notificationService.sendNotification(notiDto);
+            } catch (JobPortalException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
