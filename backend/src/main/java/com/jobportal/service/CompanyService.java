@@ -17,6 +17,10 @@ public interface CompanyService {
     // PUT /company/profile/update equivalent — name/website/description/logoUrl/linkedIn only
     CompanyDTO updateMyCompany(CompanyDTO companyDTO) throws JobPortalException;
 
+    // PUT /company/submit-for-review equivalent — moves status INCOMPLETE -> PENDING,
+    // only if all required profile fields (name/website/officialEmail/description/logoUrl) are set
+    CompanyDTO submitForReview() throws JobPortalException;
+
     // GET /company/recruiters equivalent — Profiles where companyId == own companyId
     List<ProfileDTO> getMyRecruiters() throws JobPortalException;
 

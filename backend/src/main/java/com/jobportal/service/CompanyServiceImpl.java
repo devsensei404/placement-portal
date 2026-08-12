@@ -33,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = new Company();
         company.setUserId(userId);
         company.setVerified(false);
-        company.setStatus(CompanyStatus.PENDING);
+        company.setStatus(CompanyStatus.INCOMPLETE);
         company.setCreatedAt(LocalDateTime.now());
         companyRepository.save(company);
     }
@@ -65,6 +65,26 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public CompanyDTO submitForReview() throws JobPortalException {
+        Long userId = securityUtils.getLoggedInUser().getId();
+        Company existing = companyRepository.findByUserId(userId)
+                .orElseThrow(() -> new JobPortalException("COMPANY_NOT_FOUND"));
+
+        if (existing.getStatus() != CompanyStatus.INCOMPLETE) {
+            throw new JobPortalException("COMPANY_NOT_INCOMPLETE");
+        }
+
+        if (isBlank(existing.getName()) || isBlank(existing.getWebsite()) ||
+                isBlank(existing.getOfficialEmail()) || isBlank(existing.getDescription()) ||
+                isBlank(existing.getLogoUrl())) {
+            throw new JobPortalException("COMPANY_PROFILE_INCOMPLETE");
+        }
+
+        existing.setStatus(CompanyStatus.PENDING);
+        return companyRepository.save(existing).toDTO();
+    }
+
+    @Override
     public List<ProfileDTO> getMyRecruiters() throws JobPortalException {
         Long userId = securityUtils.getLoggedInUser().getId();
         Company company = companyRepository.findByUserId(userId)
@@ -80,5 +100,9 @@ public class CompanyServiceImpl implements CompanyService {
                 .stream()
                 .map(Company::toDTO)
                 .toList();
+    }
+
+    private boolean isBlank(String s) {
+        return s == null || s.isBlank();
     }
 }
