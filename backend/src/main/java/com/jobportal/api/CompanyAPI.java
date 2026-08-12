@@ -31,6 +31,12 @@ public class CompanyAPI {
     }
 
     @PreAuthorize("hasRole('COMPANY')")
+    @PutMapping("/company/submit-for-review")
+    public ResponseEntity<CompanyDTO> submitForReview() throws JobPortalException {
+        return ResponseEntity.ok(companyService.submitForReview());
+    }
+
+    @PreAuthorize("hasRole('COMPANY')")
     @GetMapping("/company/recruiters")
     public ResponseEntity<List<ProfileDTO>> getMyRecruiters() throws JobPortalException {
         return ResponseEntity.ok(companyService.getMyRecruiters());

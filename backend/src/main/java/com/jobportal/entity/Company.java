@@ -35,7 +35,7 @@ public class Company {
     private boolean verified = false; // default false on creation
 
     @Enumerated(EnumType.STRING)
-    private CompanyStatus status = CompanyStatus.PENDING;
+    private CompanyStatus status = CompanyStatus.INCOMPLETE;
 
     private LocalDateTime createdAt;
 
