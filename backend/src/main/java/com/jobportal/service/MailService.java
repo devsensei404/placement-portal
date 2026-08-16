@@ -28,5 +28,17 @@ public class MailService {
         );
         mailSender.send(message);
     }
+
+    public void sendPasswordResetOtpEmail(String toEmail, String otpCode) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("RōninHire <" + fromAddress + ">");
+        message.setTo(toEmail);
+        message.setSubject("Your RōninHire password reset code");
+        message.setText(
+                "Your password reset code is: " + otpCode + "\n\n" +
+                "This code expires in 10 minutes. If you didn't request this, you can ignore this email."
+        );
+        mailSender.send(message);
+    }
 }
 
