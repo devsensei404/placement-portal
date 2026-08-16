@@ -18,9 +18,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service("jobService")
@@ -49,6 +52,18 @@ public class JobServiceImpl implements JobService{
 
     @Autowired
     private SecurityUtils securityUtils;
+
+    // Application status is a one-way hiring pipeline — no downgrades, no reopening a
+    // rejection. REJECTED and a bare OFFERED->REJECTED rescind are the only terminal
+    // moves; INTERVIEWING is allowed to re-target itself so a recruiter can reschedule
+    // the interview time without that counting as a "downgrade".
+    private static final Map<ApplicationStatus, Set<ApplicationStatus>> VALID_TRANSITIONS = new EnumMap<>(ApplicationStatus.class);
+    static {
+        VALID_TRANSITIONS.put(ApplicationStatus.APPLIED, EnumSet.of(ApplicationStatus.INTERVIEWING, ApplicationStatus.REJECTED));
+        VALID_TRANSITIONS.put(ApplicationStatus.INTERVIEWING, EnumSet.of(ApplicationStatus.INTERVIEWING, ApplicationStatus.OFFERED, ApplicationStatus.REJECTED));
+        VALID_TRANSITIONS.put(ApplicationStatus.OFFERED, EnumSet.of(ApplicationStatus.REJECTED));
+        VALID_TRANSITIONS.put(ApplicationStatus.REJECTED, EnumSet.noneOf(ApplicationStatus.class));
+    }
 
     @Override
     public JobDTO postJob(JobDTO jobDTO) throws JobPortalException {
@@ -140,6 +155,14 @@ public class JobServiceImpl implements JobService{
     public void changeAppStatus(ApplicationDTO applicationDTO) throws JobPortalException {
         Applicant applicant = applicantRepository.findById(applicationDTO.getId())
                 .orElseThrow(() -> new JobPortalException("APPLICANT_NOT_FOUND"));
+
+        ApplicationStatus currentStatus = applicant.getApplicationStatus();
+        ApplicationStatus targetStatus = applicationDTO.getApplicationStatus();
+        Set<ApplicationStatus> allowedNext = VALID_TRANSITIONS.getOrDefault(currentStatus, EnumSet.noneOf(ApplicationStatus.class));
+        if (!allowedNext.contains(targetStatus)) {
+            throw new JobPortalException("INVALID_STATUS_TRANSITION");
+        }
+
         applicant.setApplicationStatus(applicationDTO.getApplicationStatus());
 
         Job job = applicant.getJob();
@@ -286,3 +309,4 @@ public class JobServiceImpl implements JobService{
         }).toList();
     }
 }
+

@@ -194,6 +194,19 @@ public class NotificationMailServiceImpl implements NotificationMailService {
         sendHtmlEmail(user.getEmail(), "Your RōninHire account access has been restored", "user-unbanned.html", vars);
     }
 
+    @Override
+    public void sendAccountDeletedEmail(User user) {
+        Map<String, String> vars = baseVars();
+        vars.put("recipientName", nullSafe(user.getName()));
+        vars.put("headline", "Your account has been deleted");
+        vars.put("bodyText", "Following a review by our moderation team, your RōninHire account has been "
+                + "deleted. This action removes your profile and associated data from our platform, and you "
+                + "will not be able to log back in with these credentials.");
+        // No actionUrl/actionLabel — account is deleted, nowhere to send them
+
+        sendHtmlEmail(user.getEmail(), "Your RōninHire account has been deleted", "account-deleted.html", vars);
+    }
+
     // ─── Recruiter moderation ───────────────────────────────────────────────
 
     @Override
