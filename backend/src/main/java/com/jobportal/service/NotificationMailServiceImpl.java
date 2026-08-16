@@ -4,6 +4,7 @@ import com.jobportal.dto.UserDTO;
 import com.jobportal.entity.Applicant;
 import com.jobportal.entity.Job;
 import com.jobportal.entity.User;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Service("notificationMailService")
 public class NotificationMailServiceImpl implements NotificationMailService {
@@ -37,6 +39,8 @@ public class NotificationMailServiceImpl implements NotificationMailService {
     private static final DateTimeFormatter LETTER_DATE_FORMAT =
             DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
     private static final String SENDER_TITLE = "Hiring Team";
+    private static final String SENDER_DISPLAY_NAME = "RōninHire";
+    private static final String UNSUBSCRIBE_ADDRESS = "support.roninhire@gmail.com";
 
     // ─── Applicant-facing (changeAppStatus) ────────────────────────────────
 
@@ -77,6 +81,8 @@ public class NotificationMailServiceImpl implements NotificationMailService {
         vars.put("senderTitle", SENDER_TITLE);
         vars.put("actionUrl", BASE_URL + "/job-history");
         vars.put("actionLabel", "View Offer");
+        vars.put("managerName", recruiter != null ? nullSafe(recruiter.getName()) : "The Hiring Manager");
+        vars.put("jobLocation" , job != null ? nullSafe(job.getLocation()) : "");
 
         sendHtmlEmail(applicant.getEmail(), "Congratulations — you've been offered the position!", "offer-released.html", vars);
     }
@@ -257,19 +263,48 @@ public class NotificationMailServiceImpl implements NotificationMailService {
             for (Map.Entry<String, String> entry : placeholders.entrySet()) {
                 html = html.replace("{{" + entry.getKey() + "}}", entry.getValue() == null ? "" : entry.getValue());
             }
+            String plainText = htmlToPlainText(html);
 
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
-            helper.setFrom(fromAddress);
+            // "true" = multipart (text/plain + text/html). An HTML-only body is a well-known
+            // spam signal, especially from a low-reputation sender identity — always send both parts.
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(new InternetAddress(fromAddress, SENDER_DISPLAY_NAME, "UTF-8"));
             helper.setTo(toEmail);
             helper.setSubject(subject);
-            helper.setText(html, true);
+            helper.setText(plainText, html);
+            // Purely transactional mail doesn't strictly require this, but these go out at
+            // some volume and it's a cheap trust signal for spam filters.
+            message.addHeader("List-Unsubscribe", "<mailto:" + UNSUBSCRIBE_ADDRESS + ">");
             mailSender.send(message);
         } catch (Exception e) {
             // Mirrors the existing pattern used everywhere in-app notifications are sent:
             // never let a notification-delivery failure block the underlying state change.
             e.printStackTrace();
         }
+    }
+
+    // Strips the HTML template down to a readable plain-text alternative — no separate
+    // plain-text template needed per email. Good enough for a fallback part, not meant
+    // to be pixel-perfect.
+    private static final Pattern STYLE_OR_SCRIPT = Pattern.compile("(?is)<(style|script)[^>]*>.*?</\\1>");
+    private static final Pattern BLOCK_BREAK = Pattern.compile("(?i)</(p|div|tr|table|h1|h2|h3)>|<br\\s*/?>");
+    private static final Pattern ANY_TAG = Pattern.compile("<[^>]+>");
+    private static final Pattern BLANK_LINES = Pattern.compile("\\n{3,}");
+
+    private String htmlToPlainText(String html) {
+        String text = STYLE_OR_SCRIPT.matcher(html).replaceAll("");
+        text = BLOCK_BREAK.matcher(text).replaceAll("\n");
+        text = ANY_TAG.matcher(text).replaceAll("");
+        text = text.replace("&nbsp;", " ")
+                .replace("&amp;", "&")
+                .replace("&lt;", "<")
+                .replace("&gt;", ">")
+                .replace("&#39;", "'")
+                .replace("&quot;", "\"");
+        text = text.lines().map(String::strip).filter(line -> !line.isBlank())
+                .reduce((a, b) -> a + "\n" + b).orElse("");
+        return BLANK_LINES.matcher(text).replaceAll("\n\n").strip();
     }
 
     private String loadTemplate(String fileName) throws IOException {
@@ -279,3 +314,4 @@ public class NotificationMailServiceImpl implements NotificationMailService {
         }
     }
 }
+

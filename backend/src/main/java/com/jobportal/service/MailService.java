@@ -19,7 +19,7 @@ public class MailService {
 
     public void sendOtpEmail(String toEmail, String otpCode) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromAddress);
+        message.setFrom("RōninHire <" + fromAddress + ">");
         message.setTo(toEmail);
         message.setSubject("Your RōninHire verification code");
         message.setText(
@@ -29,3 +29,4 @@ public class MailService {
         mailSender.send(message);
     }
 }
+
