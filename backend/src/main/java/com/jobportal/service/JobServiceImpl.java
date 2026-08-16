@@ -45,6 +45,9 @@ public class JobServiceImpl implements JobService{
     private NotificationService notificationService;
 
     @Autowired
+    private NotificationMailService notificationMailService;
+
+    @Autowired
     private SecurityUtils securityUtils;
 
     @Override
@@ -139,6 +142,17 @@ public class JobServiceImpl implements JobService{
                 .orElseThrow(() -> new JobPortalException("APPLICANT_NOT_FOUND"));
         applicant.setApplicationStatus(applicationDTO.getApplicationStatus());
 
+        Job job = applicant.getJob();
+        String companyName = null;
+        if (job != null && job.getCompanyId() != null) {
+            companyName = companyRepository.findById(job.getCompanyId())
+                    .map(Company::getName)
+                    .orElse(null);
+        }
+
+        // The recruiter making this change — used as the email's sender identity.
+        UserDTO loggedInRecruiter = securityUtils.getLoggedInUser();
+
         NotificationDTO notiDto = new NotificationDTO();
         notiDto.setUserId(applicant.getApplicantId());
         notiDto.setRoute("/job-history");
@@ -147,12 +161,19 @@ public class JobServiceImpl implements JobService{
             applicant.setInterviewTime(applicationDTO.getInterviewTime());
             notiDto.setAction("Interview Scheduled");
             notiDto.setMessage("You have been shortlisted for an interview");
+            notificationMailService.sendInterviewScheduledEmail(applicant, job, companyName, loggedInRecruiter);
         } else if (applicationDTO.getApplicationStatus().equals(ApplicationStatus.OFFERED)) {
+            if (applicationDTO.getStartDate() == null) {
+                throw new JobPortalException("START_DATE_REQUIRED");
+            }
+            applicant.setStartDate(applicationDTO.getStartDate());
             notiDto.setAction("Offer Released");
             notiDto.setMessage("Congratulations! You have been offered the position");
+            notificationMailService.sendOfferReleasedEmail(applicant, job, companyName, loggedInRecruiter);
         } else if (applicationDTO.getApplicationStatus().equals(ApplicationStatus.REJECTED)) {
             notiDto.setAction("Application Rejected");
             notiDto.setMessage("Your application was not selected");
+            notificationMailService.sendApplicationRejectedEmail(applicant, job, companyName);
         }
 
         try {

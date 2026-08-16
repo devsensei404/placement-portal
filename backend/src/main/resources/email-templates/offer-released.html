@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+<title>{{headline}}</title>
+<style>
+  @media only screen and (max-width: 600px) {
+    .rh-container { width:100% !important; border-radius:0 !important; border-left:none !important; border-right:none !important; }
+    .rh-header-pad { padding:22px 24px !important; }
+    .rh-body-pad { padding:32px 24px 8px 24px !important; }
+    .rh-note-pad { padding:0 24px 32px 24px !important; }
+    .rh-footer-pad { padding:18px 24px !important; }
+    .rh-headline { font-size:25px !important; }
+    .rh-button-cell { width:100% !important; display:block !important; }
+    .rh-button { display:block !important; width:100% !important; box-sizing:border-box; text-align:center !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background-color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;">
+    <tr>
+      <td align="center" style="padding:40px 16px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" class="rh-container" style="max-width:600px; width:100%; border:1px solid #e5e5e5; border-radius:10px; overflow:hidden;">
+
+          <!-- Header -->
+          <tr>
+            <td class="rh-header-pad" style="padding:34px 44px; border-bottom:1px solid #e5e5e5;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="vertical-align:middle;">
+                    <span style="font-family:'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; color:#111111;">
+                      浪 RōninHire
+                    </span>
+                  </td>
+                  <td style="vertical-align:middle; text-align:right; font-size:13px; color:#888888;">
+                    {{letterDate}}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td class="rh-body-pad" style="padding:52px 44px 8px 44px;">
+
+              <!-- Icon + eyebrow label -->
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:26px;">
+                <tr>
+                  <td style="vertical-align:middle; padding-right:11px;">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+                      <path d="M12 2.5L14.4 5.6L18.3 5L18.8 8.9L22 11L19.8 14L21 17.7L17.2 18.4L15.9 22.1L12 20.6L8.1 22.1L6.8 18.4L3 17.7L4.2 14L2 11L5.2 8.9L5.7 5L9.6 5.6L12 2.5Z" stroke="#22c55e" stroke-width="1.5" stroke-linejoin="round"/>
+                      <path d="M8.7 12.3L10.8 14.4L15.3 9.8" stroke="#22c55e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </td>
+                  <td style="vertical-align:middle;">
+                    <span style="font-size:13px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#666666;">
+                      Offer of Employment
+                    </span>
+                  </td>
+                </tr>
+              </table>
+
+              <h1 class="rh-headline" style="margin:0 0 28px 0; font-family:'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size:31px; font-weight:700; letter-spacing:-0.02em; color:#111111; line-height:1.25;">
+                {{headline}} 🎉
+              </h1>
+
+              <p style="margin:0 0 20px 0; font-size:16px; color:#111111;">
+                Dear {{recipientName}},
+              </p>
+
+              <p style="margin:0 0 20px 0; font-size:16px; line-height:1.7; color:#374151;">
+                We are pleased to offer you the position of <strong style="color:#111111;">{{jobTitle}}</strong> at <strong style="color:#111111;">{{companyName}}</strong>, starting on <strong style="color:#111111;">{{startDate}}</strong>. In this role, you will report to <strong style="color:#111111;">{{managerName}}</strong> and be based at our <strong style="color:#111111;">{{jobLocation}}</strong> office.
+              </p>
+
+              <!-- {{bodyText}}: compensation & benefits sentence, e.g. "Your monthly salary will be
+                   ₹X, along with benefits including health insurance, paid leave, and performance
+                   bonuses. Full details will be shared upon confirmation." -->
+              <p style="margin:0 0 20px 0; font-size:16px; line-height:1.7; color:#374151;">
+                {{bodyText}}
+              </p>
+
+              <p style="margin:0 0 30px 0; font-size:16px; line-height:1.7; color:#374151;">
+                Please confirm your acceptance by <strong style="color:#111111;">{{confirmByDate}}</strong>. We're glad to have you onboard and look forward to the impact you'll make.
+              </p>
+
+              <!-- Details panel -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:34px; border:1px solid #e5e5e5; border-left:3px solid #22c55e; border-radius:6px;">
+                <tr>
+                  <td style="padding:22px 24px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="padding-bottom:14px; font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#888888; width:38%;">Role</td>
+                        <td style="padding-bottom:14px; font-size:15px; font-weight:600; color:#111111; text-align:right;">{{jobTitle}}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding-bottom:14px; font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#888888;">Company</td>
+                        <td style="padding-bottom:14px; font-size:15px; color:#111111; text-align:right;">{{companyName}}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding-bottom:14px; font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#888888;">Start date</td>
+                        <td style="padding-bottom:14px; font-size:15px; color:#111111; text-align:right;">{{startDate}}</td>
+                      </tr>
+                      <tr>
+                        <td style="font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:#888888;">Confirm by</td>
+                        <td style="font-size:15px; font-weight:600; color:#111111; text-align:right;">{{confirmByDate}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:40px;">
+                <tr>
+                  <td class="rh-button-cell" style="border-radius:7px; background-color:#111111;">
+                    <a href="{{actionUrl}}" class="rh-button" style="display:inline-block; padding:14px 30px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; border-radius:7px;">
+                      {{actionLabel}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Signature block -->
+              <table role="presentation" cellpadding="0" cellspacing="0" style="border-top:1px solid #e5e5e5; padding-top:24px; width:100%;">
+                <tr>
+                  <td style="padding-top:24px;">
+                    <p style="margin:0 0 4px 0; font-size:15px; color:#374151;">Warm regards,</p>
+                    <p style="margin:0 0 2px 0; font-family:'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size:17px; font-weight:700; color:#111111;">{{senderName}}</p>
+                    <p style="margin:0; font-size:14px; color:#888888;">{{senderTitle}}, {{companyName}}</p>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <tr>
+            <td class="rh-note-pad" style="padding:0 44px 44px 44px;">
+              <p style="margin:0 0 14px 0; font-size:14px; line-height:1.6; color:#666666;">
+                Take a moment to review the full offer on your dashboard, including benefits, before confirming.
+              </p>
+              <p style="margin:0; font-size:15px; font-weight:600; color:#111111;">
+                Congratulations again — enjoy this one. 🎊
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td class="rh-footer-pad" style="padding:22px 44px; border-top:1px solid #e5e5e5; background-color:#f9f9f9;">
+              <p style="margin:0 0 6px 0; font-size:12px; line-height:1.6; color:#666666;">
+                You're receiving this because you have a RōninHire account.
+              </p>
+              <p style="margin:0; font-size:12px; line-height:1.6; color:#666666;">
+                This is an automated message — please don't reply to this email. Need help? Write to <a href="mailto:support.roninhire@gmail.com" style="color:#666666; text-decoration:underline;">support.roninhire@gmail.com</a>.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
