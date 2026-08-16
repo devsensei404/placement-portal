@@ -153,7 +153,7 @@ I want to be upfront that this is not hardened against a serious attacker. There
 **Requirements:** Docker and Docker Compose
 
 ```bash
-git clone https://github.com/devsenjai404/placement-portal.git
+git clone https://github.com/devsensei404/placement-portal.git
 cd placement-portal
 cp .env.example .env
 # fill in your own DB credentials, Cloudinary keys, and Gemini API key in .env
