@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -38,8 +39,9 @@ public class ApplicantDTO {
     private LocalDateTime timestamp;
     private ApplicationStatus applicationStatus;
     private LocalDateTime interviewTime;
+    private LocalDate startDate;
 
     public Applicant toEntity() {
-        return new Applicant(this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.applicationStatus,this.interviewTime);
+        return new Applicant(this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.applicationStatus,this.interviewTime, this.startDate);
     }
 }

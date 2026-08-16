@@ -16,6 +16,9 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
+    private NotificationMailService notificationMailService;
+
+    @Autowired
     private CompanyRepository companyRepository;
 
     @Autowired
@@ -76,6 +79,9 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         }
 
+        userRepository.findById(company.getUserId())
+                .ifPresent(user -> notificationMailService.sendCompanyApprovedEmail(user, company.getName()));
+
         logAdminAction("APPROVE_COMPANY", "COMPANY", companyId);
         return result;
     }
@@ -98,6 +104,13 @@ public class AdminServiceImpl implements AdminService {
         }
 
         Long userId = company.getUserId();
+
+        // Resolved BEFORE tearDownAccount() deletes this user — company rejection is
+        // email-only (no in-app notification possible, account won't exist to view one),
+        // so this lookup + the send must happen here, not after.
+        userRepository.findById(userId)
+                .ifPresent(user -> notificationMailService.sendCompanyRejectedEmail(user, company.getName()));
+
         companyRepository.deleteById(companyId);
         tearDownAccount(userId);
 
@@ -123,6 +136,9 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         }
 
+        userRepository.findById(company.getUserId())
+                .ifPresent(user -> notificationMailService.sendCompanySuspendedEmail(user, company.getName()));
+
         logAdminAction("SUSPEND_COMPANY", "COMPANY", companyId);
         return result;
     }
@@ -145,6 +161,9 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         }
 
+        userRepository.findById(company.getUserId())
+                .ifPresent(user -> notificationMailService.sendCompanyUnsuspendedEmail(user, company.getName()));
+
         logAdminAction("UNSUSPEND_COMPANY", "COMPANY", companyId);
         return result;
     }
@@ -156,8 +175,12 @@ public class AdminServiceImpl implements AdminService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         user.setEnabled(false);
-        UserDTO result = userRepository.save(user).toDTO();
+        User saved = userRepository.save(user);
+        UserDTO result = saved.toDTO();
         result.setPassword(null); // never return the password hash in an admin-facing response
+
+        notificationMailService.sendUserBannedEmail(saved);
+
         logAdminAction("BAN_USER", "USER", userId);
         return result;
     }
@@ -167,8 +190,12 @@ public class AdminServiceImpl implements AdminService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
         user.setEnabled(true);
-        UserDTO result = userRepository.save(user).toDTO();
+        User saved = userRepository.save(user);
+        UserDTO result = saved.toDTO();
         result.setPassword(null); // never return the password hash in an admin-facing response
+
+        notificationMailService.sendUserUnbannedEmail(saved);
+
         logAdminAction("UNBAN_USER", "USER", userId);
         return result;
     }
@@ -221,6 +248,8 @@ public class AdminServiceImpl implements AdminService {
             } catch (JobPortalException e) {
                 e.printStackTrace();
             }
+
+            notificationMailService.sendRecruiterUnlistedEmail(user);
         });
 
         logAdminAction("UNLIST_RECRUITER", "PROFILE", profileId);
@@ -244,6 +273,8 @@ public class AdminServiceImpl implements AdminService {
             } catch (JobPortalException e) {
                 e.printStackTrace();
             }
+
+            notificationMailService.sendRecruiterRelistedEmail(user);
         });
 
         logAdminAction("RELIST_RECRUITER", "PROFILE", profileId);
@@ -263,13 +294,16 @@ public class AdminServiceImpl implements AdminService {
             NotificationDTO notiDto = new NotificationDTO();
             notiDto.setUserId(job.getPostedBy());
             notiDto.setAction("Job Posting Removed");
-            notiDto.setMessage("Your job posting \"" + job.getTitle() + "\" was removed by an admin.");
+            notiDto.setMessage("Your job posting \"" + job.getJobTitle() + "\" was removed by an admin.");
             notiDto.setRoute("/recruiter/my-jobs");
             try {
                 notificationService.sendNotification(notiDto);
             } catch (JobPortalException e) {
                 e.printStackTrace();
             }
+
+            userRepository.findById(job.getPostedBy())
+                    .ifPresent(user -> notificationMailService.sendJobDeletedEmail(user, job.getJobTitle()));
         }
 
         logAdminAction("DELETE_JOB", "JOB", jobId);

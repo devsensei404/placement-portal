@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,4 +15,5 @@ public class ApplicationDTO {
     private Long applicantId;
     private LocalDateTime interviewTime;
     private ApplicationStatus applicationStatus;
+    private LocalDate startDate;
 }

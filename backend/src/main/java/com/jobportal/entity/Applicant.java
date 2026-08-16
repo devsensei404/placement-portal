@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -32,8 +33,9 @@ public class Applicant {
     @JoinColumn(name="job_id")
     private Job job;
     private LocalDateTime interviewTime;
+    private LocalDate startDate;
 
-    public Applicant(Long applicantId, String name, String email, Long phone, String website, String resume, String coverLetter, ApplicationStatus applicationStatus,LocalDateTime interviewTime) {
+    public Applicant(Long applicantId, String name, String email, Long phone, String website, String resume, String coverLetter, ApplicationStatus applicationStatus,LocalDateTime interviewTime,LocalDate startDate) {
         this.applicantId = applicantId;
         this.name = name;
         this.email = email;
@@ -43,8 +45,9 @@ public class Applicant {
         this.coverLetter = coverLetter;
         this.applicationStatus = applicationStatus;
         this.interviewTime = interviewTime;
+        this.startDate= startDate;
     }
     public ApplicantDTO toDTO() {
-        return new ApplicantDTO(this.applicationId,this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus,this.interviewTime);
+        return new ApplicantDTO(this.applicationId,this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus,this.interviewTime, this.startDate);
     }
 }
