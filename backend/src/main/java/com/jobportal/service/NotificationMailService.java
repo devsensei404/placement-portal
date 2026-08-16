@@ -40,6 +40,8 @@ public interface NotificationMailService {
 
     void sendUserUnbannedEmail(User user);
 
+    void sendAccountDeletedEmail(User user);
+
     // ─── Recruiter moderation ───────────────────────────────────────────────
 
     void sendRecruiterUnlistedEmail(User user);
@@ -50,3 +52,4 @@ public interface NotificationMailService {
 
     void sendJobDeletedEmail(User user, String jobTitle);
 }
+

@@ -64,6 +64,11 @@ public class AdminServiceImpl implements AdminService {
     public CompanyDTO approveCompany(Long companyId) throws JobPortalException {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new JobPortalException("COMPANY_NOT_FOUND"));
+
+        if (company.getStatus() != CompanyStatus.PENDING) {
+            throw new JobPortalException("COMPANY_NOT_PENDING");
+        }
+
         company.setVerified(true);
         company.setStatus(CompanyStatus.APPROVED);
         CompanyDTO result = companyRepository.save(company).toDTO();
@@ -90,6 +95,14 @@ public class AdminServiceImpl implements AdminService {
     public void rejectCompany(Long companyId) throws JobPortalException {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new JobPortalException("COMPANY_NOT_FOUND"));
+
+        // Reject is destructive — it deletes the company row and the associated user
+        // account outright. Only safe on a still-PENDING application. An already-APPROVED
+        // (or SUSPENDED) company must go through suspendCompany instead, which is
+        // non-destructive and reversible.
+        if (company.getStatus() != CompanyStatus.PENDING) {
+            throw new JobPortalException("COMPANY_NOT_PENDING");
+        }
 
         company.setStatus(CompanyStatus.REJECTED);
         companyRepository.save(company);
@@ -121,6 +134,11 @@ public class AdminServiceImpl implements AdminService {
     public CompanyDTO suspendCompany(Long companyId) throws JobPortalException {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new JobPortalException("COMPANY_NOT_FOUND"));
+
+        if (company.getStatus() != CompanyStatus.APPROVED) {
+            throw new JobPortalException("COMPANY_NOT_APPROVED");
+        }
+
         company.setStatus(CompanyStatus.SUSPENDED);
         // verified stays true, data not deleted — per spec
         CompanyDTO result = companyRepository.save(company).toDTO();
@@ -147,6 +165,11 @@ public class AdminServiceImpl implements AdminService {
     public CompanyDTO unsuspendCompany(Long companyId) throws JobPortalException {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new JobPortalException("COMPANY_NOT_FOUND"));
+
+        if (company.getStatus() != CompanyStatus.SUSPENDED) {
+            throw new JobPortalException("COMPANY_NOT_SUSPENDED");
+        }
+
         company.setStatus(CompanyStatus.APPROVED);
         CompanyDTO result = companyRepository.save(company).toDTO();
 
@@ -174,6 +197,11 @@ public class AdminServiceImpl implements AdminService {
     public UserDTO banUser(Long userId) throws JobPortalException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+
+        if (user.getAccountType() == AccountType.ADMIN) {
+            throw new JobPortalException("CANNOT_MODIFY_ADMIN_ACCOUNT");
+        }
+
         user.setEnabled(false);
         User saved = userRepository.save(user);
         UserDTO result = saved.toDTO();
@@ -189,6 +217,11 @@ public class AdminServiceImpl implements AdminService {
     public UserDTO unbanUser(Long userId) throws JobPortalException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+
+        if (user.getAccountType() == AccountType.ADMIN) {
+            throw new JobPortalException("CANNOT_MODIFY_ADMIN_ACCOUNT");
+        }
+
         user.setEnabled(true);
         User saved = userRepository.save(user);
         UserDTO result = saved.toDTO();
@@ -205,10 +238,17 @@ public class AdminServiceImpl implements AdminService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
 
+        if (user.getAccountType() == AccountType.ADMIN) {
+            throw new JobPortalException("CANNOT_MODIFY_ADMIN_ACCOUNT");
+        }
+
         if (user.getAccountType() == AccountType.COMPANY) {
             companyRepository.findByUserId(userId).ifPresent(company ->
                     companyRepository.deleteById(company.getId()));
         }
+
+        // Sent before teardown — the user row (and its email address) won't exist after.
+        notificationMailService.sendAccountDeletedEmail(user);
 
         tearDownAccount(userId);
         logAdminAction("DELETE_ACCOUNT", "USER", userId);
@@ -368,3 +408,4 @@ public class AdminServiceImpl implements AdminService {
         adminAuditLogRepository.save(log);
     }
 }
+
