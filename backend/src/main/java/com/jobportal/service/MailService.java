@@ -1,6 +1,7 @@
 package com.jobportal.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,9 +11,10 @@ import org.springframework.stereotype.Service;
 public class MailService {
 
     @Autowired
+    @Qualifier("otpMailSender")
     private JavaMailSender mailSender;
 
-    @Value("${spring.mail.username}")
+    @Value("${otp.mail.username}")
     private String fromAddress;
 
     public void sendOtpEmail(String toEmail, String otpCode) {
