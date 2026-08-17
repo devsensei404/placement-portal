@@ -2,10 +2,12 @@ package com.jobportal.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +16,19 @@ import java.util.function.Function;
 @Component
 public class JwtHelper {
 
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // need to FIX as per AI move to application.properties later
+    @Value("${jwt.secret}")
+    private String secretString;
+
+    private Key secretKey;
 
     private static final long JWT_TOKEN_VALIDITY = 3600000;
+
+    private Key getSecretKey() {
+        if (secretKey == null) {
+            secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretString));
+        }
+        return secretKey;
+    }
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -33,7 +45,7 @@ public class JwtHelper {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(getSecretKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -57,7 +69,7 @@ public class JwtHelper {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
-                .signWith(SECRET_KEY)
+                .signWith(getSecretKey())
                 .compact();
     }
 

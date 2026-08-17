@@ -1,5 +1,6 @@
 package com.jobportal;
 
+import com.jobportal.filter.RateLimitFilter;
 import com.jobportal.jwt.JwtAuthenticationEntryPoint;
 import com.jobportal.jwt.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter filter;
 
+    @Autowired
+    private RateLimitFilter rateLimitFilter;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
@@ -47,6 +51,11 @@ public class SecurityConfig {
                                 SessionCreationPolicy.STATELESS
                         )
                 );
+
+        http.addFilterBefore(
+                rateLimitFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
 
         http.addFilterBefore(
                 filter,
