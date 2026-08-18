@@ -5,24 +5,50 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f9f9f9;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   padding: 24px;
   box-sizing: border-box;
+
+  /* === RōninHire background artwork === */
+  background-image: url("../assets/RoninHire_Signin_bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* character sits right-of-frame facing back-left; keep face+sword in view */
+  background-position: right center;
+  background-color: #f9f9f9; /* fallback while image loads / if it fails */
 }
 
 .page * {
   box-sizing: border-box;
 }
 
+/* Desktop: push the card left so the character stays visible on the right */
+@media (min-width: 901px) {
+  .page {
+    justify-content: flex-start;
+    padding-left: 8vw;
+  }
+}
+
 .card {
-  background: #ffffff;
-  border: 1px solid #c9c9c9;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 12px;
   padding: 40px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+
+  /* frosted glass */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Fallback for browsers without backdrop-filter support (older Firefox etc.) */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card {
+    background: rgba(255, 255, 255, 0.94);
+  }
 }
 
 /* ===== Brand mark (kanji + wordmark) ===== */
@@ -36,16 +62,16 @@
 }
 
 .brand-mark .kanji {
-  font-size: 30px;
-  font-weight: 400;
+  font-size: 40px;
+  font-weight: 500;
   color: #111111;
   line-height: 1;
 }
 
 .brand-mark .wordmark {
   font-family: "Space Grotesk", "Inter", sans-serif;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 600;
   letter-spacing: -0.01em;
   color: #111111;
 }
@@ -254,6 +280,10 @@ button.btn-primary {
 /* ===== Tablet ===== */
 
 @media (max-width: 600px) {
+  .page {
+    background-position: 65% center;
+  }
+
   .card {
     padding: 32px 24px;
     max-width: 100%;
@@ -270,6 +300,7 @@ button.btn-primary {
 @media (max-width: 380px) {
   .page {
     padding: 16px;
+    background-position: 70% center;
   }
 
   .card {
@@ -285,10 +316,10 @@ button.btn-primary {
   }
 
   .brand-mark .kanji {
-    font-size: 26px;
+    font-size: 30px;
   }
 
   .brand-mark .wordmark {
-    font-size: 19px;
+    font-size: 22px;
   }
 }

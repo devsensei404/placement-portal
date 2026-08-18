@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Login from "./pages/Login.jsx"
-import Signup from "./pages/Signup.jsx"
+import KanjiGate from "./pages/KanjiGate.jsx"
 import StudentDashboard from "./pages/StudentDashboard.jsx"
 import BrowseJobs from './pages/BrowseJobs.jsx';
 import JobDetails from "./pages/JobDetails";
@@ -22,12 +22,14 @@ import ManageAssessments from "./pages/ManageAssessments.jsx";
 import ManageQuestions from "./pages/ManageQuestions.jsx";
 import AssessmentResults from "./pages/AssessmentResults.jsx";
 import TakeAssessment from "./pages/TakeAssessment.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
 
 const router = createBrowserRouter([
   { path:"/", element: <LandingPage /> },
   { path: "/terms-and-privacy", element: <TermsAndPrivacy /> },
   { path: "/login", element: <Login /> },
-  { path: "/signup", element: <Signup /> },
+  { path: "/signup", element: <KanjiGate /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
   { path: "/student-dashboard", element: <ProtectedRoute><StudentDashboard /></ProtectedRoute> },
   { path: "/browse-jobs", element: <ProtectedRoute><BrowseJobs /></ProtectedRoute> },
   { path: "/job-details", element: <ProtectedRoute><JobDetails /></ProtectedRoute> },
@@ -46,6 +48,7 @@ const router = createBrowserRouter([
   { path: "/assessments/:assessmentId/questions", element: <ProtectedRoute><ManageQuestions /></ProtectedRoute> },
   { path: "/assessments/:assessmentId/results", element: <ProtectedRoute><AssessmentResults /></ProtectedRoute> },
   { path: "/assessments/:assessmentId/take", element: <ProtectedRoute><TakeAssessment /></ProtectedRoute> },
+
 ])
 
 export default function App() {

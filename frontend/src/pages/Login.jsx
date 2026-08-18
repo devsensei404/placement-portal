@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 import BASE_URL from "../api";
+import EyeIcon from "../components/EyeIcon";
 
 export default function Login() {
 
@@ -144,18 +145,12 @@ export default function Login() {
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? (
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-                    <path d="M3 3l18 18M10.58 10.58a2 2 0 002.83 2.83M9.88 5.09A9.77 9.77 0 0112 5c5 0 9 4 10 7-.42 1.27-1.2 2.6-2.27 3.77M6.6 6.6C4.3 8.06 2.7 10.06 2 12c1 3 5 7 10 7 1.35 0 2.63-.27 3.8-.75" stroke="#111111" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-                    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z" stroke="#111111" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="12" cy="12" r="3" stroke="#111111" strokeWidth="1.6" />
-                  </svg>
-                )}
+                <EyeIcon open={showPassword} />
               </button>
             </div>
+            <Link to="/forgot-password" className="forgot-password-link">
+              Forgot password?
+            </Link>
           </div>
 
           {/* Only renders if error is not an empty string */}
