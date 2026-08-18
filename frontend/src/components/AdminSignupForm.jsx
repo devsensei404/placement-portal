@@ -1,5 +1,6 @@
 // AdminSignupForm.jsx
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import BASE_URL from "../api";
 import OtpStep from "./OtpStep";
 import EyeIcon from "./EyeIcon";
@@ -178,7 +179,19 @@ export default function AdminSignupForm({ onBack, onSuccess }) {
             {submitting ? "Creating account…" : "Create admin account"}
           </button>
         )}
+
+        {detailsUnlocked && (
+          <p className="kg-legal">
+            By creating an account, you agree to RōninHire's{" "}
+            <Link to="/terms-and-privacy#terms">Terms</Link> and{" "}
+            <Link to="/terms-and-privacy#privacy">Privacy Policy</Link>
+          </p>
+        )}
       </form>
+
+      <p className="kg-footer-text">
+        Already have an account? <Link to="/login">Sign In</Link>
+      </p>
     </div>
   );
 }

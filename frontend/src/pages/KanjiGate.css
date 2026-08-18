@@ -561,3 +561,41 @@
     transform: none;
   }
 }
+
+
+.kg-legal {
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #777777;
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+.kg-legal a {
+  color: #111111;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.kg-legal a:hover {
+  text-decoration: underline;
+}
+
+.kg-footer-text {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  text-align: center;
+  color: #555555;
+  margin-top: 20px;
+}
+
+.kg-footer-text a {
+  color: #111111;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.kg-footer-text a:hover {
+  text-decoration: underline;
+}
