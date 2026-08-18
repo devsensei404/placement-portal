@@ -1,0 +1,563 @@
+/* KanjiGate.css — prefix: kg- */
+
+:root {
+  --kg-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kg-page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  background: #f9f9f9;
+  overflow: hidden;
+}
+
+/* ── Gate ── */
+
+.kg-gate {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  z-index: 20;
+}
+
+.kg-panel {
+  flex: 1 1 50%;
+  height: 100%;
+  background: #111111;
+  border: none;
+  cursor: grab;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+  transition: transform 0.55s var(--kg-ease-spring);
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.kg-panel:active {
+  cursor: grabbing;
+}
+
+.kg-panel-left {
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.kg-panel-right {
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.kg-panel-label {
+  color: rgba(255, 255, 255, 0.55);
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kg-panel-kanji {
+  color: rgba(255, 255, 255, 0.08);
+  font-size: 120px;
+  line-height: 1;
+  font-weight: 400;
+  position: absolute;
+  pointer-events: none;
+}
+
+.kg-center-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.kg-center-kanji {
+  color: #ffffff;
+  font-size: 52px;
+  line-height: 1;
+}
+
+.kg-center-hint {
+  color: rgba(255, 255, 255, 0.45);
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+/* Gate parting on open — panels slide fully off-screen in opposite directions */
+
+.kg-gate-open .kg-panel {
+  transition: transform 0.65s var(--kg-ease-spring);
+  pointer-events: none;
+}
+
+.kg-gate-open .kg-panel-left {
+  transform: translateX(-105%);
+}
+
+.kg-gate-open .kg-panel-right {
+  transform: translateX(105%);
+}
+
+.kg-gate.kg-gate-open .kg-panel-left,
+.kg-gate.kg-gate-open .kg-panel-right {
+  z-index: 1;
+}
+
+/* Once fully open, drop the gate out of the layout flow so it stops
+   intercepting clicks/scroll behind the form stage. */
+.kg-gate-open {
+  pointer-events: none;
+}
+
+/* ── Form stage ── */
+
+.kg-stage {
+  position: relative;
+  z-index: 30;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.kg-role-toggle {
+  display: flex;
+  gap: 4px;
+  background: #ffffff;
+  border: 1.5px solid #111111;
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.kg-role-btn {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #444444;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.kg-role-btn.kg-role-active {
+  background: #111111;
+  color: #ffffff;
+}
+
+.kg-role-btn:not(.kg-role-active):hover {
+  background: #f0f0f0;
+}
+
+/* ── Flip card ── */
+
+.kg-flip-card {
+  perspective: 1600px;
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Each role switch remounts this element (via React `key`), so the
+   animation below replays every time rather than relying on a toggled
+   class — avoids the "only fires on odd switches" class-diffing trap. */
+.kg-flip-face {
+  transform-style: preserve-3d;
+  animation: kg-flip-rotate 0.44s var(--kg-ease-spring) both;
+}
+
+@keyframes kg-flip-rotate {
+  0% {
+    transform: rotateY(-90deg);
+    opacity: 0.2;
+  }
+  55% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+/* On the very first open (flipKey === 0) JS applies .kg-flip-initial instead,
+   which skips the rotate — the gate-slide reveal is already the "arrival"
+   motion, so the form itself only needs its normal fade-up here. */
+.kg-flip-initial .kg-flip-face {
+  animation: none;
+}
+
+/* ── Form panel shell ── */
+
+.kg-form-panel {
+  background: #ffffff;
+  border: 1.5px solid #111111;
+  border-radius: 14px;
+  padding: 36px 32px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  animation: kg-fade-up 0.4s ease both;
+}
+
+.kg-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #444444;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  width: auto;
+  transition: color 0.15s ease;
+}
+
+.kg-back:hover {
+  color: #ffffff;
+}
+
+.kg-form-header {
+  margin-bottom: 24px;
+}
+
+.kg-eyebrow {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888888;
+  margin: 0 0 6px;
+}
+
+.kg-heading {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111111;
+  margin: 0 0 6px;
+}
+
+.kg-subtext {
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  color: #555555;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Form fields ── */
+
+.kg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.kg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kg-field label {
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.kg-field input,
+.kg-otp-form input {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111111;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s ease;
+}
+
+.kg-field input:focus,
+.kg-otp-form input:focus {
+  border-color: #111111;
+}
+
+.kg-field input:disabled {
+  background: #f9f9f9;
+  color: #888888;
+}
+
+.kg-field input::placeholder,
+.kg-otp-form input::placeholder {
+  color: #999999;
+}
+
+.kg-hint {
+  font-family: "Inter", sans-serif;
+  font-size: 11.5px;
+  color: #888888;
+  margin: 2px 0 0;
+}
+
+.kg-input-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.kg-input-icon-wrap input {
+  padding-right: 42px;
+}
+
+.kg-icon-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  width: auto;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── OTP block ── */
+
+.kg-otp-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kg-otp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kg-otp-form label {
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.kg-otp-row {
+  display: flex;
+  gap: 8px;
+}
+
+.kg-otp-row input {
+  letter-spacing: 0.08em;
+  font-family: "Space Mono", monospace;
+  font-size: 15px;
+}
+
+.kg-resend {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  width: auto;
+  padding: 0;
+  color: #444444;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.kg-resend:disabled {
+  color: #999999;
+  cursor: default;
+  text-decoration: none;
+}
+
+.kg-otp-verified {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 9px 12px;
+  width: fit-content;
+}
+
+/* ── Buttons ── */
+
+.kg-btn {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 11px 20px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+  width: auto;
+}
+
+.kg-btn:active {
+  transform: scale(0.97);
+}
+
+.kg-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+.kg-btn-primary {
+  background: #111111;
+  color: #ffffff;
+  border: 1.5px solid #111111;
+}
+
+.kg-btn-primary:hover:not(:disabled) {
+  background: #333333;
+  border-color: #333333;
+}
+
+.kg-btn-outline {
+  background: #ffffff;
+  color: #111111;
+  border: 1.5px solid #111111;
+}
+
+.kg-btn-outline:hover:not(:disabled) {
+  background: #111111;
+  color: #ffffff;
+}
+
+.kg-btn-full {
+  width: 100%;
+}
+
+.kg-btn-compact {
+  padding: 10px 16px;
+  flex-shrink: 0;
+}
+
+/* ── Error ── */
+
+.kg-error {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  margin: 0;
+}
+
+/* ── Success ── */
+
+.kg-success {
+  background: #ffffff;
+  border: 1.5px solid #111111;
+  border-radius: 14px;
+  padding: 40px 32px;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.kg-success .kg-btn {
+  margin-top: 10px;
+}
+
+/* ── Fade-up entrance ── */
+
+.kg-fade {
+  animation: kg-fade-up 0.4s ease both;
+}
+
+@keyframes kg-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 640px) {
+  .kg-panel-kanji {
+    font-size: 80px;
+  }
+
+  .kg-center-kanji {
+    font-size: 36px;
+  }
+
+  .kg-stage {
+    padding: 32px 16px;
+  }
+
+  .kg-form-panel {
+    padding: 28px 22px;
+  }
+
+  .kg-heading {
+    font-size: 22px;
+  }
+}
+
+/* ── Reduced motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .kg-panel,
+  .kg-gate-open .kg-panel,
+  .kg-flip-face,
+  .kg-flip-card.kg-flipped .kg-flip-front,
+  .kg-form-panel,
+  .kg-fade,
+  .kg-btn {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .kg-flip-card.kg-flipped .kg-flip-face {
+    transform: none;
+  }
+}
