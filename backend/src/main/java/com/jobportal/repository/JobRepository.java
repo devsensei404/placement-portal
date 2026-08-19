@@ -4,7 +4,10 @@ import com.jobportal.dto.JobStatus;
 import com.jobportal.entity.Job;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface JobRepository extends JpaRepository<Job, Long> {
@@ -13,4 +16,17 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     public List<Job> findByStatus(JobStatus status, Sort sort);
     public List<Job> findByPostedByAndStatus(Long postedBy, JobStatus status);
 
+    long countByStatus(JobStatus status);
+
+    @Query(value = """
+            SELECT date_trunc(:bucketUnit, post_time) AS bucketStart,
+                   status,
+                   COUNT(*) AS count
+            FROM jobs
+            WHERE post_time >= :from
+            GROUP BY bucketStart, status
+            ORDER BY bucketStart
+            """, nativeQuery = true)
+    List<Object[]> countJobsByBucketAndStatus(@Param("bucketUnit") String bucketUnit,
+                                               @Param("from") LocalDateTime from);
 }
