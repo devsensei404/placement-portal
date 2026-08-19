@@ -8,6 +8,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +37,9 @@ public class UserDTO {
 
     private boolean enabled = true;
 
+    private LocalDateTime createdAt;
+
+
     // Registration-request-only field. Required (and validated) only when
     // accountType == ADMIN; never passed into User.toEntity()'s constructor,
     // never persisted, irrelevant/unused on every other UserDTO usage
@@ -41,6 +47,6 @@ public class UserDTO {
     private String adminKey;
 
     public User toEntity(){
-        return new User(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled);
+        return new User(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled, LocalDateTime.now());
     }
 }

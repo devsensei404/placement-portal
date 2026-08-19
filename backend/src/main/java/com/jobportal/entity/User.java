@@ -7,6 +7,8 @@ import lombok.Data;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @NoArgsConstructor
@@ -32,9 +34,11 @@ public class User {
 
     private boolean enabled = true;
 
+    private LocalDateTime createdAt;
+
     public UserDTO toDTO(){
         // adminKey is a registration-request-only field, never persisted on User —
         // always null when converting an existing entity back to a DTO.
-        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled, null);
+        return new UserDTO(this.id, this.name, this.email, this.password, this.accountType, this.profileId, this.enabled, this.createdAt, null);
     }
 }
