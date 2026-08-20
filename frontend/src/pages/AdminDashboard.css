@@ -1,0 +1,334 @@
+/* AdminDashboard.css */
+/* Matches the black/white minimalist system used across
+   StudentDashboard / RecruiterDashboard / Login / Landing. Reuses the
+   same .dashboard / .dashboard-main / .stats-grid / .stat-card /
+   .stat-skeleton / .section-heading conventions defined in
+   StudentDashboard.css so this page doesn't look like a different
+   product — only admin-specific pieces (trend widgets, activity feed)
+   get new class names here. */
+
+/* ── Keyframes ── */
+@keyframes ad-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes ad-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ad-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ── Header ── */
+.ad-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.ad-fade-in {
+  animation: ad-fade-in 0.5s ease both;
+}
+
+/* ── Stats grid (shares .stats-grid / .stat-card / .stat-label /
+   .stat-value / .stat-skeleton with StudentDashboard.css) ── */
+.stats-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 190px;
+  flex: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  animation: ad-fade-up 0.45s ease forwards;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.stat-card-clickable {
+  cursor: pointer;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888888;
+}
+
+.stat-value {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111111;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
+}
+
+.stat-sub {
+  font-size: 12px;
+  color: #666666;
+  line-height: 1.4;
+}
+
+.stat-sub-error {
+  color: #b91c1c;
+}
+
+.stat-error-inline {
+  color: #b91c1c;
+}
+
+/* Functional status colors — pending approvals / open reports get a
+   nudge of color when there's something to act on, same reasoning as
+   the green/amber/red status colors on StudentDashboard. Zero/empty
+   stays neutral black. */
+.ad-stat-amber { color: #d97706; }
+.ad-stat-red   { color: #dc2626; }
+
+/* ── Skeleton loader (shared look with StudentDashboard.css) ── */
+.stat-skeleton {
+  display: block;
+  height: 34px;
+  width: 60px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ececec 25%, #d8d8d8 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: ad-shimmer 1.4s infinite;
+}
+
+/* ── Section shell ── */
+.ad-section {
+  margin-bottom: 32px;
+}
+
+.ad-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-heading {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111111;
+  margin-bottom: 20px;
+}
+
+.ad-section-header .section-heading {
+  margin-bottom: 0;
+}
+
+.ad-view-all-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.ad-view-all-link:hover {
+  color: #333333;
+  text-decoration: underline;
+}
+
+/* ── Trend widgets ── */
+.trend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.trend-card {
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  animation: ad-fade-up 0.45s ease forwards;
+  animation-delay: 400ms;
+}
+
+.trend-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.trend-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.trend-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111111;
+}
+
+.trend-total {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666666;
+}
+
+.mini-chart-svg {
+  width: 100%;
+  height: 90px;
+  display: block;
+  overflow: visible;
+}
+
+.mini-chart-bar {
+  fill: #111111;
+  transition: fill 0.15s ease;
+}
+
+.trend-card:hover .mini-chart-bar {
+  fill: #333333;
+}
+
+.trend-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #999999;
+}
+
+.trend-empty {
+  font-size: 13px;
+  color: #888888;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.trend-skeleton {
+  height: 90px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ececec 25%, #d8d8d8 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: ad-shimmer 1.4s infinite;
+}
+
+.trend-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: #111111;
+}
+
+/* ── Recent Activity ── */
+.activity-card {
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 8px 24px;
+  opacity: 0;
+  animation: ad-fade-up 0.45s ease forwards;
+  animation-delay: 480ms;
+}
+
+.activity-list {
+  list-style: none;
+}
+
+.activity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  opacity: 0;
+  animation: ad-fade-up 0.35s ease forwards;
+}
+
+.activity-row + .activity-row {
+  border-top: 1px solid #eeeeee;
+}
+
+.activity-action {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.activity-target {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 2px;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #888888;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.activity-empty {
+  font-size: 13px;
+  color: #888888;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.activity-skeleton-list {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.activity-skeleton-row {
+  height: 18px;
+  width: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ececec 25%, #d8d8d8 50%, #ececec 75%);
+  background-size: 200% 100%;
+  opacity: 0;
+  animation: ad-fade-up 0.35s ease forwards, ad-shimmer 1.4s infinite;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .stats-grid {
+    flex-direction: column;
+  }
+  .activity-row {
+    align-items: flex-start;
+  }
+}

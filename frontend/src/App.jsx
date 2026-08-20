@@ -7,6 +7,7 @@ import JobDetails from "./pages/JobDetails";
 import MyApplications from "./pages/MyApplications.jsx";
 import ApplicationDetail from "./pages/ApplicationDetail.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import RecruiterDashboard from "./pages/RecruiterDashboard.jsx";
@@ -23,6 +24,7 @@ import ManageQuestions from "./pages/ManageQuestions.jsx";
 import AssessmentResults from "./pages/AssessmentResults.jsx";
 import TakeAssessment from "./pages/TakeAssessment.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 const router = createBrowserRouter([
   { path:"/", element: <LandingPage /> },
@@ -48,6 +50,7 @@ const router = createBrowserRouter([
   { path: "/assessments/:assessmentId/questions", element: <ProtectedRoute><ManageQuestions /></ProtectedRoute> },
   { path: "/assessments/:assessmentId/results", element: <ProtectedRoute><AssessmentResults /></ProtectedRoute> },
   { path: "/assessments/:assessmentId/take", element: <ProtectedRoute><TakeAssessment /></ProtectedRoute> },
+  { path: "/admin-dashboard", element: <AdminRoute><AdminDashboard /></AdminRoute> },
 
 ])
 

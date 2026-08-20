@@ -33,7 +33,9 @@ export default function Login() {
     const accountType = localStorage.getItem("accountType");
 
     if (token) {
-      if (accountType === "EMPLOYER") {
+      if (accountType === "ADMIN") {
+        navigate("/admin-dashboard");
+      } else if (accountType === "EMPLOYER") {
         navigate("/recruiter-dashboard");
       } else {
         navigate("/student-dashboard");
@@ -84,9 +86,11 @@ export default function Login() {
       localStorage.setItem("userId", payload.id);
       localStorage.setItem("accountType", payload.accountType);
 
-      // payload.accountType will be "APPLICANT" or "EMPLOYER"
+      // payload.accountType will be "APPLICANT", "EMPLOYER", or "ADMIN"
       // Redirect to the right dashboard based on role
-      if (payload.accountType === "EMPLOYER") {
+      if (payload.accountType === "ADMIN") {
+        navigate("/admin-dashboard");
+      } else if (payload.accountType === "EMPLOYER") {
         navigate("/recruiter-dashboard");
       } else {
         navigate("/student-dashboard");

@@ -1,3 +1,4 @@
+
 // Navbar.jsx
 // Reusable navbar shown on every dashboard page.
 // Reads accountType from localStorage to show the right links.
@@ -74,6 +75,15 @@ export default function Navbar() {
             <Link to="/chats" onClick={closeMenu}>Messages</Link>
             <Link to="/my-profile" onClick={closeMenu}>My Profile</Link>
             <Link to="/notifications" onClick={closeMenu}>Notifications</Link>
+          </>
+        )}
+
+        {accountType === "ADMIN" && (
+          <>
+            <Link to="/admin-dashboard" onClick={closeMenu}>Dashboard</Link>
+            <Link to="/admin/companies" onClick={closeMenu}>Companies</Link>
+            <Link to="/admin/reports" onClick={closeMenu}>Reports</Link>
+            <Link to="/admin/audit-log" onClick={closeMenu}>Audit Log</Link>
           </>
         )}
 
