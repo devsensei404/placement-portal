@@ -1,11 +1,10 @@
 package com.jobportal.api;
 
-import com.jobportal.dto.CompanyDTO;
-import com.jobportal.dto.ResponseDTO;
-import com.jobportal.dto.UserDTO;
+import com.jobportal.dto.*;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +19,18 @@ public class AdminAPI {
     @Autowired
     private AdminService adminService;
 
-    // ─── Company moderation ────────────────────────────────────────────────
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/companies/pending")
     public ResponseEntity<List<CompanyDTO>> getPendingCompanies() throws JobPortalException {
         return ResponseEntity.ok(adminService.getPendingCompanies());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/companies")
+    public ResponseEntity<List<CompanyDTO>> getAllCompanies(
+            @RequestParam(required = false) CompanyStatus status
+    ) throws JobPortalException {
+        return ResponseEntity.ok(adminService.getAllCompanies(status));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -53,8 +58,6 @@ public class AdminAPI {
         return ResponseEntity.ok(adminService.unsuspendCompany(id));
     }
 
-    // ─── User moderation ────────────────────────────────────────────────────
-
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/users/ban/{id}")
     public ResponseEntity<UserDTO> banUser(@PathVariable Long id) throws JobPortalException {
@@ -80,7 +83,14 @@ public class AdminAPI {
         return ResponseEntity.ok(adminService.getAllUsers());
     }
 
-    // ─── Recruiter moderation ───────────────────────────────────────────────
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/recruiters")
+    public ResponseEntity<List<AdminRecruiterDTO>> getAllRecruiters(
+            @RequestParam(required = false) ListingStatus listingStatus,
+            @RequestParam(required = false) Long companyId
+    ) throws JobPortalException {
+        return ResponseEntity.ok(adminService.getAllRecruiters(listingStatus, companyId));
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/recruiters/unlist/{profileId}")
@@ -96,7 +106,14 @@ public class AdminAPI {
         return ResponseEntity.ok(new ResponseDTO("Recruiter Relisted Successfully"));
     }
 
-    // ─── Content moderation ─────────────────────────────────────────────────
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/jobs")
+    public ResponseEntity<List<JobDTO>> getAllJobsAdmin(
+            @RequestParam(required = false) JobStatus status,
+            @RequestParam(required = false) Long companyId
+    ) throws JobPortalException {
+        return ResponseEntity.ok(adminService.getAllJobsAdmin(status, companyId));
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/jobs/delete/{id}")
@@ -106,9 +123,28 @@ public class AdminAPI {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/interview-exp")
+    public ResponseEntity<List<InterviewExpDTO>> getAllInterviewExpsAdmin(
+            @RequestParam(required = false) Long jobId
+    ) throws JobPortalException {
+        return ResponseEntity.ok(adminService.getAllInterviewExpsAdmin(jobId));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/interview-exp/delete/{id}")
     public ResponseEntity<ResponseDTO> deleteInterviewExp(@PathVariable Long id) throws JobPortalException {
         adminService.deleteInterviewExp(id);
         return ResponseEntity.ok(new ResponseDTO("Interview Experience Deleted Successfully"));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/audit-logs")
+    public ResponseEntity<Page<AdminAuditLogDTO>> getAuditLogs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String targetType,
+            @RequestParam(required = false) Long adminId
+    ) throws JobPortalException {
+        return ResponseEntity.ok(adminService.getAuditLogs(page, size, targetType, adminId));
     }
 }

@@ -6,11 +6,17 @@ import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.*;
 import com.jobportal.utility.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service("adminService")
 public class AdminServiceImpl implements AdminService {
@@ -47,8 +53,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private NotificationService notificationService;
-
-    // ─── Company moderation ────────────────────────────────────────────────
 
     @Override
     public List<CompanyDTO> getPendingCompanies() throws JobPortalException {
@@ -96,10 +100,6 @@ public class AdminServiceImpl implements AdminService {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new JobPortalException("COMPANY_NOT_FOUND"));
 
-        // Reject is destructive — it deletes the company row and the associated user
-        // account outright. Only safe on a still-PENDING application. An already-APPROVED
-        // (or SUSPENDED) company must go through suspendCompany instead, which is
-        // non-destructive and reversible.
         if (company.getStatus() != CompanyStatus.PENDING) {
             throw new JobPortalException("COMPANY_NOT_PENDING");
         }
@@ -107,7 +107,6 @@ public class AdminServiceImpl implements AdminService {
         company.setStatus(CompanyStatus.REJECTED);
         companyRepository.save(company);
 
-        // Auto-reject any dangling PENDING association requests pointing at this company
         List<CompanyAssociationRequest> pendingRequests = associationRequestRepository
                 .findByCompanyIdAndStatus(companyId, AssociationStatus.PENDING);
         for (CompanyAssociationRequest request : pendingRequests) {
@@ -118,9 +117,6 @@ public class AdminServiceImpl implements AdminService {
 
         Long userId = company.getUserId();
 
-        // Resolved BEFORE tearDownAccount() deletes this user — company rejection is
-        // email-only (no in-app notification possible, account won't exist to view one),
-        // so this lookup + the send must happen here, not after.
         userRepository.findById(userId)
                 .ifPresent(user -> notificationMailService.sendCompanyRejectedEmail(user, company.getName()));
 
@@ -140,7 +136,6 @@ public class AdminServiceImpl implements AdminService {
         }
 
         company.setStatus(CompanyStatus.SUSPENDED);
-        // verified stays true, data not deleted — per spec
         CompanyDTO result = companyRepository.save(company).toDTO();
 
         NotificationDTO notiDto = new NotificationDTO();
@@ -191,7 +186,14 @@ public class AdminServiceImpl implements AdminService {
         return result;
     }
 
-    // ─── User moderation ────────────────────────────────────────────────────
+    @Override
+    public List<CompanyDTO> getAllCompanies(CompanyStatus status) throws JobPortalException {
+        List<Company> companies = status == null
+                ? companyRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
+                : companyRepository.findByStatus(status);
+        logAdminAction("VIEW_ALL_COMPANIES", "COMPANY", null);
+        return companies.stream().map(Company::toDTO).toList();
+    }
 
     @Override
     public UserDTO banUser(Long userId) throws JobPortalException {
@@ -205,7 +207,7 @@ public class AdminServiceImpl implements AdminService {
         user.setEnabled(false);
         User saved = userRepository.save(user);
         UserDTO result = saved.toDTO();
-        result.setPassword(null); // never return the password hash in an admin-facing response
+        result.setPassword(null);
 
         notificationMailService.sendUserBannedEmail(saved);
 
@@ -225,7 +227,7 @@ public class AdminServiceImpl implements AdminService {
         user.setEnabled(true);
         User saved = userRepository.save(user);
         UserDTO result = saved.toDTO();
-        result.setPassword(null); // never return the password hash in an admin-facing response
+        result.setPassword(null);
 
         notificationMailService.sendUserUnbannedEmail(saved);
 
@@ -247,7 +249,6 @@ public class AdminServiceImpl implements AdminService {
                     companyRepository.deleteById(company.getId()));
         }
 
-        // Sent before teardown — the user row (and its email address) won't exist after.
         notificationMailService.sendAccountDeletedEmail(user);
 
         tearDownAccount(userId);
@@ -260,20 +261,15 @@ public class AdminServiceImpl implements AdminService {
                 .stream()
                 .map(User::toDTO)
                 .toList();
-        result.forEach(dto -> dto.setPassword(null)); // never return password hashes in bulk admin listings
+        result.forEach(dto -> dto.setPassword(null));
         logAdminAction("VIEW_ALL_USERS", "USER", null);
         return result;
     }
-
-    // ─── Recruiter moderation ───────────────────────────────────────────────
 
     @Override
     public void unlistRecruiter(Long profileId) throws JobPortalException {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
-        // companyId stays untouched — existing commitments (open jobs, interviews,
-        // applicants) continue; only new activity is blocked by the postJob/updateJob
-        // listingStatus == ACTIVE guard. No job closures here — see branch discussion.
         profile.setListingStatus(ListingStatus.UNLISTED);
         profileRepository.save(profile);
 
@@ -320,7 +316,10 @@ public class AdminServiceImpl implements AdminService {
         logAdminAction("RELIST_RECRUITER", "PROFILE", profileId);
     }
 
-    // ─── Content moderation ─────────────────────────────────────────────────
+    @Override
+    public List<AdminRecruiterDTO> getAllRecruiters(ListingStatus listingStatus, Long companyId) throws JobPortalException {
+        return userRepository.findRecruitersForAdmin(listingStatus, companyId);
+    }
 
     @Override
     public void deleteJobPosting(Long jobId) throws JobPortalException {
@@ -369,16 +368,62 @@ public class AdminServiceImpl implements AdminService {
         logAdminAction("DELETE_INTERVIEW_EXP", "INTERVIEW_EXP", reviewId);
     }
 
-    // ─── Helpers ──────────────────────────────────────────────────────────────
+    @Override
+    public List<JobDTO> getAllJobsAdmin(JobStatus status, Long companyId) throws JobPortalException {
+        Sort sort = Sort.by(Sort.Direction.DESC, "postTime");
+        List<Job> jobs;
+        if (status != null && companyId != null) {
+            jobs = jobRepository.findByStatusAndCompanyId(status, companyId, sort);
+        } else if (status != null) {
+            jobs = jobRepository.findByStatus(status, sort);
+        } else if (companyId != null) {
+            jobs = jobRepository.findByCompanyId(companyId, sort);
+        } else {
+            jobs = jobRepository.findAll(sort);
+        }
 
-    /**
-     * Shared account teardown: notifications -> job cleanup (if EMPLOYER) -> profile -> user.
-     * Mirrors UserServiceImpl.deleteUser()'s sequence exactly, minus its self-only
-     * ownership guard (admin is never the target here) and minus the Company deletion
-     * step, which callers (rejectCompany/deleteAccount) handle themselves before
-     * invoking this, since only one of the two callers needs it and at a different point
-     * in their respective sequences.
-     */
+        List<Long> companyIds = jobs.stream()
+                .map(Job::getCompanyId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        Map<Long, String> namesById = companyIds.isEmpty()
+                ? Map.of()
+                : companyRepository.findAllById(companyIds).stream()
+                        .collect(Collectors.toMap(Company::getId, Company::getName));
+
+        return jobs.stream().map(job -> {
+            JobDTO dto = job.toDTO();
+            dto.setCompanyName(namesById.get(job.getCompanyId()));
+            return dto;
+        }).toList();
+    }
+
+    @Override
+    public List<InterviewExpDTO> getAllInterviewExpsAdmin(Long jobId) throws JobPortalException {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        List<InterviewExp> exps = jobId == null
+                ? interviewExpRepository.findAll(sort)
+                : interviewExpRepository.findByJobId(jobId, sort);
+        return exps.stream().map(InterviewExp::toDTO).toList();
+    }
+
+    @Override
+    public Page<AdminAuditLogDTO> getAuditLogs(int page, int size, String targetType, Long adminId) throws JobPortalException {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
+        Page<AdminAuditLog> logPage;
+        if (targetType != null && adminId != null) {
+            logPage = adminAuditLogRepository.findByTargetTypeAndAdminId(targetType, adminId, pageable);
+        } else if (targetType != null) {
+            logPage = adminAuditLogRepository.findByTargetType(targetType, pageable);
+        } else if (adminId != null) {
+            logPage = adminAuditLogRepository.findByAdminId(adminId, pageable);
+        } else {
+            logPage = adminAuditLogRepository.findAll(pageable);
+        }
+        return logPage.map(AdminAuditLog::toDTO);
+    }
+
     private void tearDownAccount(Long userId) throws JobPortalException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
@@ -408,4 +453,3 @@ public class AdminServiceImpl implements AdminService {
         adminAuditLogRepository.save(log);
     }
 }
-
