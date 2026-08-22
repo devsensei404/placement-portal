@@ -1,0 +1,520 @@
+/* AdminCompanies.css
+   Only new classes not already covered by AdminDashboard.css / AdminAnalytics.css
+   (both imported alongside this file in AdminCompanies.jsx) — reuses .dashboard,
+   .dashboard-main, .dash-title, .ad-header, .ad-section, .ad-section-header,
+   .section-heading, .ad-fade-in, .trend-skeleton, ad-shimmer/ad-fade-up
+   keyframes, and the .aa-chip / .aa-chart-type-switcher chip pattern from
+   those files directly. */
+
+/* ── Status badges ── */
+.ac-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.ac-badge-approved {
+  background: #dcfce7;
+  color: #059669;
+}
+
+.ac-badge-pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.ac-badge-incomplete {
+  background: #f0f0f0;
+  color: #666666;
+}
+
+.ac-badge-suspended {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ── Buttons ── */
+.ac-btn {
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.ac-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ac-btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.ac-btn-approve {
+  background: #059669;
+  color: #ffffff;
+}
+
+.ac-btn-approve:hover:not(:disabled) {
+  background: #047857;
+}
+
+.ac-btn-danger {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.ac-btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.ac-btn-warn {
+  background: #ffffff;
+  color: #d97706;
+  border-color: #d97706;
+}
+
+.ac-btn-warn:hover:not(:disabled) {
+  background: #fffbeb;
+}
+
+.ac-btn-ghost {
+  background: #ffffff;
+  color: #444444;
+  border-color: #cccccc;
+}
+
+.ac-btn-ghost:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.ac-no-action {
+  color: #bbbbbb;
+  font-size: 13px;
+}
+
+/* ── Success banner (inline, dismissing-on-timeout) ── */
+.ac-success-banner {
+  background: #dcfce7;
+  color: #059669;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  animation: ad-fade-in 0.25s ease both;
+}
+
+/* ── Section 1: Pending Approvals (cards) ── */
+.ac-pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ac-pending-card {
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ac-pending-card-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ac-pending-card-name {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111111;
+}
+
+.ac-pending-card-email {
+  font-size: 13px;
+  color: #444444;
+}
+
+.ac-pending-card-website {
+  font-size: 12px;
+  color: #2563eb;
+  word-break: break-all;
+}
+
+.ac-pending-card-date {
+  font-size: 12px;
+  color: #888888;
+  margin-top: 4px;
+}
+
+.ac-pending-card-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.ac-pending-card-skeleton {
+  align-items: flex-start;
+}
+
+.ac-skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ececec 25%, #d8d8d8 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: ad-shimmer 1.4s infinite;
+  margin-bottom: 8px;
+}
+
+.ac-skeleton-line-wide {
+  width: 220px;
+}
+
+.ac-skeleton-line-narrow {
+  width: 140px;
+}
+
+.ac-empty-good {
+  font-size: 14px;
+  color: #059669;
+  text-align: center;
+  padding: 32px 0;
+  font-weight: 600;
+}
+
+.ac-empty {
+  font-size: 13px;
+  color: #888888;
+  text-align: center;
+  padding: 32px 0;
+}
+
+.ac-error {
+  font-size: 13px;
+  color: #b91c1c;
+  text-align: center;
+  padding: 32px 0;
+}
+
+/* ── Section 2: All Companies (table) ── */
+.ac-directory-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.ac-search-input {
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: #111111;
+  min-width: 220px;
+  transition: border-color 0.15s ease;
+}
+
+.ac-search-input:focus {
+  outline: none;
+  border-color: #111111;
+}
+
+.ac-table-wrap {
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+.ac-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ac-table thead th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888888;
+  padding: 14px 20px;
+  border-bottom: 1px solid #eeeeee;
+  white-space: nowrap;
+}
+
+.ac-row td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #f2f2f2;
+  font-size: 13px;
+  color: #333333;
+  vertical-align: middle;
+}
+
+.ac-row:last-child td {
+  border-bottom: none;
+}
+
+.ac-td-name {
+  font-weight: 700;
+  color: #111111;
+}
+
+.ac-td-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Reject confirmation modal ── */
+.ac-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: ad-fade-in 0.15s ease both;
+}
+
+.ac-modal {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.ac-modal-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111111;
+  margin-bottom: 10px;
+}
+
+.ac-modal-body {
+  font-size: 13px;
+  color: #444444;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.ac-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ── Mobile (tablet/phone, ≤720px) — matches AdminAnalytics.css's
+   breakpoint so this page transitions at the same width as the rest of
+   the admin section. ── */
+@media (max-width: 720px) {
+  .ac-pending-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 18px;
+  }
+
+  .ac-pending-card-actions {
+    justify-content: stretch;
+  }
+
+  .ac-pending-card-actions .ac-btn {
+    flex: 1;
+    padding: 10px 12px; /* taller tap target */
+  }
+
+  .ac-pending-card-name {
+    font-size: 15px;
+  }
+
+  .ac-directory-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .ac-search-input {
+    min-width: 0;
+    width: 100%;
+    padding: 10px 14px; /* taller tap target */
+  }
+
+  /* Status chip row stacks vertically instead of scrolling
+     horizontally — a horizontal strip was easy to miss/scroll past on
+     phones; a capped-width vertical list keeps every status visible at
+     once and reachable without a sideways swipe. */
+  .ac-directory-controls .aa-chart-type-switcher {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    max-width: 260px;
+  }
+
+  .ac-directory-controls .aa-chip {
+    flex-shrink: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ── Table → stacked cards ──
+     A 4-column table (name/email/status/actions) has no room on a
+     phone screen even with horizontal scroll — scrolling a data table
+     sideways to read a badge is a bad experience. Below this width each
+     row becomes its own card: the header row is hidden, each <td>
+     stacks full-width and grows its own label (via data-label, set in
+     JSX) so the column meaning isn't lost once the grid layout is gone. */
+  .ac-table-wrap {
+    overflow-x: visible;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .ac-table,
+  .ac-table tbody,
+  .ac-row,
+  .ac-row td {
+    display: block;
+    width: 100%;
+  }
+
+  .ac-table thead {
+    display: none;
+  }
+
+  .ac-row {
+    background: #ffffff;
+    border: 1px solid #111111;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    padding: 6px 18px;
+    margin-bottom: 12px;
+  }
+
+  .ac-row td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f2f2f2;
+    text-align: right;
+  }
+
+  .ac-row td:last-child {
+    border-bottom: none;
+  }
+
+  .ac-row td::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888888;
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  .ac-td-name,
+  .ac-td-email {
+    text-align: right;
+    word-break: break-word;
+  }
+
+  .ac-td-actions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}
+
+/* ── Small phones (≤420px) — matches AdminAnalytics.css's small-phone
+   tier for consistent scaling across the admin section. ── */
+@media (max-width: 420px) {
+  .ac-pending-card {
+    padding: 14px 14px;
+  }
+
+  .ac-pending-card-name {
+    font-size: 14px;
+  }
+
+  .ac-pending-card-email,
+  .ac-pending-card-website {
+    font-size: 12px;
+  }
+
+  .ac-btn {
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+
+  .ac-directory-controls .aa-chart-type-switcher {
+    max-width: 220px;
+  }
+
+  .ac-directory-controls .aa-chip {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  .ac-search-input {
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+
+  .ac-row {
+    padding: 4px 14px;
+  }
+
+  .ac-row td {
+    font-size: 12px;
+    padding: 8px 0;
+  }
+
+  .ac-row td::before {
+    font-size: 10px;
+  }
+
+  .ac-modal {
+    padding: 20px;
+  }
+
+  .ac-modal-title {
+    font-size: 15px;
+  }
+
+  .ac-modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .ac-modal-actions .ac-btn {
+    width: 100%;
+  }
+}
