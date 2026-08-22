@@ -1,0 +1,277 @@
+/* ── Summary stat row ── */
+.ar-summary-row {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.ar-summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ar-summary-value {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ar-summary-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888888;
+}
+
+.ar-summary-skeleton {
+  display: block;
+  height: 26px;
+  width: 50px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ececec 25%, #d8d8d8 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: ad-shimmer 1.4s infinite;
+}
+
+.ar-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-bottom: 24px;
+}
+
+.ar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ar-card {
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0;
+  animation: ad-fade-up 0.35s ease forwards;
+}
+
+.ar-card-skeleton {
+  gap: 10px;
+}
+
+.ar-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.ar-card-time {
+  font-size: 12px;
+  color: #888888;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.ar-card-reason {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111111;
+}
+
+.ar-card-target {
+  font-size: 12px;
+  color: #666666;
+}
+
+.ar-card-details {
+  font-size: 13px;
+  color: #444444;
+  line-height: 1.5;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 4px;
+}
+
+.ar-card-reporter {
+  font-size: 11px;
+  color: #999999;
+  margin-top: 2px;
+}
+
+.ar-card-resolution {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #eeeeee;
+}
+
+.ar-card-resolution-note {
+  font-size: 13px;
+  color: #444444;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.ar-card-resolution-meta {
+  font-size: 11px;
+  color: #999999;
+  margin-top: 4px;
+}
+
+.ar-card-error {
+  font-size: 12px;
+  color: #b91c1c;
+  margin-top: 4px;
+}
+
+.ar-card-actions-wrap {
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ar-note-toggle {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+.ar-note-toggle:hover {
+  text-decoration: underline;
+}
+
+.ar-note-input {
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #111111;
+  resize: vertical;
+  transition: border-color 0.15s ease;
+}
+
+.ar-note-input:focus {
+  outline: none;
+  border-color: #111111;
+}
+
+.ar-card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Mobile (≤720px) ── */
+@media (max-width: 720px) {
+  .ar-summary-row {
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+
+  .ar-summary-value {
+    font-size: 22px;
+  }
+
+  .ar-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .ar-filter-row .aa-chart-type-switcher {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 260px;
+  }
+
+  .ar-filter-row .aa-chip {
+    width: 100%;
+    text-align: center;
+  }
+
+  .ar-card {
+    padding: 16px 18px;
+  }
+
+  .ar-card-top {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ar-card-actions {
+    flex-direction: column;
+  }
+
+  .ar-card-actions .ac-btn {
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  .ar-note-input {
+    font-size: 16px;
+  }
+}
+
+/* ── Small phones (≤420px) ── */
+@media (max-width: 420px) {
+  .ar-summary-row {
+    gap: 18px;
+  }
+
+  .ar-summary-value {
+    font-size: 19px;
+  }
+
+  .ar-summary-label {
+    font-size: 11px;
+  }
+
+  .ar-filter-row .aa-chart-type-switcher {
+    max-width: 220px;
+  }
+
+  .ar-filter-row .aa-chip {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  .ar-card {
+    padding: 14px 14px;
+  }
+
+  .ar-card-reason {
+    font-size: 14px;
+  }
+
+  .ar-card-details {
+    font-size: 12px;
+  }
+
+  .ar-card-time,
+  .ar-card-target,
+  .ar-card-resolution-note,
+  .ar-note-toggle {
+    font-size: 11px;
+  }
+}
