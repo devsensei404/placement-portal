@@ -1,0 +1,22 @@
+.ar-recruiter-status-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ar-account-banned-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: #b91c1c;
+  background: #fee2e2;
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .ar-recruiter-status-cell {
+    justify-content: flex-end;
+  }
+}
