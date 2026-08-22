@@ -108,6 +108,7 @@
    stays neutral black. */
 .ad-stat-amber { color: #d97706; }
 .ad-stat-red   { color: #dc2626; }
+.ad-stat-green { color: #059669; }
 
 /* ── Skeleton loader (shared look with StudentDashboard.css) ── */
 .stat-skeleton {

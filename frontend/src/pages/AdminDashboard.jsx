@@ -283,6 +283,7 @@ export default function AdminDashboard() {
             loading={summaryLoading}
             error={summaryError}
             index={0}
+            onClick={() => navigate("/admin/users")}
           />
           <StatCard
             label="Active Jobs"
@@ -290,11 +291,12 @@ export default function AdminDashboard() {
             loading={summaryLoading}
             error={summaryError}
             index={1}
+            onClick={() => navigate("/admin/jobs")}
           />
           <StatCard
             label="Pending Company Approvals"
             value={summary?.pendingCompanyApprovals}
-            colorClass={summary?.pendingCompanyApprovals > 0 ? "ad-stat-amber" : ""}
+            colorClass={summary?.pendingCompanyApprovals > 0 ? "ad-stat-red" : "ad-stat-green"}
             loading={summaryLoading}
             error={summaryError}
             index={2}
@@ -303,7 +305,7 @@ export default function AdminDashboard() {
           <StatCard
             label="Open Reports"
             value={reportSummary?.openCount}
-            colorClass={reportSummary?.openCount > 0 ? "ad-stat-red" : ""}
+            colorClass={reportSummary?.openCount > 0 ? "ad-stat-red" : "ad-stat-green"}
             loading={reportsLoading}
             error={reportsError}
             index={3}
