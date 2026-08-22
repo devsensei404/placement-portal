@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 public class InterviewExpDTO {
 
-    // basically I didn't use id(pk) of interviewexp table cuz its one review per userId and jobId , so the combi of both makes unique criteria anyways.
+    private Long id;
 
     @NotBlank(message = "Cannot be empty")
     private String msg;

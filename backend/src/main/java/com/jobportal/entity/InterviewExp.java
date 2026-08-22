@@ -30,6 +30,9 @@ public class InterviewExp {
         this.createdAt=createdAt;
     }
     public InterviewExpDTO toDTO(){
-        return new InterviewExpDTO(this.msg,this.jobId,this.createdAt);
+        return new InterviewExpDTO(this.id, this.msg, this.jobId, this.createdAt);
     }
-}
+}git add backend/src/main/java/com/jobportal/dto/InterviewExpDTO.java backend/src/main/java/com/jobportal/entity/InterviewExp.java
+git commit -m "feat(backend): expose id on InterviewExpDTO for report/moderation targeting"
+
+        #
