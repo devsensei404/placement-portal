@@ -536,3 +536,13 @@
     font-size: 12px;
   }
 }
+
+.cp-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-name-row .cp-name {
+  margin: 0;
+}

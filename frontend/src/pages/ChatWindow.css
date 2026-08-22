@@ -328,3 +328,12 @@
     padding: 9px 12px;
   }
 }
+
+.cw2-bubble-row {
+  align-items: center;
+}
+
+.cw2-bubble-row--other .report-btn {
+  margin-right: 2px;
+}
+

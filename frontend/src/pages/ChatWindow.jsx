@@ -8,6 +8,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
+import ReportButton from "../components/ReportButton.jsx";
 import BASE_URL from "../api.js";
 import "./ChatWindow.css";
 
@@ -15,6 +16,7 @@ export default function ChatWindow() {
   const { otherUserId } = useParams();
   const token           = localStorage.getItem("token");
   const myId            = Number(localStorage.getItem("userId"));
+  const accountType     = localStorage.getItem("accountType");
   const navigate        = useNavigate();
   const location        = useLocation();
 
@@ -31,6 +33,8 @@ export default function ChatWindow() {
 
   const bottomRef  = useRef(null);   // scroll anchor
   const intervalRef = useRef(null);  // polling interval handle
+
+  const canReport = accountType === "APPLICANT" || accountType === "EMPLOYER";
 
   // Fetch conversation and scroll to bottom
   function fetchMessages() {
@@ -165,6 +169,9 @@ export default function ChatWindow() {
                 className={`cw2-bubble-row ${isOwn ? "cw2-bubble-row--own" : "cw2-bubble-row--other"}`}
                 style={{ animationDelay: `${Math.min(index, 10) * 0.03}s` }}
               >
+                {!isOwn && canReport && (
+                  <ReportButton targetType="CHAT_MESSAGE" targetId={msg.id} />
+                )}
                 <div className={`cw2-bubble ${isOwn ? "cw2-bubble--own" : "cw2-bubble--other"}`}>
                   <p className="cw2-bubble-text">{msg.content}</p>
                   <span className="cw2-bubble-time">{formatTime(msg.timestamp)}</span>

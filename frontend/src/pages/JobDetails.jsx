@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
+import ReportButton from "../components/ReportButton.jsx";
 import BASE_URL from "../api";
 import "./JobDetails.css";
 
@@ -53,6 +54,8 @@ export default function JobDetails() {
   const accountType = localStorage.getItem("accountType");
   const jobId = new URLSearchParams(window.location.search).get("id");
   const navigate = useNavigate();
+
+  const canReport = accountType === "APPLICANT" || accountType === "EMPLOYER" || accountType === "COMPANY";
 
   // ── fetch job ────────────────────────────────────────────
   useEffect(() => {
@@ -198,7 +201,12 @@ export default function JobDetails() {
       <main className="job-details-main">
 
         <div className="job-header">
-          <h1 className="job-title">{job.jobTitle}</h1>
+          <div className="job-header-top-row">
+            <h1 className="job-title">{job.jobTitle}</h1>
+            {canReport && (
+              <ReportButton targetType="JOB" targetId={Number(jobId)} />
+            )}
+          </div>
           <p className="job-meta"><span className="meta-label">Company:</span> {job.company}</p>
           <p className="job-meta"><span className="meta-label">Location:</span> {job.location}</p>
           <p className="job-meta"><span className="meta-label">Job Type:</span> {job.jobType}</p>
@@ -320,7 +328,6 @@ export default function JobDetails() {
           ) : (
             <div className="exp-list">
 
-              {/* Own review — pinned at top with edit/delete */}
               {ownReview && (
                 <div className="exp-card exp-card-own">
                   <div className="exp-card-top">
@@ -371,9 +378,8 @@ export default function JobDetails() {
                 </div>
               )}
 
-              {/* Everyone else's reviews */}
               {reviews.map((review, idx) => (
-                <div key={idx} className="exp-card">
+                <div key={review.id ?? idx} className="exp-card">
                   <div className="exp-card-top">
                     <div className="exp-avatar">
                       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -385,6 +391,9 @@ export default function JobDetails() {
                       <span className="exp-anon-label">Anonymous Applicant</span>
                       <span className="exp-time">{timeAgo(review.createdAt)}</span>
                     </div>
+                    {canReport && review.id != null && (
+                      <ReportButton targetType="INTERVIEW_EXP" targetId={review.id} />
+                    )}
                   </div>
                   <p className="exp-msg">{review.msg}</p>
                 </div>

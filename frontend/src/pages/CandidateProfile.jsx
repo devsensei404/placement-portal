@@ -8,6 +8,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
+import ReportButton from "../components/ReportButton.jsx";
 import "./CandidateProfile.css";
 import BASE_URL from "../api";
 
@@ -16,11 +17,14 @@ const BASE = BASE_URL;
 export default function CandidateProfile() {
   const { id }   = useParams();
   const token    = localStorage.getItem("token");
+  const accountType = localStorage.getItem("accountType");
   const navigate = useNavigate();
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error,   setError  ] = useState("");
+
+  const canReport = accountType === "EMPLOYER" || accountType === "COMPANY";
 
   useEffect(() => {
     fetch(`${BASE}/profiles/view/${id}`, {
@@ -103,7 +107,12 @@ export default function CandidateProfile() {
 
           {/* Name + title + meta */}
           <div className="cp-hero-info">
-            <h1 className="cp-name">{profile.name || "Unnamed"}</h1>
+            <div className="cp-name-row">
+              <h1 className="cp-name">{profile.name || "Unnamed"}</h1>
+              {canReport && (
+                <ReportButton targetType="PROFILE" targetId={Number(id)} />
+              )}
+            </div>
 
             {profile.jobTitle && (
               <p className="cp-job-title">
