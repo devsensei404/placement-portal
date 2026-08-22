@@ -1,0 +1,23 @@
+/* AdminUsers.css — wraps the two chip rows so .ac-directory-controls
+   still only sees two children, same as AdminCompanies.jsx's layout. */
+
+.au-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 720px) {
+  .au-filter-chips {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .au-filter-chips {
+    gap: 8px;
+  }
+}
