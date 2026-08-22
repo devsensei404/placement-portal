@@ -1,0 +1,321 @@
+/* AdminAnalytics.css
+   Only new classes not already covered by AdminDashboard.css (imported
+   alongside this file in AdminAnalytics.jsx) — reuses .dashboard,
+   .dashboard-main, .dash-title, .ad-header, .ad-fade-in, .trend-empty,
+   .trend-axis, card/shadow/border conventions from there directly. */
+
+/* ── Layout ── */
+.aa-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.aa-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 200px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.aa-sidebar-item {
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444444;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.aa-sidebar-item:hover {
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.aa-sidebar-item-active {
+  background: #111111;
+  color: #ffffff;
+}
+
+.aa-sidebar-item-active:hover {
+  background: #111111;
+  color: #ffffff;
+}
+
+.aa-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Time-range control row ── */
+.aa-timerange-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.aa-toggle-group {
+  display: flex;
+  border: 1px solid #111111;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: opacity 0.15s ease;
+}
+
+/* Mutual-exclusivity made visually obvious: the inactive group dims. */
+.aa-toggle-group-inactive {
+  opacity: 0.45;
+}
+
+.aa-toggle-btn {
+  background: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444444;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.aa-toggle-btn + .aa-toggle-btn {
+  border-left: 1px solid #111111;
+}
+
+.aa-toggle-btn:hover {
+  background: #f5f5f5;
+}
+
+.aa-toggle-btn-selected {
+  background: #111111;
+  color: #ffffff;
+}
+
+.aa-toggle-btn-selected:hover {
+  background: #111111;
+  color: #ffffff;
+}
+
+/* ── Chart-type switcher (chips) ── */
+.aa-chart-type-switcher {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.aa-chip {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #444444;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.aa-chip:hover {
+  border-color: #111111;
+  color: #111111;
+}
+
+.aa-chip-selected {
+  background: #111111;
+  border-color: #111111;
+  color: #ffffff;
+}
+
+/* ── Chart panel card (wraps a TrendChart) ── */
+.aa-chart-card {
+  background: #ffffff;
+  border: 1px solid #111111;
+  border-radius: 12px;
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.aa-chart-card-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111111;
+  margin-bottom: 14px;
+}
+
+/* ── TrendChart internals (used by TrendChart.jsx) ── */
+.trendchart-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trendchart-svg {
+  width: 100%;
+  height: var(--trendchart-height, 140px);
+  display: block;
+  overflow: visible;
+}
+
+.trendchart-body-pie {
+  display: flex;
+  justify-content: center;
+}
+
+.trendchart-pie-svg {
+  width: var(--trendchart-height, 140px);
+  height: var(--trendchart-height, 140px);
+}
+
+.trendchart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.trendchart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #444444;
+}
+
+.trendchart-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ── Placeholder (removed once Tasks 3–6 land) ── */
+.aa-tab-placeholder {
+  background: #ffffff;
+  border: 1px dashed #cccccc;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: #888888;
+  font-size: 14px;
+}
+
+/* ── Mobile (tablet/phone, ≤720px) ── */
+@media (max-width: 720px) {
+  .aa-layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Sidebar becomes a horizontally-scrollable tab strip instead of a
+     vertical stack — keeps all 4 metrics reachable in one thumb swipe
+     without eating vertical space above the charts. */
+  .aa-sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .aa-sidebar-item {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* Toggle groups stack instead of sitting side by side — at narrow
+     widths two 2-button segmented controls next to each other get too
+     cramped to tap reliably. */
+  .aa-timerange-row {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .aa-toggle-group {
+    width: 100%;
+  }
+
+  .aa-toggle-btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px; /* slightly taller tap target */
+  }
+
+  .aa-chart-type-switcher {
+    gap: 6px;
+  }
+
+  .aa-chip {
+    padding: 7px 12px;
+  }
+
+  .aa-chart-card {
+    padding: 16px 16px;
+  }
+
+  .aa-chart-card-title {
+    font-size: 14px;
+  }
+
+  .trendchart-svg {
+    height: 120px; /* shorter default chart height on small screens */
+  }
+
+  .trendchart-pie-svg {
+    width: 120px;
+    height: 120px;
+  }
+
+  .trendchart-legend {
+    gap: 8px 14px;
+  }
+
+  .trendchart-legend-item {
+    font-size: 11px;
+  }
+}
+
+/* ── Small phones (≤420px) ── */
+@media (max-width: 420px) {
+  .aa-sidebar-item {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .aa-toggle-btn {
+    font-size: 12px;
+    padding: 9px 6px;
+  }
+
+  .aa-chip {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  .aa-chart-card {
+    padding: 14px 12px;
+  }
+
+  .trendchart-svg {
+    height: 100px;
+  }
+
+  .trendchart-pie-svg {
+    width: 100px;
+    height: 100px;
+  }
+}
