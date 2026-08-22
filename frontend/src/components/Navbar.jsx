@@ -1,24 +1,15 @@
-
-// Navbar.jsx
-// Reusable navbar shown on every dashboard page.
-// Reads accountType from localStorage to show the right links.
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar() {
 
-  // Read accountType to decide which links to show
   const accountType = localStorage.getItem("accountType");
 
-  // useNavigate lets us redirect after logout
   const navigate = useNavigate();
 
-  // Controls whether the mobile menu is open or closed
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Clears all auth data and sends user back to login
   function handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
@@ -26,7 +17,6 @@ export default function Navbar() {
     navigate("/login");
   }
 
-  // Closes the mobile menu — called whenever a link is clicked
   function closeMenu() {
     setMenuOpen(false);
   }
@@ -34,13 +24,11 @@ export default function Navbar() {
   return (
     <nav className="navbar">
 
-      {/* Logo — kanji + wordmark, same as landing/login/signup */}
       <div className="navbar-logo">
         <span className="navbar-logo-kanji">浪</span>
         <span className="navbar-logo-text">RōninHire</span>
       </div>
 
-      {/* Hamburger button — only visible on small screens via CSS */}
       <button
         className={`navbar-hamburger ${menuOpen ? "navbar-hamburger-open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -52,7 +40,6 @@ export default function Navbar() {
         <span></span>
       </button>
 
-      {/* Nav links — different per role */}
       <div className={`navbar-links ${menuOpen ? "navbar-links-open" : ""}`}>
 
         {accountType === "APPLICANT" && (
@@ -68,7 +55,6 @@ export default function Navbar() {
 
         {accountType === "EMPLOYER" && (
           <>
-            {/* Recruiter links go here when we build that branch */}
             <Link to="/recruiter-dashboard" onClick={closeMenu}>Home</Link>
             <Link to="/browse-jobs" onClick={closeMenu}>Browse Jobs</Link>
             <Link to="/my-jobs" onClick={closeMenu}>My Jobs</Link>
@@ -82,6 +68,9 @@ export default function Navbar() {
           <>
             <Link to="/admin-dashboard" onClick={closeMenu}>Dashboard</Link>
             <Link to="/admin/companies" onClick={closeMenu}>Companies</Link>
+            <Link to="/admin/jobs" onClick={closeMenu}>Jobs</Link>
+            <Link to="/admin/interview-exp" onClick={closeMenu}>Interview Experiences</Link>
+            <Link to="/admin/recruiters" onClick={closeMenu}>Recruiters</Link>
             <Link to="/admin/reports" onClick={closeMenu}>Reports</Link>
             <Link to="/admin/audit-log" onClick={closeMenu}>Audit Log</Link>
           </>

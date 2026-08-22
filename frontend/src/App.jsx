@@ -25,6 +25,15 @@ import AssessmentResults from "./pages/AssessmentResults.jsx";
 import TakeAssessment from "./pages/TakeAssessment.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import AdminAnalytics from "./pages/AdminAnalytics.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import AdminAuditLog from "./pages/AdminAuditLog.jsx";
+import AdminCompanies from "./pages/AdminCompanies.jsx";
+import AdminUsers from "./pages/AdminUsers.jsx";
+import AdminReports from "./pages/AdminReports.jsx";
+import AdminJobs from "./pages/AdminJobs.jsx";
+import AdminInterviewExp from "./pages/AdminInterviewExp.jsx";
+import AdminRecruiters from "./pages/AdminRecruiters.jsx";
 
 const router = createBrowserRouter([
   { path:"/", element: <LandingPage /> },
@@ -51,6 +60,15 @@ const router = createBrowserRouter([
   { path: "/assessments/:assessmentId/results", element: <ProtectedRoute><AssessmentResults /></ProtectedRoute> },
   { path: "/assessments/:assessmentId/take", element: <ProtectedRoute><TakeAssessment /></ProtectedRoute> },
   { path: "/admin-dashboard", element: <AdminRoute><AdminDashboard /></AdminRoute> },
+  { path: "/admin/analytics", element: <AdminRoute><AdminAnalytics /></AdminRoute> },
+  { path: "/admin/audit-log", element: <AdminRoute><AdminAuditLog /></AdminRoute> },
+  { path: "/admin/companies", element: <AdminRoute><AdminCompanies /></AdminRoute> },
+  { path: "/admin/users", element: <AdminRoute><AdminUsers /></AdminRoute> },
+  { path: "/admin/reports", element: <AdminRoute><AdminReports /></AdminRoute> },
+  { path: "/admin/jobs", element: <AdminRoute><AdminJobs /></AdminRoute> },
+  { path: "/admin/interview-exp", element: <AdminRoute><AdminInterviewExp /></AdminRoute> },
+  { path: "/admin/recruiters", element: <AdminRoute><AdminRecruiters /></AdminRoute> },
+  { path: "*", element: <NotFound /> },
 
 ])
 
