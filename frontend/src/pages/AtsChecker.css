@@ -1,0 +1,402 @@
+/*
+  AtsChecker.css
+  Standalone AI resume checker page — same ink/white monochrome design
+  system as MyProfile.css / ResumeBuilder.css / CandidateProfile.css.
+*/
+
+.atc-page {
+  --atc-ink: #111111;
+  --atc-ink-hover: #333333;
+  --atc-text-secondary: #444444;
+  --atc-text-tertiary: #888888;
+  --atc-bg-subtle: #f9f9f9;
+  --atc-strong: #15803d;
+  --atc-strong-bg: #dcfce7;
+  --atc-medium: #b45309;
+  --atc-medium-bg: #fef3c7;
+  --atc-weak: #b91c1c;
+  --atc-weak-bg: #fee2e2;
+
+  min-height: 100vh;
+  background: #ffffff;
+  color: var(--atc-ink);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.atc-page button,
+.atc-page input {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.atc-page button:focus-visible {
+  outline: 2px solid var(--atc-ink);
+  outline-offset: 2px;
+}
+
+.atc-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+/* ── Header ── */
+
+.atc-header {
+  margin-bottom: 28px;
+  animation: atc-fade-up 0.5s ease-out both;
+}
+
+.atc-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.atc-subtitle {
+  font-size: 14px;
+  color: var(--atc-text-secondary);
+  max-width: 560px;
+  line-height: 1.5;
+}
+
+/* ── Upload card ── */
+
+.atc-upload-card {
+  border: 1.5px dashed var(--atc-ink);
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  background: var(--atc-bg-subtle);
+  animation: atc-fade-up 0.5s ease-out both;
+  animation-delay: 0.05s;
+}
+
+.atc-upload-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--atc-ink);
+  color: #ffffff;
+  border: 1.5px solid var(--atc-ink);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.atc-upload-btn:hover:not(:disabled) {
+  background-color: var(--atc-ink-hover);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.atc-upload-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.atc-upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.atc-filename {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--atc-text-tertiary);
+}
+
+.atc-error {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--atc-weak);
+  font-weight: 500;
+}
+
+/* ── Loading ── */
+
+.atc-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 48px 0;
+  color: var(--atc-text-secondary);
+  font-size: 14px;
+}
+
+.atc-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--atc-bg-subtle);
+  border-top-color: var(--atc-ink);
+  border-radius: 50%;
+  animation: atc-spin 0.8s linear infinite;
+}
+
+/* ── Empty state ── */
+
+.atc-empty {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--atc-text-tertiary);
+  font-size: 14px;
+}
+
+/* ── Result: card shell shared by all result sections ── */
+
+.atc-card {
+  background: #ffffff;
+  border: 1px solid var(--atc-ink);
+  border-radius: 12px;
+  padding: 24px 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  animation: atc-fade-up 0.4s ease-out both;
+}
+
+.atc-card-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.atc-title-good { color: var(--atc-strong); }
+.atc-title-warn { color: var(--atc-medium); }
+.atc-title-tip  { color: var(--atc-ink); }
+
+.atc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.atc-list li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--atc-text-secondary);
+  padding-left: 16px;
+  position: relative;
+}
+
+.atc-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--atc-ink);
+}
+
+/* ── Score card (ring + sub-scores) ── */
+
+.atc-score-card {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.atc-score-side {
+  flex: 1;
+  min-width: 240px;
+}
+
+.atc-score-verdict {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.atc-subscores {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.atc-subscore-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.atc-subscore-label {
+  color: var(--atc-text-secondary);
+  font-weight: 500;
+}
+
+.atc-subscore-value {
+  font-weight: 700;
+}
+
+.atc-subscore-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--atc-bg-subtle);
+  overflow: hidden;
+}
+
+.atc-subscore-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease-out;
+}
+
+.atc-subscore-strong { background: var(--atc-strong); }
+.atc-subscore-medium { background: var(--atc-medium); }
+.atc-subscore-weak   { background: var(--atc-weak); }
+
+/* ── Score ring ── */
+
+.atc-ring-wrap {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  flex-shrink: 0;
+}
+
+.atc-ring-track {
+  fill: none;
+  stroke: var(--atc-bg-subtle);
+  stroke-width: 10;
+}
+
+.atc-ring-fill {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s ease-out;
+}
+
+.atc-ring-strong .atc-ring-fill { stroke: var(--atc-strong); }
+.atc-ring-medium .atc-ring-fill { stroke: var(--atc-medium); }
+.atc-ring-weak   .atc-ring-fill { stroke: var(--atc-weak); }
+
+.atc-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.atc-ring-score {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.atc-ring-max {
+  font-size: 12px;
+  color: var(--atc-text-tertiary);
+}
+
+/* ── Details grid ── */
+
+.atc-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.atc-card-wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .atc-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .atc-score-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ── Session history ── */
+
+.atc-history {
+  margin-top: 32px;
+  animation: atc-fade-up 0.4s ease-out both;
+}
+
+.atc-history-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--atc-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.atc-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.atc-history-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.atc-history-name {
+  color: var(--atc-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70%;
+}
+
+.atc-history-score {
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.atc-history-strong { color: var(--atc-strong); background: var(--atc-strong-bg); }
+.atc-history-medium { color: var(--atc-medium); background: var(--atc-medium-bg); }
+.atc-history-weak   { color: var(--atc-weak);   background: var(--atc-weak-bg); }
+
+/* ── Animations ── */
+
+@keyframes atc-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes atc-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atc-page *,
+  .atc-page *::before,
+  .atc-page *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

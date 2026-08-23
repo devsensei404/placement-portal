@@ -17,6 +17,7 @@ import CandidateProfile from "./pages/CandidateProfile";
 import Chats from "./pages/Chats.jsx";
 import ChatWindow from "./pages/ChatWindow.jsx";
 import ResumeBuilder from "./pages/ResumeBuilder.jsx";
+import AtsChecker from "./pages/AtsChecker.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import TermsAndPrivacy from "./pages/TermsAndPrivacy.jsx";
 import ManageAssessments from "./pages/ManageAssessments.jsx";
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
   { path: "/chats", element: <ProtectedRoute><Chats /></ProtectedRoute> },
   { path: "/chats/:otherUserId", element: <ProtectedRoute><ChatWindow /></ProtectedRoute> },
   { path: "/resume-builder", element: <ProtectedRoute><ResumeBuilder /></ProtectedRoute> },
+  { path: "/ats-checker", element: <ProtectedRoute><AtsChecker /></ProtectedRoute> },
   { path: "/assessments/manage/:jobId", element: <ProtectedRoute><ManageAssessments /></ProtectedRoute> },
   { path: "/assessments/:assessmentId/questions", element: <ProtectedRoute><ManageQuestions /></ProtectedRoute> },
   { path: "/assessments/:assessmentId/results", element: <ProtectedRoute><AssessmentResults /></ProtectedRoute> },

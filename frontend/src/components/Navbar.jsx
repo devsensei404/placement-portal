@@ -47,6 +47,7 @@ export default function Navbar() {
             <Link to="/student-dashboard" onClick={closeMenu}>Home</Link>
             <Link to="/browse-jobs" onClick={closeMenu}>Browse Jobs</Link>
             <Link to="/my-applications" onClick={closeMenu}>My Applications</Link>
+            <Link to="/ats-checker" onClick={closeMenu}>ATS Checker</Link>
             <Link to="/chats" onClick={closeMenu}>Messages</Link>
             <Link to="/my-profile" onClick={closeMenu}>My Profile</Link>
             <Link to="/notifications" onClick={closeMenu}>Notifications</Link>
