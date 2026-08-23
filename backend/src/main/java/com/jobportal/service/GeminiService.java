@@ -6,7 +6,11 @@ import com.jobportal.dto.CandidateRankDTO;
 import com.jobportal.dto.JobRecommendationDTO;
 import com.jobportal.dto.ResumeRequestDTO;
 import com.jobportal.dto.ResumeResponseDTO;
-import com.jobportal.entity.*;
+import com.jobportal.entity.Applicant;
+import com.jobportal.entity.Certification;
+import com.jobportal.entity.Experience;
+import com.jobportal.entity.Job;
+import com.jobportal.entity.Profile;
 import com.jobportal.exception.JobPortalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +41,7 @@ public class GeminiService {
     private String geminiRankingApiKey;
 
     private static final String GEMINI_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=";
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=";
 
     private static final String SYSTEM_PROMPT = """
 You are an expert resume writer and ATS optimization specialist.
@@ -459,10 +463,35 @@ Do not add any explanation or text outside the JSON array.
     }
 
     /**
-     * Calls Gemini with a text prompt plus zero or more inline images, using the given API key.
+     * Calls Gemini with a text prompt plus zero or more inline images, using the given
+     * API key. Adds a short backoff-retry specifically for Gemini's own 503 "deadline
+     * expired / overloaded" responses — these are usually transient on Google's end,
+     * so an immediate retry (after a brief pause) often succeeds where hammering it
+     * instantly would just get the same 503 back. Any other error (4xx, network, etc.)
+     * is NOT retried here — that's still handled by each caller's existing 2-attempt loop.
      */
-    @SuppressWarnings("unchecked")
     private String callGemini(String prompt, List<String> imagesBase64, String apiKey) throws Exception {
+        final int maxServerRetries = 2;
+        final long backoffMillis = 1500;
+
+        for (int attempt = 1; attempt <= maxServerRetries; attempt++) {
+            try {
+                return doCallGemini(prompt, imagesBase64, apiKey);
+            } catch (org.springframework.web.client.HttpServerErrorException.ServiceUnavailable e) {
+                if (attempt == maxServerRetries) throw e;
+                try {
+                    Thread.sleep(backoffMillis);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw e;
+                }
+            }
+        }
+        throw new IllegalStateException("unreachable");
+    }
+
+    @SuppressWarnings("unchecked")
+    private String doCallGemini(String prompt, List<String> imagesBase64, String apiKey) throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
