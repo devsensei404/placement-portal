@@ -1,5 +1,6 @@
 package com.jobportal.api;
 
+import com.jobportal.dto.AtsScoreDTO;
 import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
@@ -138,5 +139,12 @@ public class ProfileAPI {
             @RequestParam("file") MultipartFile file) throws JobPortalException {
         profileService.uploadResume(id, file);
         return ResponseEntity.ok(new ResponseDTO("Resume updated"));
+    }
+
+    // AI ATS score for the logged-in user's own profile resume.
+    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    @GetMapping("/me/resumeScore")
+    public ResponseEntity<AtsScoreDTO> getMyResumeScore() throws JobPortalException {
+        return ResponseEntity.ok(profileService.getMyResumeScore());
     }
 }

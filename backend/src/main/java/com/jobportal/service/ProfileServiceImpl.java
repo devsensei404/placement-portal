@@ -1,5 +1,6 @@
 package com.jobportal.service;
 
+import com.jobportal.dto.AtsScoreDTO;
 import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
@@ -36,6 +37,9 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Autowired
     private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private GeminiService geminiService;
 
     @Override
     public Long createProfile(String email) throws JobPortalException {
@@ -218,5 +222,16 @@ public class ProfileServiceImpl implements ProfileService{
     public ProfileDTO viewProfile(Long profileId) throws JobPortalException {
         ProfileDTO profileDTO =profileRepository.findById(profileId).orElseThrow(()-> new JobPortalException("PROFILE_NOT_FOUND")).toDTO();
         return (profileDTO);
+    }
+
+    @Override
+    public AtsScoreDTO getMyResumeScore() throws JobPortalException {
+        Long realProfileId = securityUtils.getLoggedInUser().getProfileId();
+        Profile profile = profileRepository.findById(realProfileId)
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+        if (profile.getResumeUrl() == null || profile.getResumeUrl().isBlank()) {
+            throw new JobPortalException("RESUME_NOT_FOUND");
+        }
+        return geminiService.scoreResume(profile.getResumeUrl());
     }
 }

@@ -1,5 +1,6 @@
 package com.jobportal.service;
 
+import com.jobportal.dto.AtsScoreDTO;
 import com.jobportal.dto.CertificationDTO;
 import com.jobportal.dto.ExperienceDTO;
 import com.jobportal.dto.ProfileDTO;
@@ -43,4 +44,7 @@ public interface ProfileService {
     public void uploadResume(Long profileId, MultipartFile file) throws JobPortalException;
 
     public ProfileDTO viewProfile(Long profileId) throws JobPortalException;
+
+    // ATS-style score for the logged-in user's own profile resume image.
+    public AtsScoreDTO getMyResumeScore() throws JobPortalException;
 }
