@@ -23,6 +23,11 @@ public class ProfileDTO {
     private String profilePictureUrl;
     private String coverPhotoUrl;
     private String resumeUrl;
+
+    // Clickable contact icons on the profile card — Mail reuses "email" above.
+    private String githubUrl;
+    private String linkedinUrl;
+
     private List<String> skills;
     private List<ExperienceDTO> experience;
     private List<CertificationDTO> certifications;
@@ -30,6 +35,10 @@ public class ProfileDTO {
 
     private Long companyId;
     private ListingStatus listingStatus;
+
+    // Only used by AI features (profile-strength scoring) — null/omitted for
+    // every normal profile fetch, only populated by GET /profiles/topProfiles.
+    private Integer profileStrength;
 
     public Profile toEntity() {
         Profile p = new Profile();
@@ -43,6 +52,8 @@ public class ProfileDTO {
         p.setProfilePictureUrl(this.profilePictureUrl);
         p.setCoverPhotoUrl(this.coverPhotoUrl);
         p.setResumeUrl(this.resumeUrl);
+        p.setGithubUrl(this.githubUrl);
+        p.setLinkedinUrl(this.linkedinUrl);
         p.setSkills(this.skills);
         p.setSavedJobs(this.savedJobs);
         p.setCompanyId(this.companyId);

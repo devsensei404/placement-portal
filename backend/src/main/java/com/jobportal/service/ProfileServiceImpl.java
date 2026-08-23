@@ -71,6 +71,8 @@ public class ProfileServiceImpl implements ProfileService{
         if (profileDTO.getCompany() != null) existing.setCompany(profileDTO.getCompany());
         if (profileDTO.getLocation() != null) existing.setLocation(profileDTO.getLocation());
         if (profileDTO.getAbout() != null) existing.setAbout(profileDTO.getAbout());
+        if (profileDTO.getGithubUrl() != null) existing.setGithubUrl(profileDTO.getGithubUrl());
+        if (profileDTO.getLinkedinUrl() != null) existing.setLinkedinUrl(profileDTO.getLinkedinUrl());
         if (profileDTO.getSkills() != null) existing.setSkills(profileDTO.getSkills());
         if (profileDTO.getSavedJobs() != null) existing.setSavedJobs(profileDTO.getSavedJobs());
         return profileRepository.save(existing).toDTO();
@@ -233,5 +235,50 @@ public class ProfileServiceImpl implements ProfileService{
             throw new JobPortalException("RESUME_NOT_FOUND");
         }
         return geminiService.scoreResume(profile.getResumeUrl());
+    }
+
+    // Minimum completeness score (out of 100) for a profile to show up in the
+    // recruiter-facing "top profiles" panel/list. Roughly "half their profile filled in".
+    private static final int TOP_PROFILE_MIN_SCORE = 50;
+
+    @Override
+    public List<ProfileDTO> getTopProfiles(Integer limit) throws JobPortalException {
+        List<ProfileDTO> scored = profileRepository.findAll().stream()
+                .map(profile -> {
+                    ProfileDTO dto = profile.toDTO();
+                    dto.setProfileStrength(computeProfileStrength(profile));
+                    return dto;
+                })
+                .filter(dto -> dto.getProfileStrength() >= TOP_PROFILE_MIN_SCORE)
+                .sorted((a, b) -> b.getProfileStrength() - a.getProfileStrength())
+                .toList();
+
+        if (limit != null && limit > 0 && scored.size() > limit) {
+            return scored.subList(0, limit);
+        }
+        return scored;
+    }
+
+    // Deterministic, zero-AI-cost completeness score (0-100). Not a judgment of
+    // resume/experience QUALITY (that's what the ATS checker and candidate ranking
+    // are for) — purely "how filled-out is this profile".
+    private int computeProfileStrength(Profile profile) {
+        int score = 0;
+
+        if (profile.getName() != null && !profile.getName().isBlank()) score += 10;
+        if (profile.getAbout() != null && !profile.getAbout().isBlank()) score += 15;
+        if (profile.getResumeUrl() != null && !profile.getResumeUrl().isBlank()) score += 20;
+        if (profile.getLocation() != null && !profile.getLocation().isBlank()) score += 5;
+
+        int skillCount = profile.getSkills() == null ? 0 : profile.getSkills().size();
+        score += Math.min(skillCount * 5, 20);
+
+        int experienceCount = profile.getExperience() == null ? 0 : profile.getExperience().size();
+        score += Math.min(experienceCount * 10, 20);
+
+        int certCount = profile.getCertifications() == null ? 0 : profile.getCertifications().size();
+        score += Math.min(certCount * 5, 10);
+
+        return Math.min(score, 100);
     }
 }

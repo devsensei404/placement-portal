@@ -28,6 +28,12 @@ public class Profile {
     private String profilePictureUrl;
     private String coverPhotoUrl;
     private String resumeUrl;
+
+    // Clickable contact icons on the profile card — Mail reuses the existing
+    // "email" field above, these two are new.
+    private String githubUrl;
+    private String linkedinUrl;
+
     @ElementCollection
     private List<String> skills = new ArrayList<>();
 
@@ -57,6 +63,8 @@ public class Profile {
         dto.setProfilePictureUrl(this.profilePictureUrl);
         dto.setCoverPhotoUrl(this.coverPhotoUrl);
         dto.setResumeUrl(this.resumeUrl);
+        dto.setGithubUrl(this.githubUrl);
+        dto.setLinkedinUrl(this.linkedinUrl);
         dto.setSkills(this.skills);
         dto.setExperience(this.experience.stream().map(exp -> exp.toDTO()).toList());
         dto.setCertifications(this.certifications.stream().map(cert -> cert.toDTO()).toList());

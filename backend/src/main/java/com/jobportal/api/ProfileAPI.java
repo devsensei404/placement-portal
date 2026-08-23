@@ -141,10 +141,20 @@ public class ProfileAPI {
         return ResponseEntity.ok(new ResponseDTO("Resume updated"));
     }
 
-    // AI ATS score for the logged-in user's own profile resume.
-    @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
+    // AI ATS score checker for resume.
+    @PreAuthorize("hasAnyRole('APPLICANT')")
     @GetMapping("/me/resumeScore")
     public ResponseEntity<AtsScoreDTO> getMyResumeScore() throws JobPortalException {
         return ResponseEntity.ok(profileService.getMyResumeScore());
+    }
+
+    // Profiles sorted by completeness score, excluding low-completeness ones (<50).
+    // Used by the recruiter dashboard's "top candidates" panel (small limit) and
+    // the full /candidates browse page (no limit -> everything above the cutoff).
+    @PreAuthorize("hasRole('EMPLOYER')")
+    @GetMapping("/topProfiles")
+    public ResponseEntity<List<ProfileDTO>> getTopProfiles(
+            @RequestParam(value = "limit", required = false) Integer limit) throws JobPortalException {
+        return ResponseEntity.ok(profileService.getTopProfiles(limit));
     }
 }

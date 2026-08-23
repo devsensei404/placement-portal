@@ -173,6 +173,37 @@
   flex-shrink: 0;
 }
 
+/* ── Contact icons: Mail / GitHub / LinkedIn — round icon buttons below the
+   location chip, same ink/white monochrome system as the rest of the page. ── */
+.cp-contact-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cp-contact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid #111111;
+  color: #111111;
+  background: #ffffff;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.cp-contact-icon:hover {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+.cp-contact-icon:active {
+  transform: scale(0.94);
+}
+
 .cp-resume-link {
   display: inline-flex;
   align-items: center;
@@ -535,14 +566,4 @@
   .cp-meta-chip {
     font-size: 12px;
   }
-}
-
-.cp-name-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.cp-name-row .cp-name {
-  margin: 0;
 }

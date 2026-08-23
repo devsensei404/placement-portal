@@ -47,4 +47,9 @@ public interface ProfileService {
 
     // ATS-style score for the logged-in user's own profile resume image.
     public AtsScoreDTO getMyResumeScore() throws JobPortalException;
+
+    // Profiles sorted by completeness score (0-100), excluding low-completeness
+    // ones (< 50), used by the recruiter dashboard panel and /candidates page.
+    // Pass null limit for the full filtered+sorted list, or a number to cap it.
+    public List<ProfileDTO> getTopProfiles(Integer limit) throws JobPortalException;
 }
