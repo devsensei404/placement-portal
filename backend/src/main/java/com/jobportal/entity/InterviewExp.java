@@ -24,15 +24,13 @@ public class InterviewExp {
     private Long userId; // stores userId of person sharing review
     private LocalDateTime createdAt;
 
-    public InterviewExp(String msg,Long jobId,LocalDateTime createdAt){
-        this.msg=msg;
-        this.jobId=jobId;
-        this.createdAt=createdAt;
+    public InterviewExp(String msg, Long jobId, LocalDateTime createdAt) {
+        this.msg = msg;
+        this.jobId = jobId;
+        this.createdAt = createdAt;
     }
-    public InterviewExpDTO toDTO(){
+
+    public InterviewExpDTO toDTO() {
         return new InterviewExpDTO(this.id, this.msg, this.jobId, this.createdAt);
     }
-}git add backend/src/main/java/com/jobportal/dto/InterviewExpDTO.java backend/src/main/java/com/jobportal/entity/InterviewExp.java
-git commit -m "feat(backend): expose id on InterviewExpDTO for report/moderation targeting"
-
-        #
+}

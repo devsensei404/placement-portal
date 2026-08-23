@@ -35,6 +35,14 @@ public class JobAPI {
         return new ResponseEntity<>(jobService.getAllJobs(), HttpStatus.OK);
     }
 
+    // NOTE: must be declared before "/get/{id}" would only matter if the path shapes
+    // clashed — they don't ("/recommendations" vs "/get/{id}") so ordering is safe.
+    @PreAuthorize("hasRole('APPLICANT')")
+    @GetMapping("/recommendations")
+    public ResponseEntity<List<JobDTO>> getRecommendedJobs() throws JobPortalException {
+        return new ResponseEntity<>(jobService.getRecommendedJobs(), HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAnyRole('APPLICANT', 'EMPLOYER')")
     @GetMapping("/get/{id}")
     public ResponseEntity<JobDTO>getJob(@PathVariable Long id) throws JobPortalException{
@@ -52,6 +60,21 @@ public class JobAPI {
     @GetMapping("/postedBy/{id}")
     public ResponseEntity<List<JobDTO>>getJobsPostedBy(@PathVariable Long id) throws JobPortalException{
         return new ResponseEntity<>(jobService.getJobsPostedby(id), HttpStatus.OK);
+    }
+
+    // AI candidate ranking — auto-scores (and caches) on first fetch, then returns
+    // cached scores on subsequent fetches until the job is edited or refreshed below.
+    @PreAuthorize("hasRole('EMPLOYER')")
+    @GetMapping("/{id}/rankedApplicants")
+    public ResponseEntity<List<ApplicantDTO>> getRankedApplicants(@PathVariable("id") Long jobId) throws JobPortalException {
+        return ResponseEntity.ok(jobService.getRankedApplicants(jobId));
+    }
+
+    // Forces re-scoring of every applicant on this job (ignores cache).
+    @PreAuthorize("hasRole('EMPLOYER')")
+    @PostMapping("/{id}/rankedApplicants/refresh")
+    public ResponseEntity<List<ApplicantDTO>> refreshRankedApplicants(@PathVariable("id") Long jobId) throws JobPortalException {
+        return ResponseEntity.ok(jobService.refreshRankedApplicants(jobId));
     }
 
     @PreAuthorize("hasRole('EMPLOYER')")

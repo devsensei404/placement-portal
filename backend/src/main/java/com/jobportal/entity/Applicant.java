@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,6 +36,27 @@ public class Applicant {
     private LocalDateTime interviewTime;
     private LocalDate startDate;
 
+    // ── AI candidate-ranking cache ──────────────────────────────────────
+    // Populated by GeminiService.rankApplicants() the first time a recruiter fetches
+    // this job's applicant list, then reused until the job is edited or a refresh is
+    // requested — avoids re-scoring on every page load.
+    private Integer matchScore; // 0-100, null = not yet scored
+
+    @ElementCollection
+    @CollectionTable(name = "applicant_match_strengths", joinColumns = @JoinColumn(name = "application_id"))
+    @Column(name = "strength")
+    private List<String> matchStrengths;
+
+    @ElementCollection
+    @CollectionTable(name = "applicant_match_gaps", joinColumns = @JoinColumn(name = "application_id"))
+    @Column(name = "gap")
+    private List<String> matchGaps;
+
+    @Column(length = 500)
+    private String matchSummary;
+
+    private LocalDateTime rankedAt;
+
     public Applicant(Long applicantId, String name, String email, Long phone, String website, String resume, String coverLetter, ApplicationStatus applicationStatus,LocalDateTime interviewTime,LocalDate startDate) {
         this.applicantId = applicantId;
         this.name = name;
@@ -48,6 +70,11 @@ public class Applicant {
         this.startDate= startDate;
     }
     public ApplicantDTO toDTO() {
-        return new ApplicantDTO(this.applicationId,this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus,this.interviewTime, this.startDate);
+        ApplicantDTO dto = new ApplicantDTO(this.applicationId,this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.timestamp, this.applicationStatus,this.interviewTime, this.startDate);
+        dto.setMatchScore(this.matchScore);
+        dto.setMatchStrengths(this.matchStrengths);
+        dto.setMatchGaps(this.matchGaps);
+        dto.setMatchSummary(this.matchSummary);
+        return dto;
     }
 }

@@ -31,4 +31,14 @@ public interface JobService {
 
     public void deleteJob(Long id) throws JobPortalException;
 
+    // AI candidate ranking — returns this job's applicants sorted by matchScore desc.
+    // Scores unscored applicants on demand (auto-score on fetch) and caches the result.
+    public List<ApplicantDTO> getRankedApplicants(Long jobId) throws JobPortalException;
+
+    // Forces re-scoring of all applicants for this job, ignoring any cached scores.
+    public List<ApplicantDTO> refreshRankedApplicants(Long jobId) throws JobPortalException;
+
+    // AI job recommendations for the logged-in student, sorted by matchScore desc.
+    public List<JobDTO> getRecommendedJobs() throws JobPortalException;
+
 }

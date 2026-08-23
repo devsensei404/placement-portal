@@ -2,15 +2,14 @@ package com.jobportal.dto;
 
 import com.jobportal.entity.Applicant;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class ApplicantDTO {
 
@@ -40,6 +39,31 @@ public class ApplicantDTO {
     private ApplicationStatus applicationStatus;
     private LocalDateTime interviewTime;
     private LocalDate startDate;
+
+    // ── AI candidate-ranking (read-only, populated server-side) ─────────
+    private Integer matchScore;
+    private List<String> matchStrengths;
+    private List<String> matchGaps;
+    private String matchSummary;
+
+    // Kept as the original constructor shape (used throughout the codebase, e.g.
+    // Applicant.toDTO()) — matching fields are set separately via setters afterward.
+    public ApplicantDTO(Long applicationId, Long applicantId, String name, String email, Long phone,
+                         String website, String resume, String coverLetter, LocalDateTime timestamp,
+                         ApplicationStatus applicationStatus, LocalDateTime interviewTime, LocalDate startDate) {
+        this.applicationId = applicationId;
+        this.applicantId = applicantId;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.website = website;
+        this.resume = resume;
+        this.coverLetter = coverLetter;
+        this.timestamp = timestamp;
+        this.applicationStatus = applicationStatus;
+        this.interviewTime = interviewTime;
+        this.startDate = startDate;
+    }
 
     public Applicant toEntity() {
         return new Applicant(this.applicantId, this.name, this.email, this.phone, this.website, this.resume, this.coverLetter, this.applicationStatus,this.interviewTime, this.startDate);

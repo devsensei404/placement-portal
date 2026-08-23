@@ -1,11 +1,7 @@
 package com.jobportal.service;
 
 import com.jobportal.dto.*;
-import com.jobportal.entity.Applicant;
-import com.jobportal.entity.Company;
-import com.jobportal.entity.Job;
-import com.jobportal.entity.Profile;
-import com.jobportal.entity.User;
+import com.jobportal.entity.*;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.ApplicantRepository;
 import com.jobportal.repository.CompanyRepository;
@@ -18,8 +14,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +41,7 @@ public class JobServiceImpl implements JobService{
     private ProfileRepository profileRepository;
 
     @Autowired
-    private CompanyRepository companyRepository; // NEW — used only to resolve companyId -> companyName for JobDTOs
+    private CompanyRepository companyRepository; // used only to resolve companyId -> companyName for JobDTOs
 
     @Autowired
     private NotificationService notificationService;
@@ -52,6 +51,20 @@ public class JobServiceImpl implements JobService{
 
     @Autowired
     private SecurityUtils securityUtils;
+
+    @Autowired
+    private GeminiService geminiService;
+
+    // Ranking is TEXT-only (profile + application data, no resume images), so it's far
+    // cheaper per candidate than the old image-based approach — batch size can be large.
+    // Chunking still exists purely as a safety net for very large applicant pools.
+    private static final int RANKING_BATCH_SIZE = 40;
+
+    // Cap on how many open jobs we send Gemini in one recommendation call.
+    private static final int RECOMMENDATION_JOB_LIMIT = 40;
+
+    // How many top recommendations to return to the student.
+    private static final int RECOMMENDATION_RESULT_LIMIT = 20;
 
     // Application status is a one-way hiring pipeline — no downgrades, no reopening a
     // rejection. REJECTED and a bare OFFERED->REJECTED rescind are the only terminal
@@ -126,6 +139,18 @@ public class JobServiceImpl implements JobService{
                 .filter((x) -> x.getApplicantId() != null && x.getApplicantId().equals(applicantDTO.getApplicantId()))
                 .toList().isEmpty())
             throw new JobPortalException("JOB_APPLIED_ALREADY");
+
+        // If the applicant didn't attach a resume link for this specific application,
+        // fall back to the resume already saved on their profile.
+        if (applicantDTO.getResume() == null || applicantDTO.getResume().isBlank()) {
+            Long profileId = securityUtils.getLoggedInUser().getProfileId();
+            profileRepository.findById(profileId).ifPresent(profile -> {
+                if (profile.getResumeUrl() != null && !profile.getResumeUrl().isBlank()) {
+                    applicantDTO.setResume(profile.getResumeUrl());
+                }
+            });
+        }
+
         applicantDTO.setApplicationStatus(ApplicationStatus.APPLIED);
         Applicant applicant = applicantDTO.toEntity();
         applicant.setTimestamp(LocalDateTime.now());
@@ -241,15 +266,31 @@ public class JobServiceImpl implements JobService{
         if (!job.getPostedBy().equals(loggedInUser.getId()))
             throw new JobPortalException("UNAUTHORIZED_ACTION");
         getActiveRecruiterProfile();
+        boolean requirementsChanged = false;
         if (jobDTO.getJobTitle() != null) job.setJobTitle(jobDTO.getJobTitle());
         if (jobDTO.getAbout() != null) job.setAbout(jobDTO.getAbout());
-        if (jobDTO.getExperience() != null) job.setExperience(jobDTO.getExperience());
+        if (jobDTO.getExperience() != null) { job.setExperience(jobDTO.getExperience()); requirementsChanged = true; }
         if (jobDTO.getJobType() != null) job.setJobType(jobDTO.getJobType());
         if (jobDTO.getLocation() != null) job.setLocation(jobDTO.getLocation());
         if (jobDTO.getPackageOffered() != null) job.setPackageOffered(jobDTO.getPackageOffered());
-        if (jobDTO.getDescription() != null) job.setDescription(jobDTO.getDescription());
-        if (jobDTO.getSkillsRequired() != null) job.setSkillsRequired(jobDTO.getSkillsRequired());
+        if (jobDTO.getDescription() != null) { job.setDescription(jobDTO.getDescription()); requirementsChanged = true; }
+        if (jobDTO.getSkillsRequired() != null) { job.setSkillsRequired(jobDTO.getSkillsRequired()); requirementsChanged = true; }
         Job saved = jobRepository.save(job);
+
+        // Requirements changed -> cached candidate scores are stale. Clear them so the
+        // next recruiter fetch re-scores against the updated job, instead of silently
+        // showing outdated rankings.
+        if (requirementsChanged && saved.getApplicants() != null && !saved.getApplicants().isEmpty()) {
+            for (Applicant applicant : saved.getApplicants()) {
+                applicant.setMatchScore(null);
+                applicant.setMatchStrengths(null);
+                applicant.setMatchGaps(null);
+                applicant.setMatchSummary(null);
+                applicant.setRankedAt(null);
+            }
+            applicantRepository.saveAll(saved.getApplicants());
+        }
+
         return withCompanyName(saved);
     }
 
@@ -265,7 +306,160 @@ public class JobServiceImpl implements JobService{
         jobRepository.deleteById(id);
     }
 
-    // ─── Helpers ──────────────────────────────────────────────────────────────
+    @Override
+    public List<ApplicantDTO> getRankedApplicants(Long jobId) throws JobPortalException {
+        Job job = jobRepository.findById(jobId).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+        assertOwnsJob(job);
+
+        List<Applicant> applicants = job.getApplicants();
+        if (applicants == null || applicants.isEmpty()) return List.of();
+
+        // Auto-score on fetch: only call Gemini for applicants that don't already have
+        // a cached score (e.g. new applications since the job was last ranked).
+        List<Applicant> unscored = applicants.stream()
+                .filter(a -> a.getMatchScore() == null)
+                .toList();
+
+        if (!unscored.isEmpty()) {
+            scoreAndCache(job, unscored);
+        }
+
+        return sortedByScore(applicants);
+    }
+
+    @Override
+    public List<ApplicantDTO> refreshRankedApplicants(Long jobId) throws JobPortalException {
+        Job job = jobRepository.findById(jobId).orElseThrow(() -> new JobPortalException("JOB_NOT_FOUND"));
+        assertOwnsJob(job);
+
+        List<Applicant> applicants = job.getApplicants();
+        if (applicants == null || applicants.isEmpty()) return List.of();
+
+        scoreAndCache(job, applicants); // force re-score of everyone, ignoring cache
+        return sortedByScore(applicants);
+    }
+
+    @Override
+    public List<JobDTO> getRecommendedJobs() throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        Profile profile = profileRepository.findById(loggedInUser.getProfileId())
+                .orElseThrow(() -> new JobPortalException("USER_NOT_FOUND"));
+
+        List<Job> openJobs = jobRepository.findByStatus(JobStatus.OPEN, Sort.by(Sort.Direction.DESC, "postTime"));
+        if (openJobs.isEmpty()) return List.of();
+
+        // Cap how many jobs we send Gemini in one call — most active portals won't
+        // exceed this, but it protects against payload/token blowups as job volume grows.
+        List<Job> candidateJobs = openJobs.size() > RECOMMENDATION_JOB_LIMIT
+                ? openJobs.subList(0, RECOMMENDATION_JOB_LIMIT)
+                : openJobs;
+
+        // Recommendations still use the resume IMAGE (one per call, cheap regardless of
+        // how many jobs are being compared) -- see GeminiService.recommendJobs().
+        List<JobRecommendationDTO> recommendations = geminiService.recommendJobs(profile, candidateJobs);
+
+        Map<Long, JobRecommendationDTO> byJobId = recommendations.stream()
+                .collect(Collectors.toMap(JobRecommendationDTO::getJobId, r -> r, (a, b) -> a));
+
+        List<JobDTO> scoredJobs = new ArrayList<>();
+        for (Job job : candidateJobs) {
+            JobRecommendationDTO rec = byJobId.get(job.getId());
+            if (rec == null) continue; // Gemini didn't return this one -- skip rather than show unscored
+            JobDTO dto = job.toDTO();
+            if (dto.getCompanyId() != null) {
+                companyRepository.findById(dto.getCompanyId()).ifPresent(c -> dto.setCompanyName(c.getName()));
+            }
+            dto.setMatchScore(rec.getScore());
+            dto.setMatchReason(rec.getReason());
+            scoredJobs.add(dto);
+        }
+
+        return scoredJobs.stream()
+                .sorted(Comparator.comparing(JobDTO::getMatchScore, Comparator.nullsLast(Comparator.reverseOrder())))
+                .limit(RECOMMENDATION_RESULT_LIMIT)
+                .toList();
+    }
+
+    // --- Helpers ------------------------------------------------------------
+
+    private void assertOwnsJob(Job job) throws JobPortalException {
+        UserDTO loggedInUser = securityUtils.getLoggedInUser();
+        if (!job.getPostedBy().equals(loggedInUser.getId()))
+            throw new JobPortalException("UNAUTHORIZED_ACTION");
+    }
+
+    // Scores the given applicants (in RANKING_BATCH_SIZE chunks) against the job, using
+    // TEXT ONLY (profile + application data -- no resume images), and writes the result
+    // back onto each Applicant, then saves them.
+    private void scoreAndCache(Job job, List<Applicant> applicantsToScore) throws JobPortalException {
+        List<Long> applicantUserIds = applicantsToScore.stream()
+                .map(Applicant::getApplicantId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        Map<Long, Profile> profilesByApplicantId = resolveProfilesForApplicants(applicantUserIds);
+
+        List<List<Applicant>> chunks = partition(applicantsToScore, RANKING_BATCH_SIZE);
+        LocalDateTime now = LocalDateTime.now();
+
+        for (List<Applicant> chunk : chunks) {
+            List<CandidateRankDTO> results = geminiService.rankApplicants(job, chunk, profilesByApplicantId);
+            Map<Long, CandidateRankDTO> byApplicantId = results.stream()
+                    .collect(Collectors.toMap(CandidateRankDTO::getApplicantId, r -> r, (a, b) -> a));
+
+            for (Applicant applicant : chunk) {
+                CandidateRankDTO result = byApplicantId.get(applicant.getApplicantId());
+                if (result == null) continue; // Gemini omitted this one -- leave unscored, retried next fetch
+                applicant.setMatchScore(result.getScore());
+                applicant.setMatchStrengths(result.getStrengths());
+                applicant.setMatchGaps(result.getGaps());
+                applicant.setMatchSummary(result.getSummary());
+                applicant.setRankedAt(now);
+            }
+        }
+
+        applicantRepository.saveAll(applicantsToScore);
+    }
+
+    // Resolves each applicant's Profile via their linked user account -- same
+    // user.getProfileId() -> profileRepository.findById() pattern used everywhere else
+    // in this codebase (see getActiveRecruiterProfile, updateProfile, etc).
+    private Map<Long, Profile> resolveProfilesForApplicants(List<Long> applicantUserIds) {
+        if (applicantUserIds.isEmpty()) return Map.of();
+
+        List<User> users = userRepository.findAllById(applicantUserIds);
+        List<Long> profileIds = users.stream()
+                .map(User::getProfileId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        Map<Long, Profile> profilesByProfileId = profileIds.isEmpty()
+                ? Map.of()
+                : profileRepository.findAllById(profileIds).stream()
+                        .collect(Collectors.toMap(Profile::getId, p -> p));
+
+        Map<Long, Profile> result = new HashMap<>();
+        for (User user : users) {
+            Profile profile = profilesByProfileId.get(user.getProfileId());
+            if (profile != null) result.put(user.getId(), profile);
+        }
+        return result;
+    }
+
+    private List<ApplicantDTO> sortedByScore(List<Applicant> applicants) {
+        return applicants.stream()
+                .map(Applicant::toDTO)
+                .sorted(Comparator.comparing(ApplicantDTO::getMatchScore, Comparator.nullsLast(Comparator.reverseOrder())))
+                .toList();
+    }
+
+    private <T> List<List<T>> partition(List<T> list, int size) {
+        List<List<T>> chunks = new ArrayList<>();
+        for (int i = 0; i < list.size(); i += size) {
+            chunks.add(list.subList(i, Math.min(i + size, list.size())));
+        }
+        return chunks;
+    }
 
     private Profile getActiveRecruiterProfile() throws JobPortalException {
         UserDTO loggedInUser = securityUtils.getLoggedInUser();
@@ -278,7 +472,7 @@ public class JobServiceImpl implements JobService{
     }
 
     // Single-job path: one direct lookup, used by getJob/postJob/closeJob/reopenJob/updateJob.
-    // If companyId is null (pre-migration job), companyName is simply left null — no throw.
+    // If companyId is null (pre-migration job), companyName is simply left null -- no throw.
     private JobDTO withCompanyName(Job job) {
         JobDTO dto = job.toDTO();
         if (job.getCompanyId() != null) {
@@ -289,7 +483,7 @@ public class JobServiceImpl implements JobService{
     }
 
     // List path: one batched lookup for all distinct companyIds in the list, used by
-    // getAllJobs/getJobsPostedby. Avoids N+1 queries — never looks up per-job in a loop.
+    // getAllJobs/getJobsPostedby. Avoids N+1 queries -- never looks up per-job in a loop.
     private List<JobDTO> withCompanyNames(List<Job> jobs) {
         List<Long> companyIds = jobs.stream()
                 .map(Job::getCompanyId)
@@ -309,4 +503,3 @@ public class JobServiceImpl implements JobService{
         }).toList();
     }
 }
-
