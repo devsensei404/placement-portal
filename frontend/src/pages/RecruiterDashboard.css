@@ -413,10 +413,27 @@
   min-width: 0;
 }
 
+.rd2-candidate-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .rd2-candidate-name {
   font-size: 14px;
   font-weight: 600;
   color: #111111;
+}
+
+.rd2-strength-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #111111;
+  background: #f0f0f0;
+  border: 1px solid #111111;
+  border-radius: 999px;
+  padding: 1px 8px;
+  flex-shrink: 0;
 }
 
 .rd2-candidate-title {

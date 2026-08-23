@@ -17,7 +17,9 @@ export default function Candidates() {
     const CARDS_PER_PAGE = 6;
 
     useEffect(() => {
-        fetch(`${BASE_URL}/profiles/getAll`, {
+        // Sorted by profile completeness score, low-completeness profiles (<50)
+        // already excluded server-side.
+        fetch(`${BASE_URL}/profiles/topProfiles`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => {
@@ -120,6 +122,12 @@ export default function Candidates() {
                                 <div className="cand-avatar">
                                     {getInitials(profile.name)}
                                 </div>
+
+                                {typeof profile.profileStrength === "number" && (
+                                    <span className="cand-strength-badge" title="Profile completeness">
+                                        {profile.profileStrength}%
+                                    </span>
+                                )}
 
                                 <h3 className="cand-name">
                                     {profile.name || "Unnamed Candidate"}

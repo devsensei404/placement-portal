@@ -97,8 +97,9 @@ export default function RecruiterDashboard() {
       .catch(() => {})
       .finally(() => setJobsLoading(false));
 
-    // Fetch all profiles for candidates panel
-    fetch(`${BASE}/profiles/getAll`, {
+    // Fetch top profiles (by completeness score, already filtered/sorted server-side)
+    // for the candidates panel
+    fetch(`${BASE}/profiles/topProfiles?limit=3`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => { if (!res.ok) throw new Error(); return res.json(); })
@@ -284,7 +285,7 @@ export default function RecruiterDashboard() {
             <div className="rd2-panel-header">
               <h2 className="rd2-panel-title">
                 <IconUsers />
-                Browse Candidates
+                Top Candidates
               </h2>
               <button
                 className="rd2-panel-link"
@@ -303,7 +304,7 @@ export default function RecruiterDashboard() {
               </div>
             ) : (
               <div className="rd2-candidates-scroll">
-                {candidates.slice(0, 3).map((candidate) => (
+                {candidates.map((candidate) => (
                   <div
                     key={candidate.id}
                     className="rd2-candidate-card"
@@ -313,7 +314,14 @@ export default function RecruiterDashboard() {
                       {getInitials(candidate.name)}
                     </div>
                     <div className="rd2-candidate-info">
-                      <p className="rd2-candidate-name">{candidate.name || "Unnamed"}</p>
+                      <div className="rd2-candidate-name-row">
+                        <p className="rd2-candidate-name">{candidate.name || "Unnamed"}</p>
+                        {typeof candidate.profileStrength === "number" && (
+                          <span className="rd2-strength-badge" title="Profile completeness">
+                            {candidate.profileStrength}%
+                          </span>
+                        )}
+                      </div>
                       <p className="rd2-candidate-title">
                         {candidate.jobTitle || "No title set"}
                         {candidate.company ? ` · ${candidate.company}` : ""}
