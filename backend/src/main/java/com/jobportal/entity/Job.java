@@ -58,9 +58,12 @@ public class Job {
     // companyName is intentionally NOT set here — this entity has no knowledge of
     // the Company table (kept out of the entity/repository layer on purpose).
     // JobServiceImpl resolves companyName from companyId and sets it on the DTO
-    // after this method returns. The trailing null below is that placeholder slot.
+    // after this method returns. The trailing nulls below are placeholder slots for
+    // companyName and for matchScore/matchReason (only populated by the AI job
+    // recommendations endpoint, which builds its own JobDTO directly — see
+    // JobServiceImpl.getRecommendedJobs()).
     public JobDTO toDTO(){
-        return new JobDTO(this.id,this.jobTitle,this.companyId,null,this.applicants == null ? new ArrayList<>() : this.applicants.stream().map(x->x.toDTO()).toList(), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy);
+        return new JobDTO(this.id,this.jobTitle,this.companyId,null,this.applicants == null ? new ArrayList<>() : this.applicants.stream().map(x->x.toDTO()).toList(), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy, null, null);
     }
 
 }

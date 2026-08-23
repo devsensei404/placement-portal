@@ -21,7 +21,7 @@ public class JobDTO {
 
     private Long companyId;
 
-    private String companyName; // NEW — resolved by JobServiceImpl from companyId, never set by Job.toDTO() directly
+    private String companyName; // resolved by JobServiceImpl from companyId, never set by Job.toDTO() directly
 
     private List<ApplicantDTO> applicants;
 
@@ -44,6 +44,10 @@ public class JobDTO {
     private JobStatus status;
 
     private Long postedBy;
+
+    // ── AI recommendation (only populated by getRecommendedJobs, null otherwise) ──
+    private Integer matchScore;
+    private String matchReason;
 
     public Job toEntity(){
         return new Job(this.id,this.jobTitle,this.companyId, this.applicants == null ? null : this.applicants.stream().map(x -> x.toEntity()).collect(Collectors.toList()), this.about, this.experience, this.jobType, this.location, this.packageOffered,this.postTime, this.description,this.skillsRequired, this.status,this.postedBy);
