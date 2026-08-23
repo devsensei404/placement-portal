@@ -338,7 +338,7 @@
 .mj2-applicants-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
   margin-bottom: 16px;
 }
 
@@ -353,6 +353,18 @@
 .mj2-applicants-count {
   font-size: 12px;
   color: var(--mj2-text-tertiary);
+  flex: 1;
+}
+
+.mj2-rank-btn {
+  margin-left: auto;
+}
+
+.mj2-rank-error {
+  font-size: 13px;
+  color: #b91c1c;
+  margin-bottom: 12px;
+  font-weight: 500;
 }
 
 .mj2-no-applicants {
@@ -392,6 +404,101 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--mj2-ink);
+}
+
+.mj2-applicant-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mj2-rank-score {
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.mj2-rank-score-strong {
+  color: #15803d;
+  background: #dcfce7;
+  border-color: #15803d;
+}
+
+.mj2-rank-score-medium {
+  color: #b45309;
+  background: #fef3c7;
+  border-color: #b45309;
+}
+
+.mj2-rank-score-weak {
+  color: #b91c1c;
+  background: #fee2e2;
+  border-color: #b91c1c;
+}
+
+.mj2-rank-detail {
+  background: #f9f9f9;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mj2-rank-summary {
+  font-size: 13px;
+  color: var(--mj2-text-secondary);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.mj2-rank-detail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mj2-rank-detail-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mj2-rank-detail-good { color: #15803d; }
+.mj2-rank-detail-warn { color: #b45309; }
+
+.mj2-rank-detail-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mj2-rank-detail-list li {
+  font-size: 13px;
+  color: var(--mj2-text-secondary);
+  padding-left: 12px;
+  position: relative;
+  line-height: 1.45;
+}
+
+.mj2-rank-detail-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
 }
 
 .mj2-applicant-email {

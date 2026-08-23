@@ -90,6 +90,14 @@ export default function MyJobs() {
   // ── Accordion: which job is expanded ──
   const [expandedJobId, setExpandedJobId] = useState(null);
 
+  // ── AI candidate ranking: keyed by jobId ──
+  // rankedApplicants[jobId] holds the ranked+scored applicant list once fetched
+  // (replaces job.applicants purely for display/sort order in that job's panel).
+  const [rankedApplicants, setRankedApplicants] = useState({});
+  const [rankingLoading,   setRankingLoading  ] = useState({});
+  const [rankingError,     setRankingError    ] = useState({});
+  const [expandedRankDetail, setExpandedRankDetail] = useState({}); // applicationId -> bool
+
   // ── Post Job modal ──
   const [showPostModal, setShowPostModal] = useState(false);
   const [form,          setForm         ] = useState(EMPTY_FORM);
@@ -140,6 +148,45 @@ export default function MyJobs() {
       })
       .catch((err) => setJobsError(err.message))
       .finally(() => setJobsLoading(false));
+  }
+
+  // ─────────────────────────────────
+  // AI CANDIDATE RANKING
+  // ─────────────────────────────────
+  // Auto-scores (and caches server-side) on first fetch; subsequent calls to
+  // this same endpoint just return the cached scores until the job is edited
+  // or "Refresh Ranking" is used.
+  function rankApplicants(jobId) {
+    setRankingLoading((prev) => ({ ...prev, [jobId]: true }));
+    setRankingError((prev) => ({ ...prev, [jobId]: "" }));
+    fetch(`${BASE}/jobs/${jobId}/rankedApplicants`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Couldn't rank candidates. Try again.");
+        return res.json();
+      })
+      .then((data) => setRankedApplicants((prev) => ({ ...prev, [jobId]: data })))
+      .catch((err) => setRankingError((prev) => ({ ...prev, [jobId]: err.message })))
+      .finally(() => setRankingLoading((prev) => ({ ...prev, [jobId]: false })));
+  }
+
+  // Forces re-scoring of every applicant on this job, ignoring cached scores —
+  // useful if a recruiter feels the previous ranking is stale.
+  function refreshRanking(jobId) {
+    setRankingLoading((prev) => ({ ...prev, [jobId]: true }));
+    setRankingError((prev) => ({ ...prev, [jobId]: "" }));
+    fetch(`${BASE}/jobs/${jobId}/rankedApplicants/refresh`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Couldn't refresh ranking. Try again.");
+        return res.json();
+      })
+      .then((data) => setRankedApplicants((prev) => ({ ...prev, [jobId]: data })))
+      .catch((err) => setRankingError((prev) => ({ ...prev, [jobId]: err.message })))
+      .finally(() => setRankingLoading((prev) => ({ ...prev, [jobId]: false })));
   }
 
   // ─────────────────────────────────
@@ -397,6 +444,14 @@ export default function MyJobs() {
     });
   }
 
+  // AI ranking score -> visual tone (matches the color convention used on
+  // the ATS checker and profile-strength badges elsewhere in the app)
+  function scoreTone(score) {
+    if (score >= 80) return "strong";
+    if (score >= 50) return "medium";
+    return "weak";
+  }
+
   // ─────────────────────────────────
   // RENDER
   // ─────────────────────────────────
@@ -505,7 +560,21 @@ export default function MyJobs() {
                   </div>
 
                   {/* ── Applicants accordion ── */}
-                  {isExpanded && (
+                  {isExpanded && (() => {
+                    const ranked = rankedApplicants[job.id];
+                    // Ranking gives us score/order; job.applicants (refreshed after
+                    // every status save) gives us the live applicationStatus/interviewTime.
+                    // Merge so a stale ranked snapshot never shows an outdated status badge.
+                    const displayApplicants = ranked
+                      ? ranked.map((r) => {
+                          const live = job.applicants?.find((a) => a.applicationId === r.applicationId);
+                          return live ? { ...r, applicationStatus: live.applicationStatus, interviewTime: live.interviewTime } : r;
+                        })
+                      : job.applicants || [];
+                    const isRanking = rankingLoading[job.id];
+                    const rankError = rankingError[job.id];
+
+                    return (
                     <div className="mj2-applicants-panel">
                       <div className="mj2-applicants-header">
                         <span className="mj2-applicants-title">
@@ -514,13 +583,27 @@ export default function MyJobs() {
                         <span className="mj2-applicants-count">
                           {job.applicants?.length || 0} total
                         </span>
+                        {job.applicants?.length > 0 && (
+                          <button
+                            className="mj2-btn-sm mj2-btn-ghost mj2-rank-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              ranked ? refreshRanking(job.id) : rankApplicants(job.id);
+                            }}
+                            disabled={isRanking}
+                          >
+                            {isRanking ? "Ranking…" : ranked ? "Refresh Ranking" : "Rank with AI"}
+                          </button>
+                        )}
                       </div>
+
+                      {rankError && <p className="mj2-rank-error">{rankError}</p>}
 
                       {!job.applicants?.length ? (
                         <p className="mj2-no-applicants">No applicants yet for this job.</p>
                       ) : (
                         <div className="mj2-applicant-list">
-                          {job.applicants.map((applicant,idx) => {
+                          {displayApplicants.map((applicant,idx) => {
                             // Lazy-init per-applicant state
                             if (!appState[applicant.applicationId]) {
                               initAppState(applicant);
@@ -532,17 +615,61 @@ export default function MyJobs() {
                               msg:           "",
                             };
 
+                            const hasRank = typeof applicant.matchScore === "number";
+                            const detailOpen = expandedRankDetail[applicant.applicationId];
+
                             return (
                                <div key={`${job.id}-${applicant.applicationId ?? idx}`} className="mj2-applicant-row">
 
                                 {/* Top: name + current badge */}
                                 <div className="mj2-applicant-row-top">
                                   <div>
-                                    <p className="mj2-applicant-name">{applicant.name}</p>
+                                    <div className="mj2-applicant-name-row">
+                                      <p className="mj2-applicant-name">{applicant.name}</p>
+                                      {hasRank && (
+                                        <span
+                                          className={`mj2-rank-score mj2-rank-score-${scoreTone(applicant.matchScore)}`}
+                                          onClick={() =>
+                                            setExpandedRankDetail((prev) => ({
+                                              ...prev,
+                                              [applicant.applicationId]: !prev[applicant.applicationId],
+                                            }))
+                                          }
+                                          title="Click for AI ranking details"
+                                        >
+                                          {applicant.matchScore}% match
+                                        </span>
+                                      )}
+                                    </div>
                                     <p className="mj2-applicant-email">{applicant.email}</p>
                                   </div>
                                   <StatusBadge status={applicant.applicationStatus} />
                                 </div>
+
+                                {/* AI ranking detail (strengths / gaps / summary) */}
+                                {hasRank && detailOpen && (
+                                  <div className="mj2-rank-detail">
+                                    {applicant.matchSummary && (
+                                      <p className="mj2-rank-summary">{applicant.matchSummary}</p>
+                                    )}
+                                    {applicant.matchStrengths?.length > 0 && (
+                                      <div className="mj2-rank-detail-group">
+                                        <span className="mj2-rank-detail-label mj2-rank-detail-good">Strengths</span>
+                                        <ul className="mj2-rank-detail-list">
+                                          {applicant.matchStrengths.map((s, i) => <li key={i}>{s}</li>)}
+                                        </ul>
+                                      </div>
+                                    )}
+                                    {applicant.matchGaps?.length > 0 && (
+                                      <div className="mj2-rank-detail-group">
+                                        <span className="mj2-rank-detail-label mj2-rank-detail-warn">Gaps</span>
+                                        <ul className="mj2-rank-detail-list">
+                                          {applicant.matchGaps.map((s, i) => <li key={i}>{s}</li>)}
+                                        </ul>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
 
                                 {/* Applied date + phone */}
                                 <p className="mj2-applicant-meta">
@@ -662,7 +789,8 @@ export default function MyJobs() {
                         </div>
                       )}
                     </div>
-                  )}
+                    );
+                  })()}
                 </div>
               );
             })}
