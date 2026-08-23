@@ -48,6 +48,11 @@ export default function StudentDashboard() {
   const [loading,     setLoading    ] = useState(true);
   const [progressActive, setProgressActive] = useState(false);
 
+  // ── AI job recommendations ──
+  const [recommendedJobs, setRecommendedJobs] = useState([]);
+  const [recommendationsLoading, setRecommendationsLoading] = useState(true);
+  const [recommendationsError, setRecommendationsError] = useState(false);
+
   // ── Pending assessments (jobs where this user is APPLIED/INTERVIEWING
   //    and an OPEN assessment exists) ──
   const [pendingAssessments, setPendingAssessments] = useState([]);
@@ -110,6 +115,19 @@ export default function StudentDashboard() {
         // Trigger progress bar animation after cards appear
         setTimeout(() => setProgressActive(true), 400);
       });
+  }, []);
+
+  // AI job recommendations — fetched independently of the main dashboard
+  // Promise.all above, since this call goes through Gemini and is slower;
+  // the rest of the dashboard shouldn't wait on it.
+  useEffect(() => {
+    fetch(`${BASE_URL}/jobs/recommendations`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
+      .then((data) => setRecommendedJobs(data || []))
+      .catch(() => setRecommendationsError(true))
+      .finally(() => setRecommendationsLoading(false));
   }, []);
 
   // ── Derived stats ──
@@ -241,6 +259,23 @@ export default function StudentDashboard() {
               ))}
             </div>
           </div>
+        )}
+
+        {/* ── Recommended For You (AI) ── */}
+        {!recommendationsLoading && !recommendationsError && recommendedJobs.length > 0 && (
+          <section className="recent-jobs-section sd-recommended-section">
+            <h2 className="section-heading">Recommended For You</h2>
+            <p className="sd-recommended-sub">
+              Matched to your resume and profile
+            </p>
+            <div className="jobs-grid">
+              {recommendedJobs.slice(0, 6).map((job, i) => (
+                <div key={job.id} className="sd-job-card-wrap" style={{ animationDelay: `${i * 100}ms` }}>
+                  <JobCard job={job} matchScore={job.matchScore} matchReason={job.matchReason} />
+                </div>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* ── Latest Job Openings ── */}
